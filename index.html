@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<title>Store Operation Checklist — C&amp;B Niranthar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ════ PIN SCREEN ═════════════════════════════════════════ -->
+<div id="pinScreen" class="screen active">
+  <div class="pin-card">
+    <div class="pin-logo-wrap">
+      <img src="assets/bsc-logo.png" alt="BSC The Textile Mall"/>
+    </div>
+    <div class="pin-store-name">BSC The Textile Mall</div>
+    <div class="pin-tagline">Belagavi · Since 1938</div>
+    <div class="pin-app-name">Store Operation Checklist</div>
+
+    <div class="role-tabs" id="roleTabs">
+      <button class="role-tab active" onclick="setRole('Manager',this)">Manager</button>
+      <button class="role-tab"        onclick="setRole('CRM',this)">CRM</button>
+      <button class="role-tab"        onclick="setRole('Staff',this)">Staff</button>
+      <button class="role-tab"        onclick="setRole('Owner',this)">Owner</button>
+    </div>
+
+    <div class="pin-dots" id="pinDots">
+      <div class="pin-dot"></div><div class="pin-dot"></div>
+      <div class="pin-dot"></div><div class="pin-dot"></div>
+      <div class="pin-dot"></div><div class="pin-dot"></div>
+    </div>
+
+    <div class="pin-pad">
+      <button class="pin-key" onclick="pinPress('1')">1</button>
+      <button class="pin-key" onclick="pinPress('2')">2</button>
+      <button class="pin-key" onclick="pinPress('3')">3</button>
+      <button class="pin-key" onclick="pinPress('4')">4</button>
+      <button class="pin-key" onclick="pinPress('5')">5</button>
+      <button class="pin-key" onclick="pinPress('6')">6</button>
+      <button class="pin-key" onclick="pinPress('7')">7</button>
+      <button class="pin-key" onclick="pinPress('8')">8</button>
+      <button class="pin-key" onclick="pinPress('9')">9</button>
+      <button class="pin-key zero" onclick="pinPress('0')">0</button>
+      <button class="pin-key del"  onclick="pinDel()">⌫</button>
+    </div>
+
+    <div id="pinError" class="pin-error"></div>
+
+    <div class="powered-by">
+      <span>Powered by</span>
+      <div class="cb-logo-wrap">
+        <img src="assets/cb-logo.png" alt="C&B Consulting & Beyond"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ LOADING SCREEN ═════════════════════════════════════ -->
+<div id="loadingScreen" class="screen">
+  <div class="spinner"></div>
+  <div class="loader-text" id="loadingText">Loading your checklist...</div>
+</div>
+
+<!-- ════ CHECKLIST SCREEN ═══════════════════════════════════ -->
+<div id="checklistScreen" class="screen">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <img src="assets/bsc-logo.png" class="topbar-logo-img" alt="BSC"/>
+      <div>
+        <div class="topbar-title">Store Operation Checklist</div>
+        <div class="topbar-sub" id="clDateSub">—</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="role-badge" id="clRoleBadge">—</div>
+      <button class="logout-btn" onclick="logout()" title="Logout">↩</button>
+    </div>
+  </div>
+
+  <div class="checklist-progress">
+    <div class="progress-info">
+      <span class="progress-label">Progress</span>
+      <span class="progress-count" id="progressCount">0 / 0</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="checklist-body" id="checklistBody"></div>
+
+  <div class="submit-wrap">
+    <div class="validation-msg" id="validationMsg"></div>
+    <button class="submit-btn" id="submitBtn" onclick="doSubmit()" disabled>
+      ✓ Submit Checklist
+    </button>
+  </div>
+</div>
+
+<!-- ════ SUCCESS SCREEN ═════════════════════════════════════ -->
+<div id="successScreen" class="screen">
+  <div class="success-body">
+    <div class="success-icon">✅</div>
+    <h2>Submitted!</h2>
+    <p id="successMsg">Checklist submitted successfully.</p>
+    <p class="success-meta" id="successTime"></p>
+    <button class="success-btn" onclick="logout()">← Back to Home</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+// ════════════════════════════════════════════════════════════════
+//  INDEX.HTML — Pin + Checklist logic
+// ════════════════════════════════════════════════════════════════
+
+// ── State ─────────────────────────────────────────────────────
+let currentRole      = 'Manager';
+let currentUser      = null;
+let pinBuffer        = '';
+let sections         = [];
+let answers          = {}; // { taskId: { value, status, remarks, photoBase64 } }
+let mandatoryIds     = [];
+let photoRequiredIds = [];
+let totalTasks       = 0;
+
+// ── PIN ───────────────────────────────────────────────────────
+
+function setRole(role, btn) {
+  currentRole = role;
+  document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  resetPin();
+}
+
+function pinPress(digit) {
+  if (pinBuffer.length >= 6) return;
+  pinBuffer += digit;
+  renderDots();
+  if (pinBuffer.length === 6) doValidatePin();
+}
+
+function pinDel() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  renderDots();
+  document.getElementById('pinError').textContent = '';
+}
+
+function resetPin() {
+  pinBuffer = '';
+  renderDots();
+  document.getElementById('pinError').textContent = '';
+}
+
+function renderDots() {
+  document.querySelectorAll('.pin-dot').forEach((d, i) =>
+    d.classList.toggle('filled', i < pinBuffer.length));
+}
+
+async function doValidatePin() {
+  if (pinBuffer.length < 4) {
+    showPinError('PIN must be at least 4 digits.');
+    return;
+  }
+  showPinError('Checking…', false);
+
+  const res = await api('validatePin', { pin: pinBuffer });
+
+  if (!res.ok) {
+    showPinError(res.error || 'Invalid PIN. Please try again.');
+    resetPin();
+    return;
+  }
+
+  currentUser = { name: res.name, role: res.role };
+
+  // Owner → dashboard
+  if (res.role === 'Owner') {
+    sessionStorage.setItem('cbAuth', JSON.stringify(currentUser));
+    window.location.href = 'dashboard.html';
+    return;
+  }
+
+  // Others → load checklist
+  showScreen('loadingScreen');
+  await loadChecklist(res.role);
+}
+
+function showPinError(msg, isError = true) {
+  const el = document.getElementById('pinError');
+  el.textContent = msg;
+  el.style.color = isError ? 'var(--crimson)' : 'var(--ink-60)';
+}
+
+// ── LOAD CHECKLIST ─────────────────────────────────────────────
+
+async function loadChecklist(role) {
+  const res = await api('getChecklist', { role });
+
+  if (!res.ok || !res.sections) {
+    showToast(res.error || 'Failed to load checklist.', 'error');
+    showScreen('pinScreen');
+    return;
+  }
+
+  sections         = res.sections;
+  answers          = {};
+  mandatoryIds     = [];
+  photoRequiredIds = [];
+  totalTasks       = 0;
+
+  sections.forEach(sec => sec.tasks.forEach(t => {
+    totalTasks++;
+    if (t.mandatory)     mandatoryIds.push(t.taskId);
+    if (t.photoRequired) photoRequiredIds.push(t.taskId);
+  }));
+  mandatoryIds.push('__wrongToday__');
+
+  renderChecklist();
+  const dt = getISTDate();
+  document.getElementById('clDateSub').textContent   = `${dt.label} · ${currentUser.name}`;
+  document.getElementById('clRoleBadge').textContent = role;
+  showScreen('checklistScreen');
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+
+function renderChecklist() {
+  const body = document.getElementById('checklistBody');
+  let html   = '';
+
+  sections.forEach((sec, si) => {
+    html += `
+      <div class="section-block">
+        <div class="section-header">
+          <div class="section-num">${si + 1}</div>
+          <div class="section-name">${esc(sec.section)}</div>
+        </div>
+        <div class="section-divider"></div>
+        ${sec.tasks.map(t => taskHtml(t)).join('')}
+      </div>`;
+  });
+
+  // Mandatory final question
+  html += `
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num" style="background:var(--crimson)">!</div>
+        <div class="section-name">Daily Report</div>
+      </div>
+      <div class="section-divider"></div>
+      <div class="wrong-today-card" id="pc___wrongToday__">
+        <div class="point-label">
+          What went wrong today?
+          <span class="mandatory-badge">Mandatory</span>
+        </div>
+        <div style="font-size:11px;color:var(--ink-30);margin:4px 0 8px">
+          Describe any issues, incidents, or suggestions
+        </div>
+        <textarea class="text-input full" id="wrongTodayInput"
+          placeholder="e.g. AC off in section B, stock not arranged, customer complaint..."
+          oninput="setWrongToday(this.value)"></textarea>
+      </div>
+    </div>
+    <div style="height:24px"></div>`;
+
+  body.innerHTML = html;
+  updateProgress();
+}
+
+function taskHtml(task) {
+  const mb = task.mandatory     ? '<span class="mandatory-badge">Mandatory</span>' : '';
+  const pb = task.photoRequired ? '<span class="photo-badge">📷 Photo</span>'      : '';
+  let ctrl = '';
+
+  if (task.type === 'yesno') {
+    ctrl = `
+      <div class="point-controls" style="margin-top:10px">
+        <button class="yn-btn yes" id="yes_${task.taskId}" onclick="setYN('${task.taskId}','yes')">✓ Yes</button>
+        <button class="yn-btn no"  id="no_${task.taskId}"  onclick="setYN('${task.taskId}','no')">✗ No</button>
+      </div>
+      <div id="rem_${task.taskId}" style="display:none">
+        <textarea class="remarks-input" placeholder="Describe the issue..."
+          oninput="setRemarks('${task.taskId}',this.value)"></textarea>
+      </div>
+      ${task.photoRequired ? extraPhotoHtml(task.taskId) : ''}`;
+
+  } else if (task.type === 'rating') {
+    ctrl = `
+      <div class="star-rating" id="stars_${task.taskId}" style="margin-top:10px">
+        ${[1,2,3,4,5].map(n => `<span class="star" onclick="setRating('${task.taskId}',${n})">★</span>`).join('')}
+      </div>
+      <div id="rem_${task.taskId}" style="display:none">
+        <textarea class="remarks-input" placeholder="Rating remarks..."
+          oninput="setRemarks('${task.taskId}',this.value)"></textarea>
+      </div>
+      ${task.photoRequired ? extraPhotoHtml(task.taskId) : ''}`;
+
+  } else if (task.type === 'photo') {
+    ctrl = `
+      <div style="margin-top:10px">
+        <input type="file" accept="image/*" capture="environment"
+          id="file_${task.taskId}" style="display:none"
+          onchange="handlePhoto('${task.taskId}',this)"/>
+        <div class="photo-upload-area" id="photoArea_${task.taskId}">
+          <button class="photo-btn" onclick="document.getElementById('file_${task.taskId}').click()">
+            📷 Take / Upload Photo
+          </button>
+        </div>
+        <div class="photo-preview" id="photoPreview_${task.taskId}" style="display:none">
+          <img id="previewImg_${task.taskId}" class="preview-img" alt="Preview"/>
+          <button class="retake-btn" onclick="retakePhoto('${task.taskId}')">↺ Retake</button>
+        </div>
+        <textarea class="remarks-input" placeholder="Photo remarks (optional)..."
+          oninput="setRemarks('${task.taskId}',this.value)"></textarea>
+      </div>`;
+
+  } else if (task.type === 'text') {
+    ctrl = `
+      <textarea class="text-input" id="textInput_${task.taskId}"
+        style="margin-top:10px" placeholder="Enter your response..."
+        oninput="setText('${task.taskId}',this.value)"></textarea>
+      ${task.photoRequired ? extraPhotoHtml(task.taskId) : ''}`;
+  }
+
+  return `
+    <div class="point-card" id="pc_${task.taskId}">
+      <div class="point-label">${esc(task.taskName)} ${mb}${pb}</div>
+      ${ctrl}
+    </div>`;
+}
+
+function extraPhotoHtml(taskId) {
+  const xid = `${taskId}_xph`;
+  return `
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:600;color:var(--orange);margin-bottom:6px">📷 Photo required for this task</div>
+      <input type="file" accept="image/*" capture="environment"
+        id="file_${xid}" style="display:none" onchange="handlePhotoExtra('${taskId}',this)"/>
+      <div class="photo-upload-area" id="photoArea_${xid}" style="padding:10px">
+        <button class="photo-btn small" onclick="document.getElementById('file_${xid}').click()">📷 Take Photo</button>
+      </div>
+      <div class="photo-preview" id="photoPreview_${xid}" style="display:none">
+        <img id="previewImg_${xid}" class="preview-img" style="max-height:120px" alt="Preview"/>
+        <button class="retake-btn" onclick="retakePhotoExtra('${taskId}')">↺ Retake</button>
+      </div>
+    </div>`;
+}
+
+// ── ANSWER SETTERS ────────────────────────────────────────────
+
+function setYN(taskId, val) {
+  answers[taskId] = { ...answers[taskId], value: val, status: val === 'yes' ? 'OK' : 'FAIL' };
+  const card = document.getElementById(`pc_${taskId}`);
+  card.classList.add('answered');
+  card.classList.toggle('failed', val === 'no');
+  document.getElementById(`yes_${taskId}`).classList.toggle('active', val === 'yes');
+  document.getElementById(`no_${taskId}`).classList.toggle('active', val === 'no');
+  const rem = document.getElementById(`rem_${taskId}`);
+  if (rem) rem.style.display = val === 'no' ? 'block' : 'none';
+  updateProgress();
+}
+
+function setRating(taskId, val) {
+  answers[taskId] = { ...answers[taskId], value: String(val), status: val >= 3 ? 'OK' : 'FAIL' };
+  document.getElementById(`stars_${taskId}`)
+    .querySelectorAll('.star').forEach((s, i) => s.classList.toggle('active', i < val));
+  const card = document.getElementById(`pc_${taskId}`);
+  card.classList.add('answered');
+  card.classList.toggle('failed', val < 3);
+  const rem = document.getElementById(`rem_${taskId}`);
+  if (rem) rem.style.display = 'block';
+  updateProgress();
+}
+
+function setText(taskId, val) {
+  answers[taskId] = { ...answers[taskId], value: val.trim(), status: val.trim() ? 'OK' : 'FAIL' };
+  const card = document.getElementById(`pc_${taskId}`);
+  if (val.trim()) { card.classList.add('answered'); card.classList.remove('failed'); }
+  else              card.classList.remove('answered');
+  updateProgress();
+}
+
+function setRemarks(taskId, val) {
+  answers[taskId] = { ...answers[taskId], remarks: val };
+}
+
+async function handlePhoto(taskId, input) {
+  if (!input.files?.[0]) return;
+  const b64 = await compressImage(input.files[0]);
+  answers[taskId] = { ...answers[taskId], value: 'Photo taken', status: 'OK', photoBase64: b64 };
+  document.getElementById(`pc_${taskId}`).classList.add('answered');
+  document.getElementById(`photoArea_${taskId}`).style.display    = 'none';
+  document.getElementById(`previewImg_${taskId}`).src              = b64;
+  document.getElementById(`photoPreview_${taskId}`).style.display = 'flex';
+  updateProgress();
+}
+
+function retakePhoto(taskId) {
+  if (answers[taskId]) { delete answers[taskId].value; delete answers[taskId].photoBase64; }
+  document.getElementById(`pc_${taskId}`).classList.remove('answered');
+  document.getElementById(`photoArea_${taskId}`).style.display    = 'block';
+  document.getElementById(`photoPreview_${taskId}`).style.display = 'none';
+  document.getElementById(`file_${taskId}`).value = '';
+  updateProgress();
+}
+
+async function handlePhotoExtra(taskId, input) {
+  if (!input.files?.[0]) return;
+  const xid = `${taskId}_xph`;
+  const b64 = await compressImage(input.files[0]);
+  answers[taskId] = { ...answers[taskId], photoBase64: b64 };
+  document.getElementById(`photoArea_${xid}`).style.display    = 'none';
+  document.getElementById(`previewImg_${xid}`).src              = b64;
+  document.getElementById(`photoPreview_${xid}`).style.display = 'flex';
+  updateProgress();
+}
+
+function retakePhotoExtra(taskId) {
+  const xid = `${taskId}_xph`;
+  if (answers[taskId]) delete answers[taskId].photoBase64;
+  document.getElementById(`photoArea_${xid}`).style.display    = 'block';
+  document.getElementById(`photoPreview_${xid}`).style.display = 'none';
+  document.getElementById(`file_${xid}`).value = '';
+  updateProgress();
+}
+
+function setWrongToday(val) {
+  const card = document.getElementById('pc___wrongToday__');
+  if (val.trim()) {
+    answers['__wrongToday__'] = { value: val.trim(), status: 'OK' };
+    card.classList.add('answered');
+  } else {
+    delete answers['__wrongToday__'];
+    card.classList.remove('answered');
+  }
+  updateProgress();
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────
+
+function updateProgress() {
+  const done = Object.keys(answers).filter(k => k !== '__wrongToday__').length;
+  document.getElementById('progressCount').textContent = `${done} / ${totalTasks}`;
+  const pct = totalTasks > 0 ? (done / totalTasks) * 100 : 0;
+  const fill = document.getElementById('progressFill');
+  fill.style.width = pct + '%';
+  fill.classList.toggle('complete', pct >= 100);
+
+  const allMandatory = mandatoryIds.every(id => answers[id]?.value);
+  const allPhotos    = photoRequiredIds.every(id => answers[id]?.photoBase64);
+  document.getElementById('submitBtn').disabled = !(allMandatory && allPhotos);
+
+  // Validation message
+  const missing = [];
+  mandatoryIds.filter(id => !answers[id]?.value).forEach(id => {
+    if (id === '__wrongToday__') { missing.push('"What went wrong today?"'); return; }
+    sections.forEach(s => s.tasks.forEach(t => {
+      if (t.taskId === id) missing.push(t.taskName.substring(0, 30) + '…');
+    }));
+  });
+  photoRequiredIds.filter(id => !answers[id]?.photoBase64).forEach(id => {
+    sections.forEach(s => s.tasks.forEach(t => {
+      if (t.taskId === id) missing.push(`📷 ${t.taskName.substring(0, 24)}…`);
+    }));
+  });
+
+  const el = document.getElementById('validationMsg');
+  if (missing.length > 0 && done > 0) {
+    el.textContent  = `⚠ Pending: ${missing.slice(0,2).join(', ')}${missing.length > 2 ? ` +${missing.length-2} more` : ''}`;
+    el.style.display = 'block';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────
+// Photos included as base64 in POST body.
+// Apps Script saves them to Drive and stores the URL.
+
+async function doSubmit() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled    = true;
+  btn.textContent = '📋 Submitting…';
+
+  const entries = [];
+
+  sections.forEach(sec => {
+    sec.tasks.forEach(task => {
+      const ans = answers[task.taskId] || {};
+      entries.push({
+        section:     sec.section,
+        taskId:      task.taskId,
+        taskName:    task.taskName,
+        type:        task.type,
+        response:    ans.value      || '',
+        photoBase64: ans.photoBase64 || '',  // Apps Script uploads to Drive
+        photoUrl:    '',
+        status:      ans.status     || (ans.value ? 'OK' : 'MISS'),
+        remarks:     ans.remarks    || ''
+      });
+    });
+  });
+
+  // Final mandatory "what went wrong"
+  entries.push({
+    section:     'Daily Report',
+    taskId:      '__wrongToday__',
+    taskName:    'What went wrong today?',
+    type:        'text',
+    response:    document.getElementById('wrongTodayInput').value.trim(),
+    photoBase64: '',
+    photoUrl:    '',
+    status:      'OK',
+    remarks:     ''
+  });
+
+  const res = await postApi({
+    action:    'submitChecklist',
+    staffName: currentUser.name,
+    role:      currentUser.role,
+    entries
+  });
+
+  if (res.ok) {
+    const dt = getISTDate();
+    document.getElementById('successMsg').textContent  = `${currentUser.name} — ${currentUser.role} checklist submitted.`;
+    document.getElementById('successTime').textContent = `${dt.label} at ${dt.time} IST`;
+    showScreen('successScreen');
+  } else {
+    showToast(res.error || 'Submission failed. Please try again.', 'error');
+    btn.disabled    = false;
+    btn.textContent = '✓ Submit Checklist';
+  }
+}
+
+// ── LOGOUT ────────────────────────────────────────────────────
+
+function logout() {
+  pinBuffer   = '';
+  currentUser = null;
+  answers     = {};
+  sections    = [];
+  renderDots();
+  document.getElementById('pinError').textContent       = '';
+  document.getElementById('checklistBody').innerHTML    = '';
+  document.getElementById('progressFill').style.width   = '0%';
+  document.getElementById('progressCount').textContent  = '0 / 0';
+  const wt = document.getElementById('wrongTodayInput');
+  if (wt) wt.value = '';
+  showScreen('pinScreen');
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  sessionStorage.removeItem('cbAuth');
+  showScreen('pinScreen');
+});
+</script>
+</body>
+</html>

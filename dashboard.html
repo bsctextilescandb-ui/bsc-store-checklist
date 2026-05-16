@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<title>Owner Dashboard — C&amp;B Niranthar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ════ PIN GATE ════════════════════════════════════════════
+     Shown when user opens dashboard.html directly.
+     If Owner already authenticated via index.html, skipped.
+     ═══════════════════════════════════════════════════════════ -->
+<div id="dashPinGate" class="screen active">
+  <div class="pin-card">
+    <div class="pin-logo-wrap">
+      <img src="assets/bsc-logo.png" alt="BSC The Textile Mall"/>
+    </div>
+    <div class="pin-store-name">BSC The Textile Mall</div>
+    <div class="pin-app-name">Owner Dashboard</div>
+    <div class="pin-sub">Enter Owner PIN to continue</div>
+
+    <div class="pin-dots" id="dashPinDots">
+      <div class="pin-dot"></div><div class="pin-dot"></div>
+      <div class="pin-dot"></div><div class="pin-dot"></div>
+      <div class="pin-dot"></div><div class="pin-dot"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="dPinPress('1')">1</button>
+      <button class="pin-key" onclick="dPinPress('2')">2</button>
+      <button class="pin-key" onclick="dPinPress('3')">3</button>
+      <button class="pin-key" onclick="dPinPress('4')">4</button>
+      <button class="pin-key" onclick="dPinPress('5')">5</button>
+      <button class="pin-key" onclick="dPinPress('6')">6</button>
+      <button class="pin-key" onclick="dPinPress('7')">7</button>
+      <button class="pin-key" onclick="dPinPress('8')">8</button>
+      <button class="pin-key" onclick="dPinPress('9')">9</button>
+      <button class="pin-key zero" onclick="dPinPress('0')">0</button>
+      <button class="pin-key del"  onclick="dPinDel()">⌫</button>
+    </div>
+    <div id="dashPinError" class="pin-error"></div>
+
+    <div class="powered-by">
+      <span>Powered by</span>
+      <div class="cb-logo-wrap">
+        <img src="assets/cb-logo.png" alt="C&B Consulting & Beyond"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ DASHBOARD SCREEN ═══════════════════════════════════ -->
+<div id="dashboardScreen" class="screen">
+
+  <!-- Topbar -->
+  <div class="dash-topbar">
+    <div class="dash-brand">
+      <div class="dash-logo-wrap">
+        <img src="assets/bsc-logo.png" alt="BSC"/>
+      </div>
+      <div>
+        <div class="dash-title">Store Operation Checklist</div>
+        <div class="dash-sub" id="dashWelcome">C&B Niranthar · Owner Dashboard</div>
+      </div>
+    </div>
+    <div class="dash-right">
+      <button class="logout-btn" onclick="dashLogout()" title="Logout">↩</button>
+    </div>
+  </div>
+
+  <!-- Date Filter -->
+  <div class="date-strip">
+    <span class="date-label" id="dashDateLabel">Today</span>
+    <input type="date" id="dashDatePicker" class="date-input" onchange="changeDashDate(this.value)"/>
+    <button class="refresh-btn" onclick="loadDashboard()" title="Refresh">↺</button>
+  </div>
+
+  <!-- Dashboard Body (rendered by JS) -->
+  <div class="dash-body" id="dashBody">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px">
+      <div class="spinner"></div>
+      <div class="loader-text">Loading dashboard...</div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+// ════════════════════════════════════════════════════════════════
+//  DASHBOARD.HTML — Owner dashboard logic
+// ════════════════════════════════════════════════════════════════
+
+// ── State ─────────────────────────────────────────────────────
+let dashUser    = null;
+let dashData    = null;
+let dashDate    = getISTDate().dateStr;
+let dashPinBuf  = '';
+
+// ── INIT ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  // Set date picker default to today
+  document.getElementById('dashDatePicker').value = dashDate;
+
+  // Check if Owner already authenticated via index.html
+  const auth = sessionStorage.getItem('cbAuth');
+  if (auth) {
+    try {
+      const u = JSON.parse(auth);
+      if (u.role === 'Owner') {
+        dashUser = u;
+        document.getElementById('dashWelcome').textContent =
+          `${u.name} · Owner Dashboard`;
+        showScreen('dashboardScreen');
+        await loadDashboard();
+        return;
+      }
+    } catch(_) {}
+  }
+
+  // Otherwise show PIN gate
+  showScreen('dashPinGate');
+});
+
+// ── PIN GATE ──────────────────────────────────────────────────
+
+function dPinPress(digit) {
+  if (dashPinBuf.length >= 6) return;
+  dashPinBuf += digit;
+  renderDashDots();
+  if (dashPinBuf.length === 6) doPinValidate();
+}
+
+function dPinDel() {
+  dashPinBuf = dashPinBuf.slice(0, -1);
+  renderDashDots();
+  document.getElementById('dashPinError').textContent = '';
+}
+
+function renderDashDots() {
+  document.querySelectorAll('#dashPinDots .pin-dot').forEach((d, i) =>
+    d.classList.toggle('filled', i < dashPinBuf.length));
+}
+
+function showDashPinError(msg, isError = true) {
+  const el = document.getElementById('dashPinError');
+  el.textContent = msg;
+  el.style.color = isError ? 'var(--crimson)' : 'var(--ink-60)';
+}
+
+async function doPinValidate() {
+  if (dashPinBuf.length < 4) {
+    showDashPinError('PIN must be at least 4 digits.');
+    return;
+  }
+  showDashPinError('Checking…', false);
+
+  const res = await api('validatePin', { pin: dashPinBuf });
+
+  if (!res.ok) {
+    showDashPinError(res.error || 'Invalid PIN.');
+    dashPinBuf = '';
+    renderDashDots();
+    return;
+  }
+  if (res.role !== 'Owner') {
+    showDashPinError('This dashboard is for Owner access only.');
+    dashPinBuf = '';
+    renderDashDots();
+    return;
+  }
+
+  dashUser = { name: res.name, role: res.role };
+  sessionStorage.setItem('cbAuth', JSON.stringify(dashUser));
+  document.getElementById('dashWelcome').textContent = `${res.name} · Owner Dashboard`;
+  showScreen('dashboardScreen');
+  await loadDashboard();
+}
+
+// ── LOAD DASHBOARD ─────────────────────────────────────────────
+
+async function loadDashboard() {
+  const body = document.getElementById('dashBody');
+  body.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px">
+      <div class="spinner"></div><div class="loader-text">Fetching data...</div>
+    </div>`;
+
+  const res = await api('getDashboard', { date: dashDate });
+
+  if (!res.ok) {
+    body.innerHTML = `
+      <div class="no-data" style="margin-top:24px">
+        <div class="icon">⚠️</div>
+        <h3>Failed to load</h3>
+        <p>${esc(res.error || 'Could not fetch dashboard data.')}</p>
+      </div>`;
+    showToast('Failed to load dashboard.', 'error');
+    return;
+  }
+
+  dashData = res;
+
+  // Update date label
+  const dt = getISTDate();
+  const isToday = dashDate === dt.dateStr;
+  document.getElementById('dashDateLabel').textContent =
+    isToday ? `Today — ${dt.label}` : formatDateLabel(dashDate);
+
+  renderDashboard(res);
+}
+
+function changeDashDate(val) {
+  if (val) { dashDate = val; loadDashboard(); }
+}
+
+// ── RENDER DASHBOARD ─────────────────────────────────────────
+
+function renderDashboard(d) {
+  const body = document.getElementById('dashBody');
+  let html   = '';
+
+  // ── Score Hero ───────────────────────────────────────────
+  const badge = d.overallScore >= 80 ? 'good' : d.overallScore >= 60 ? 'warn' : 'bad';
+  const badgeTxt = d.overallScore >= 80 ? '✅ Good Standing'
+                 : d.overallScore >= 60 ? '⚠️ Needs Improvement'
+                 : '🔴 Critical — Action Required';
+
+  html += `
+    <div class="score-hero">
+      <div class="score-label">Overall Compliance Score</div>
+      <div class="score-value">${d.overallScore}<span>%</span></div>
+      <div class="score-badge ${badge}">${badgeTxt}</div>
+      <div class="score-meta">
+        ${d.totalSubmitted} of ${d.totalTasks} tasks completed
+        · ${d.totalFailed} failed · ${d.totalMissed} missed
+      </div>
+    </div>`;
+
+  // ── Role Submission Status ───────────────────────────────
+  if (d.allRoles && d.allRoles.length > 0) {
+    html += '<div class="role-chips">';
+    d.allRoles.forEach(role => {
+      const sub = d.roles.find(r => r.role === role);
+      if (sub) {
+        html += `
+          <div class="role-chip submitted">
+            <div class="rc-role">${esc(role)}</div>
+            <div class="rc-name">${esc(sub.staffName)}</div>
+            <div class="rc-status ok">✓ Submitted</div>
+            ${sub.failed > 0
+              ? `<div style="font-size:10px;color:var(--crimson);margin-top:2px">${sub.failed} task${sub.failed>1?'s':''} failed</div>`
+              : '<div style="font-size:10px;color:var(--green);margin-top:2px">All OK</div>'
+            }
+          </div>`;
+      } else {
+        html += `
+          <div class="role-chip not-submitted">
+            <div class="rc-role">${esc(role)}</div>
+            <div class="rc-name">—</div>
+            <div class="rc-status miss">✗ Not submitted</div>
+          </div>`;
+      }
+    });
+    html += '</div>';
+  }
+
+  // ── Section-wise Compliance (KEY FEATURE) ────────────────
+  html += `
+    <div class="card-title" style="margin-bottom:12px">
+      📋 Section-wise Compliance
+    </div>
+    <div class="sec-cards-wrap">`;
+
+  if (d.sections && d.sections.length > 0) {
+    d.sections.forEach((sec, i) => {
+      const cls  = sec.score >= 80 ? 'high' : sec.score >= 60 ? 'mid' : 'low';
+
+      html += `
+        <div class="sec-card">
+          <div class="sec-card-hdr">
+            <div class="sec-card-name">${esc(sec.section)}</div>
+            <div class="sec-card-score ${cls}">${sec.score}<span style="font-size:13px;font-weight:400;color:var(--ink-30)">%</span></div>
+          </div>
+          <div class="sec-prog-bar">
+            <div class="sec-prog-fill ${cls}" style="width:${sec.score}%"></div>
+          </div>
+          <div class="sec-stats">
+            <span class="sec-stat done">✓ ${sec.submitted} done</span>
+            ${sec.failed > 0 ? `<span class="sec-stat fail">✗ ${sec.failed} failed</span>` : ''}
+            ${sec.missed > 0 ? `<span class="sec-stat miss">● ${sec.missed} missed</span>` : ''}
+          </div>`;
+
+      if (sec.failedTasks && sec.failedTasks.length > 0) {
+        html += `
+          <button class="sec-toggle" onclick="toggleSection(${i})">
+            View ${sec.failedTasks.length} failed task${sec.failedTasks.length>1?'s':''} ▾
+          </button>
+          <div class="sec-detail" id="secDetail_${i}">
+            ${sec.failedTasks.map(ft => `
+              <div class="sec-detail-row">
+                <div>
+                  <div class="sec-detail-name">${esc(ft.taskName)}</div>
+                  <div style="font-size:10px;color:var(--ink-60)">${esc(ft.role)} · ${esc(ft.staffName)}</div>
+                  ${ft.remarks ? `<div class="sec-detail-rem">📝 ${esc(ft.remarks)}</div>` : ''}
+                </div>
+                <div class="sec-detail-val fail">✗ ${esc(ft.response || 'No')}</div>
+              </div>`).join('')}
+          </div>`;
+      }
+
+      html += '</div>'; // .sec-card
+    });
+  } else {
+    html += `
+      <div class="no-data">
+        <div class="icon">📋</div>
+        <h3>No submissions yet</h3>
+        <p>No checklist data found for this date.<br>Staff haven't submitted their checklists yet.</p>
+      </div>`;
+  }
+
+  html += '</div>'; // .sec-cards-wrap
+
+  // ── 7-Day History Chart ──────────────────────────────────
+  if (d.history && d.history.length > 0) {
+    const maxScore = Math.max(...d.history.map(h => h.score), 1);
+    html += `
+      <div class="history-card">
+        <div class="card-title">📈 7-Day Compliance History</div>
+        <div class="history-chart">
+          ${d.history.map((h, i) => {
+            const isToday = i === d.history.length - 1;
+            const isLow   = h.score < 60;
+            const barH    = Math.max(4, Math.round((h.score / 100) * 54));
+            const label   = isToday ? 'Today' : formatDateLabel(h.date).split(' ').slice(0,2).join(' ');
+            return `
+              <div class="h-bar-wrap">
+                <div class="h-score">${h.score}%</div>
+                <div class="h-bar ${isToday ? 'today' : ''} ${isLow ? 'low' : ''}"
+                     style="height:${barH}px" title="${h.date}: ${h.score}%"></div>
+                <div class="h-bar-label">${esc(label)}</div>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  }
+
+  // ── All Failed Tasks ─────────────────────────────────────
+  if (d.failedAll && d.failedAll.length > 0) {
+    html += `
+      <div class="failed-card">
+        <div class="card-title">🔴 All Failed Tasks (${d.failedAll.length})</div>
+        ${d.failedAll.map(f => `
+          <div class="fail-row">
+            <div class="fail-info">
+              <div class="fail-section">${esc(f.section)} · ${esc(f.role)} · ${esc(f.staffName)}</div>
+              <div class="fail-name">${esc(f.taskName)}</div>
+              ${f.remarks ? `<div class="fail-rem">📝 ${esc(f.remarks)}</div>` : ''}
+            </div>
+            <div class="fail-tag">✗ ${esc(f.response || 'No')}</div>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  // ── What Went Wrong Today ────────────────────────────────
+  if (d.wrongToday && d.wrongToday.length > 0) {
+    html += `
+      <div class="wrong-today-dash">
+        <div class="card-title">📋 What Went Wrong Today</div>
+        ${d.wrongToday.map(wt => `
+          <div class="wt-entry">
+            <div class="wt-role">${esc(wt.role)} — ${esc(wt.staffName)}</div>
+            <div class="wt-text">${esc(wt.text)}</div>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  // ── Footer ───────────────────────────────────────────────
+  html += `
+    <div class="dash-footer">
+      <span>Powered by</span>
+      <img src="assets/cb-logo.png" alt="C&B Consulting & Beyond"/>
+    </div>`;
+
+  body.innerHTML = html;
+}
+
+// ── TOGGLE SECTION DETAIL ─────────────────────────────────────
+
+function toggleSection(i) {
+  const detail = document.getElementById(`secDetail_${i}`);
+  const btn    = detail.previousElementSibling;
+  if (!detail) return;
+  const open = detail.classList.toggle('open');
+  btn.textContent = open
+    ? btn.textContent.replace('▾', '▴')
+    : btn.textContent.replace('▴', '▾');
+}
+
+// ── LOGOUT ────────────────────────────────────────────────────
+
+function dashLogout() {
+  sessionStorage.removeItem('cbAuth');
+  dashUser   = null;
+  dashPinBuf = '';
+  document.querySelectorAll('#dashPinDots .pin-dot')
+    .forEach(d => d.classList.remove('filled'));
+  document.getElementById('dashPinError').textContent = '';
+  showScreen('dashPinGate');
+}
+</script>
+</body>
+</html>
