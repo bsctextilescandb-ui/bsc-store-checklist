@@ -97,7 +97,8 @@ img { max-width:100%; display:block; }
   width:13px; height:13px; border-radius:50%;
   border:2px solid var(--ink-30); background:transparent; transition:all .2s;
 }
-.pin-dot.filled { background:var(--navy); border-color:var(--navy); }
+.pin-dot.filled,
+.pin-dot.on { background:var(--navy); border-color:var(--navy); }
 
 .pin-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-bottom:12px; }
 .pin-key {
