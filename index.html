@@ -93,7 +93,11 @@ input,textarea{font-family:inherit;outline:0}
 /* --- submit --- */
 .sub-wrap{position:fixed;bottom:0;left:0;right:0;padding:10px 16px 14px;background:var(--ivory);border-top:1px solid var(--border);z-index:80}
 .vmsg{font-size:11px;color:var(--orange);margin-bottom:8px;padding:6px 10px;background:var(--orange-l);border-radius:6px;display:none}
-.sub-btn{width:100%;padding:15px;border-radius:var(--r);background:var(--navy);color:#fff;font-size:15px;font-weight:700;transition:opacity .2s}
+.sub-wrap-btns{display:flex;gap:8px;align-items:stretch}
+.draft-btn{padding:14px 16px;border-radius:var(--r);background:var(--navy-l);color:var(--navy);font-size:13px;font-weight:700;border:1.5px solid var(--navy);transition:all .2s;white-space:nowrap;flex-shrink:0}
+.draft-btn.saved{background:var(--green-l);color:var(--green);border-color:var(--green)}
+.draft-restored{font-size:11px;font-weight:600;color:var(--green);background:var(--green-l);padding:6px 10px;border-radius:6px;margin-bottom:8px;display:none}
+.sub-btn{flex:1;padding:15px;border-radius:var(--r);background:var(--navy);color:#fff;font-size:15px;font-weight:700;transition:opacity .2s}
 .sub-btn:disabled{opacity:.45;cursor:not-allowed}
 /* --- success --- */
 .done-body{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px;gap:12px;min-height:100vh;justify-content:center}
@@ -169,8 +173,12 @@ input,textarea{font-family:inherit;outline:0}
   </div>
   <div class="cl-body" id="cl-body"></div>
   <div class="sub-wrap">
+    <div class="draft-restored" id="draftBanner"></div>
     <div class="vmsg" id="vmsg"></div>
-    <button class="sub-btn" id="sub-btn" onclick="submitChecklist()" disabled>Submit Checklist</button>
+    <div class="sub-wrap-btns">
+      <button class="draft-btn" id="draftBtn" onclick="saveDraft()">&#128190; Save Draft</button>
+      <button class="sub-btn" id="sub-btn" onclick="submitChecklist()" disabled>Submit Checklist</button>
+    </div>
   </div>
 </div>
 
@@ -392,6 +400,18 @@ function loadChecklist(role) {
     document.getElementById("cl-sub").textContent  = dt.lbl + " \u00B7 " + me.name;
     document.getElementById("cl-role").textContent = me.role;
     buildChecklist();
+
+    // Auto-restore draft if one exists for today
+    var draft = loadDraftFromStorage();
+    if (draft) {
+      restoreDraft(draft);
+      var banner = document.getElementById('draftBanner');
+      if (banner) {
+        banner.textContent = '\u21BA Draft restored from ' + draft.savedAt + ' \u2014 continue where you left off';
+        banner.style.display = 'block';
+      }
+    }
+
     goPage("pg-list");
   });
 }
@@ -636,12 +656,130 @@ function submitChecklist() {
       var dt = ist();
       document.getElementById("done-msg").textContent  = me.name + " \u2014 " + me.role + " submitted.";
       document.getElementById("done-time").textContent = dt.lbl + " at " + dt.t + " IST";
+      clearDraft(); // remove draft on successful submit
       goPage("pg-done");
     } else {
       toast(r.error || "Submission failed", "err");
       btn.disabled = false; btn.textContent = "Submit Checklist";
     }
   });
+}
+
+// -- DRAFT: save / restore between sessions --
+
+function draftKey() {
+  var d    = ist().str;
+  var name = (me ? me.name : 'x').replace(/\W+/g, '_');
+  var role = (me ? me.role : 'x');
+  return 'soc_' + role + '_' + name + '_' + d;
+}
+
+function saveDraft() {
+  try {
+    var draft = {
+      staffName: me.name,
+      role:      me.role,
+      date:      ist().str,
+      savedAt:   ist().t,
+      answers:   ans
+    };
+    localStorage.setItem(draftKey(), JSON.stringify(draft));
+    var btn = document.getElementById('draftBtn');
+    btn.textContent = '\u2713 Saved';
+    btn.classList.add('saved');
+    setTimeout(function() {
+      btn.textContent = '\u{1F4BE} Save Draft';
+      btn.classList.remove('saved');
+    }, 2000);
+    toast('Draft saved at ' + ist().t);
+  } catch(e) {
+    toast('Draft save failed: ' + e.message, 'err');
+  }
+}
+
+function loadDraftFromStorage() {
+  try {
+    var raw = localStorage.getItem(draftKey());
+    if (!raw) return null;
+    var draft = JSON.parse(raw);
+    // Only restore if same role, same calendar date
+    if (!draft || draft.role !== me.role || draft.date !== ist().str) {
+      localStorage.removeItem(draftKey());
+      return null;
+    }
+    return draft;
+  } catch(e) { return null; }
+}
+
+function restoreDraft(draft) {
+  ans = draft.answers || {};
+
+  for (var si = 0; si < secs.length; si++) {
+    var sec = secs[si];
+    for (var ti = 0; ti < sec.tasks.length; ti++) {
+      var t  = sec.tasks[ti];
+      var id = t.taskId;
+      var a  = ans[id];
+      if (!a || !a.v) continue;
+
+      var card = document.getElementById('tc_' + id);
+
+      if (t.type === 'yesno') {
+        var yEl = document.getElementById('y_' + id);
+        var nEl = document.getElementById('n_' + id);
+        var rd  = document.getElementById('rd_' + id);
+        if (yEl) yEl.className = 'yb y' + (a.v === 'yes' ? ' on' : '');
+        if (nEl) nEl.className = 'yb n' + (a.v === 'no'  ? ' on' : '');
+        if (card) card.className = 'tc ' + (a.v === 'no' ? 'fail' : 'ok');
+        if (rd)   rd.style.display = a.v === 'no' ? 'block' : 'none';
+        if (a.r) {
+          var rmEl = document.querySelector('[data-id="' + id + '"].rm');
+          if (rmEl) rmEl.value = a.r;
+        }
+
+      } else if (t.type === 'rating') {
+        var n    = parseInt(a.v, 10);
+        var stEl = document.getElementById('st_' + id);
+        if (stEl) {
+          var stars = stEl.querySelectorAll('.star');
+          for (var k = 0; k < stars.length; k++)
+            stars[k].className = 'star' + (k < n ? ' on' : '');
+        }
+        if (card) card.className = 'tc ' + (n < 3 ? 'fail' : 'ok');
+
+      } else if (t.type === 'text') {
+        var txEl = document.getElementById('tx_' + id);
+        if (txEl) txEl.value = a.v;
+        if (card) card.className = 'tc ok';
+
+      } else if (t.type === 'photo') {
+        // Restore photo preview from stored base64
+        if (a.p) {
+          var paEl = document.getElementById('pa_' + id);
+          var ppEl = document.getElementById('pp_' + id);
+          var piEl = document.getElementById('pi_' + id);
+          if (paEl) paEl.style.display = 'none';
+          if (piEl) piEl.src = a.p;
+          if (ppEl) ppEl.style.display = 'flex';
+          if (card) card.className = 'tc ok';
+        }
+      }
+    }
+  }
+
+  // Restore "What went wrong" field
+  if (ans['__w__'] && ans['__w__'].v) {
+    var wi = document.getElementById('winp');
+    var wc = document.getElementById('wc');
+    if (wi) wi.value = ans['__w__'].v;
+    if (wc) wc.className = 'wcard ok';
+  }
+
+  updateProg();
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(draftKey()); } catch(e) {}
 }
 
 // -- go home --
