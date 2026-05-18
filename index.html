@@ -421,8 +421,8 @@ function taskHtml(t, sec) {
 
   if (t.type === "yesno") {
     ctrl = '<div class="yno">'
-         + '<button class="yb y" data-id="' + id + '" data-v="yes" onclick="ynBtn(this)">Yes</button>'
-         + '<button class="yb n" data-id="' + id + '" data-v="no"  onclick="ynBtn(this)">No</button>'
+         + '<button class="yb y" id="y_' + id + '" data-id="' + id + '" data-v="yes" onclick="ynBtn(this)">Yes</button>'
+         + '<button class="yb n" id="n_' + id + '" data-id="' + id + '" data-v="no"  onclick="ynBtn(this)">No</button>'
          + '</div>'
          + '<div id="rd_' + id + '" style="display:none">'
          + '<textarea class="rm" data-id="' + id + '" placeholder="Describe issue..." oninput="remTA(this)"></textarea>'
