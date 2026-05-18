@@ -79,7 +79,62 @@
 </div>
 
 <div id="toast"></div>
-<script src="script.js"></script>
+<script>
+// ─────────────────────────────────────────────────────────
+//  STEP 1: Paste your Apps Script Web App URL below
+//  (same URL as in index.html)
+// ─────────────────────────────────────────────────────────
+var API_URL = 'https://script.google.com/macros/s/AKfycbzT-GnqHn6EfZnNMl2JdqwTfaOoKLklHe0PN4CSynq-c2nZWa1t43_8vNyvCrkpHqSyhQ/exec';
+
+function api(action, params) {
+  if (!API_URL || API_URL.indexOf('YOUR_') === 0) {
+    return Promise.resolve({ ok: false, error: 'API URL not set. Open dashboard.html and paste your Apps Script URL into API_URL.' });
+  }
+  var q = 'action=' + encodeURIComponent(action);
+  if (params) Object.keys(params).forEach(function(k) { q += '&' + k + '=' + encodeURIComponent(String(params[k])); });
+  return fetch(API_URL + '?' + q, { redirect: 'follow' })
+    .then(function(r) {
+      var ct = r.headers.get('content-type') || '';
+      if (ct.indexOf('json') === -1) return { ok: false, error: 'Apps Script returned HTML, not JSON. Re-deploy your Apps Script with: Execute as = Me, Who has access = Anyone.' };
+      return r.json();
+    })
+    .catch(function(e) {
+      var msg = e.message || String(e);
+      if (msg.indexOf('DOCTYPE') !== -1 || msg.indexOf('token') !== -1)
+        return { ok: false, error: 'Got HTML instead of JSON. Re-deploy your Apps Script with Who has access = Anyone.' };
+      return { ok: false, error: 'Network error: ' + msg };
+    });
+}
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = type||''; t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3500);
+}
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  var el=document.getElementById(id); if(el) el.classList.add('active');
+}
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function getISTDate() {
+  var now=new Date(),ist=new Date(now.getTime()+5.5*3600000);
+  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var mons=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var p=function(n){return String(n).padStart(2,'0');};
+  return {
+    dateStr:ist.getUTCFullYear()+'-'+p(ist.getUTCMonth()+1)+'-'+p(ist.getUTCDate()),
+    label:days[ist.getUTCDay()]+', '+ist.getUTCDate()+' '+mons[ist.getUTCMonth()]+' '+ist.getUTCFullYear(),
+    time:p(ist.getUTCHours())+':'+p(ist.getUTCMinutes())
+  };
+}
+function formatDateLabel(dateStr) {
+  var d=new Date(dateStr+'T00:00:00Z');
+  var day=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getUTCDay()];
+  var mon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getUTCMonth()];
+  return day+' '+d.getUTCDate()+' '+mon;
+}
+</script>
 <script>
 var dashUser   = null;
 var dashData   = null;
