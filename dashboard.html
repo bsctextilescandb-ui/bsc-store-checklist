@@ -313,10 +313,8 @@ function toggleSec(i) {
 
 function dashLogout() {
   sessionStorage.removeItem('cbAuth');
-  dashUser=null; dashPinBuf='';
-  document.querySelectorAll('#dashPinDots .pin-dot').forEach(function(d){ d.classList.remove('on'); });
-  document.getElementById('dashPinError').textContent='';
-  showScreen('dashPinGate');
+  // Fix 4: redirect to main app index (not local pin gate) so pin screen is consistent
+  location.href = 'index.html';
 }
 </script>
 </body>
