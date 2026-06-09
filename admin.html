@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Admin Panel — BSC Store Checklist</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#1E2D5A;--navy-l:#EEF1FB;--gold:#B8860B;--gold-l:#FFF8E7;
+  --crimson:#C0392B;--crimson-l:#FFECEC;
+  --green:#1E7A1E;--green-l:#D1FAE5;
+  --orange:#D97706;--orange-l:#FEF3C7;
+  --ink:#1A1A2E;--ink-60:rgba(26,26,46,.6);--ink-30:rgba(26,26,46,.3);--ink-10:rgba(26,26,46,.06);
+  --ivory:#F9F7F0;--white:#fff;--border:#E8E4D8;
+  --r:12px;--r-sm:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--navy);font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:0;outline:0;-webkit-tap-highlight-color:transparent}
+input,select,textarea{font-family:inherit;outline:0}
+
+/* ── PAGES ── */
+.page{position:fixed;top:0;left:0;right:0;bottom:0;display:none;overflow-y:auto}
+.page.active{display:block}
+
+/* ── PIN PAGE ── */
+#pg-pin{background:#1C2951;flex-direction:column;align-items:center;justify-content:center}
+#pg-pin.active{display:flex}
+.logo-icon{width:80px;height:80px;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:14px;box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.logo-icon img{width:100%;height:100%;object-fit:cover}
+.s-name{font-family:"DM Serif Display",serif;font-size:20px;color:#fff;margin-bottom:3px;text-align:center}
+.tagline{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.app-nm{font-size:11px;font-weight:700;color:rgba(255,215,0,.8);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.pin-hint{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.dots{display:flex;gap:14px;justify-content:center;margin-bottom:24px}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,255,255,.3);background:transparent;transition:all .18s}
+.dot.on{background:#fff;border-color:#fff}
+.pad{display:grid;grid-template-columns:repeat(3,68px);gap:9px}
+.k{width:68px;height:68px;border-radius:13px;background:rgba(255,255,255,.1);color:#fff;font-size:21px;font-weight:600;border:1px solid rgba(255,255,255,.08);transition:background .12s,transform .1s}
+.k:active{background:rgba(255,255,255,.22);transform:scale(.93)}
+.k-zero{grid-column:2}
+.k-del{background:rgba(192,57,43,.6);font-size:16px;color:#ffb3a8}
+.pin-msg{font-size:12px;min-height:18px;margin-top:10px;color:#ff8b7e;text-align:center}
+.pin-msg.info{color:rgba(255,255,255,.5)}
+
+/* ── MAIN PAGE ── */
+#pg-main{background:var(--ivory)}
+.topbar{background:var(--navy);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-logo{height:34px;width:44px;object-fit:contain;background:rgba(255,255,255,.1);border-radius:7px;padding:3px}
+.tb-info .tb-title{font-family:"DM Serif Display",serif;color:#fff;font-size:15px}
+.tb-info .tb-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+.tb-right{display:flex;gap:8px;align-items:center}
+.back-btn{padding:7px 14px;border-radius:8px;background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-weight:600}
+
+/* tabs */
+.tabs{background:var(--white);border-bottom:2px solid var(--border);display:flex;position:sticky;top:60px;z-index:90}
+.tab{flex:1;padding:12px 6px;font-size:12px;font-weight:600;color:var(--ink-60);border-bottom:2px solid transparent;margin-bottom:-2px;background:transparent;border-top:0;border-left:0;border-right:0;border-radius:0;transition:color .15s,border-color .15s;text-align:center}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold)}
+
+/* panels */
+.panel{display:none;padding:16px;max-width:900px;margin:0 auto;padding-bottom:40px}
+.panel.active{display:block}
+
+/* section header row */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:4px}
+.sec-hdr h2{font-family:"DM Serif Display",serif;font-size:18px;color:var(--navy)}
+.add-btn{padding:9px 16px;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+
+/* search/filter bar */
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.search-inp{flex:1;min-width:160px;padding:9px 12px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:13px;background:var(--white);color:var(--ink)}
+.filter-sel{padding:9px 10px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:12px;background:var(--white);color:var(--ink)}
+
+/* task table */
+.task-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border)}
+.task-table th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:10px 12px;text-align:left;letter-spacing:.05em}
+.task-table td{padding:10px 12px;font-size:12px;color:var(--ink);border-bottom:1px solid var(--border);vertical-align:middle}
+.task-table tr:last-child td{border-bottom:0}
+.task-table tr:hover td{background:var(--ivory)}
+.tid{font-size:10px;font-weight:700;color:var(--ink-60);font-family:monospace}
+.role-pill{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--navy-l);color:var(--navy);margin:1px}
+.type-pill{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--gold-l);color:var(--gold)}
+.inactive-row td{opacity:.45}
+.active-toggle{width:36px;height:20px;border-radius:10px;border:0;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.active-toggle.on{background:var(--green)}
+.active-toggle.off{background:var(--ink-30)}
+.active-toggle::after{content:'';position:absolute;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s}
+.active-toggle.on::after{left:18px}
+.active-toggle.off::after{left:2px}
+.action-btns{display:flex;gap:6px}
+.edit-btn{padding:5px 11px;border-radius:6px;background:var(--navy-l);color:var(--navy);font-size:11px;font-weight:600}
+.del-btn{padding:5px 11px;border-radius:6px;background:var(--crimson-l);color:var(--crimson);font-size:11px;font-weight:600}
+
+/* users cards */
+.user-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.user-card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:14px;display:flex;align-items:center;gap:12px}
+.user-card.inactive{opacity:.5}
+.u-avatar{width:42px;height:42px;border-radius:10px;background:var(--navy);color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.u-info{flex:1;min-width:0}
+.u-name{font-size:14px;font-weight:700;color:var(--ink)}
+.u-role{font-size:11px;color:var(--ink-60);margin-top:2px}
+.u-pin{font-size:11px;font-weight:700;color:var(--navy);margin-top:3px;font-family:monospace;letter-spacing:.08em}
+.u-actions{display:flex;flex-direction:column;gap:5px}
+
+/* settings */
+.settings-grid{display:grid;gap:14px}
+.setting-card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:16px}
+.setting-card h3{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.setting-row{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.setting-row:last-child{margin-bottom:0}
+.setting-row label{font-size:11px;font-weight:600;color:var(--ink-60);text-transform:uppercase;letter-spacing:.06em}
+.setting-row input,.setting-row select{padding:9px 12px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:13px;color:var(--ink);background:var(--ivory)}
+.save-settings-btn{padding:11px 22px;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-size:13px;font-weight:700;margin-top:4px}
+
+/* ── DRAWER (slide-in form) ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none}
+.overlay.open{display:block}
+.drawer{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-radius:20px 20px 0 0;z-index:201;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:92vh;overflow-y:auto;padding:20px 18px 32px}
+.drawer.open{transform:translateY(0)}
+.drawer-handle{width:36px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 16px}
+.drawer-title{font-family:"DM Serif Display",serif;font-size:18px;color:var(--navy);margin-bottom:16px}
+.form-row{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.form-row label{font-size:11px;font-weight:600;color:var(--ink-60);text-transform:uppercase;letter-spacing:.06em}
+.form-row input,.form-row select,.form-row textarea{padding:10px 12px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:13px;color:var(--ink);background:var(--ivory);width:100%}
+.form-row textarea{resize:none;height:60px}
+.form-row select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231A1A2E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.drawer-btns{display:flex;gap:10px;margin-top:16px}
+.drawer-cancel{flex:1;padding:13px;border-radius:var(--r);background:var(--ivory);color:var(--ink-60);font-size:14px;font-weight:600;border:1.5px solid var(--border)}
+.drawer-save{flex:2;padding:13px;border-radius:var(--r);background:var(--navy);color:#fff;font-size:14px;font-weight:700}
+
+/* PIN confirm modal */
+.modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-wrap.open{display:flex}
+.modal{background:var(--white);border-radius:var(--r);padding:24px;width:100%;max-width:320px}
+.modal h3{font-family:"DM Serif Display",serif;font-size:17px;color:var(--navy);margin-bottom:6px}
+.modal p{font-size:13px;color:var(--ink-60);margin-bottom:16px}
+.pin-inp{width:100%;padding:12px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:18px;text-align:center;letter-spacing:.2em;color:var(--navy);font-weight:700;background:var(--ivory);-webkit-text-security:disc}
+.modal-msg{font-size:12px;color:var(--crimson);margin-top:6px;min-height:18px}
+.modal-btns{display:flex;gap:10px;margin-top:14px}
+.modal-cancel{flex:1;padding:12px;border-radius:var(--r-sm);background:var(--ivory);color:var(--ink-60);font-size:13px;font-weight:600;border:1.5px solid var(--border)}
+.modal-confirm{flex:2;padding:12px;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-size:13px;font-weight:700}
+
+/* loading spinner */
+#pg-load{background:var(--ivory);flex-direction:column;align-items:center;justify-content:center;gap:14px}
+#pg-load.active{display:flex}
+.spinner{width:36px;height:36px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--navy);animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* toast */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;z-index:999;transition:transform .3s,opacity .3s;white-space:nowrap;pointer-events:none;opacity:0}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#toast.err{background:var(--crimson)}
+#toast.ok{background:var(--green)}
+
+/* empty */
+.empty{text-align:center;padding:40px 20px;color:var(--ink-60);font-size:13px}
+
+@media(max-width:600px){
+  .task-table{display:block;overflow-x:auto}
+  .form-2col{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- PIN PAGE -->
+<div id="pg-pin" class="page active">
+  <div class="logo-icon"><img id="pinLogo" alt="BSC"/></div>
+  <div class="s-name">BSC The Textile Mall</div>
+  <div class="tagline">Belagavi &middot; Since 1938</div>
+  <div class="app-nm">Admin Panel</div>
+  <div class="pin-hint">Store Manager or Owner PIN</div>
+  <div class="dots">
+    <div class="dot" id="d0"></div><div class="dot" id="d1"></div>
+    <div class="dot" id="d2"></div><div class="dot" id="d3"></div>
+  </div>
+  <div class="pad">
+    <button class="k" onclick="kp(1)">1</button><button class="k" onclick="kp(2)">2</button><button class="k" onclick="kp(3)">3</button>
+    <button class="k" onclick="kp(4)">4</button><button class="k" onclick="kp(5)">5</button><button class="k" onclick="kp(6)">6</button>
+    <button class="k" onclick="kp(7)">7</button><button class="k" onclick="kp(8)">8</button><button class="k" onclick="kp(9)">9</button>
+    <button class="k k-zero" onclick="kp(0)">0</button><button class="k k-del" onclick="kd()">&#9003;</button>
+  </div>
+  <div class="pin-msg" id="pmsg"></div>
+</div>
+
+<!-- LOADING -->
+<div id="pg-load" class="page">
+  <div class="spinner"></div>
+  <div style="font-size:13px;color:var(--ink-60)">Loading...</div>
+</div>
+
+<!-- MAIN ADMIN PAGE -->
+<div id="pg-main" class="page">
+  <div class="topbar">
+    <div class="tb-left">
+      <img class="tb-logo" id="topLogo" alt="BSC"/>
+      <div class="tb-info">
+        <div class="tb-title">Admin Panel</div>
+        <div class="tb-sub" id="tb-user">—</div>
+      </div>
+    </div>
+    <div class="tb-right">
+      <button class="back-btn" onclick="location.href='dashboard.html'">&#8592; Dashboard</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('tasks')">&#9776; Tasks</button>
+    <button class="tab" onclick="switchTab('users')">&#128100; Users</button>
+    <button class="tab" onclick="switchTab('settings')">&#9881; Settings</button>
+  </div>
+
+  <!-- TASKS PANEL -->
+  <div class="panel active" id="panel-tasks">
+    <div class="sec-hdr">
+      <h2>Checklist Tasks</h2>
+      <button class="add-btn" onclick="openTaskDrawer()">&#43; Add Task</button>
+    </div>
+    <div class="filter-bar">
+      <input class="search-inp" id="taskSearch" placeholder="&#128269; Search tasks..." oninput="renderTasks()"/>
+      <select class="filter-sel" id="secFilter" onchange="renderTasks()"><option value="">All Sections</option></select>
+      <select class="filter-sel" id="roleFilter" onchange="renderTasks()"><option value="">All Roles</option></select>
+      <select class="filter-sel" id="statusFilter" onchange="renderTasks()">
+        <option value="">All</option><option value="active">Active</option><option value="inactive">Inactive</option>
+      </select>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="task-table" id="taskTable">
+        <thead><tr>
+          <th>ID</th><th>Section</th><th>Task</th><th>Role 1</th><th>Role 2</th>
+          <th>Type</th><th>Mand.</th><th>Active</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="taskBody"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="taskEmpty" style="display:none">No tasks found.</div>
+  </div>
+
+  <!-- USERS PANEL -->
+  <div class="panel" id="panel-users">
+    <div class="sec-hdr">
+      <h2>Users</h2>
+      <button class="add-btn" onclick="openUserDrawer()">&#43; Add User</button>
+    </div>
+    <div class="user-grid" id="userGrid"></div>
+    <div class="empty" id="userEmpty" style="display:none">No users found.</div>
+  </div>
+
+  <!-- SETTINGS PANEL -->
+  <div class="panel" id="panel-settings">
+    <div class="sec-hdr"><h2>Settings</h2></div>
+    <div class="settings-grid">
+      <div class="setting-card">
+        <h3>&#127981; Store Information</h3>
+        <div class="setting-row"><label>Store Name</label><input id="s-storeName" type="text"/></div>
+        <div class="setting-row"><label>Location</label><input id="s-location" type="text"/></div>
+        <div class="form-2col">
+          <div class="setting-row"><label>Opening Time</label><input id="s-openTime" type="time"/></div>
+          <div class="setting-row"><label>Closing Time</label><input id="s-closeTime" type="time"/></div>
+        </div>
+        <button class="save-settings-btn" onclick="saveSettings()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TASK DRAWER -->
+<div class="overlay" id="taskOverlay" onclick="closeTaskDrawer()"></div>
+<div class="drawer" id="taskDrawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-title" id="drawerTitle">Add Task</div>
+  <input type="hidden" id="editTaskId"/>
+  <div class="form-row"><label>Section</label>
+    <select id="f-section" onchange="checkNewSec()">
+      <option value="">— Select —</option>
+      <option value="__new__">+ New section...</option>
+    </select>
+  </div>
+  <div class="form-row" id="newSecRow" style="display:none">
+    <label>New Section Name</label><input id="f-newSection" type="text" placeholder="e.g. Mid-Day Checks"/>
+  </div>
+  <div class="form-row"><label>Task Name</label><input id="f-taskName" type="text" placeholder="Describe the task..."/></div>
+  <div class="form-2col">
+    <div class="form-row"><label>Role 1</label>
+      <select id="f-role1">
+        <option value="Store Manager">Store Manager</option>
+        <option value="Billing Manager">Billing Manager</option>
+        <option value="CRM Manager(1)">CRM Manager(1)</option>
+        <option value="CRM Manager(2)">CRM Manager(2)</option>
+        <option value="Electrical Manager">Electrical Manager</option>
+        <option value="All">All</option>
+      </select>
+    </div>
+    <div class="form-row"><label>Role 2</label>
+      <select id="f-role2">
+        <option value="NA">NA</option>
+        <option value="Store Manager">Store Manager</option>
+        <option value="Billing Manager">Billing Manager</option>
+        <option value="CRM Manager(1)">CRM Manager(1)</option>
+        <option value="CRM Manager(2)">CRM Manager(2)</option>
+        <option value="Electrical Manager">Electrical Manager</option>
+        <option value="All">All</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-2col">
+    <div class="form-row"><label>Type</label>
+      <select id="f-type">
+        <option value="yesno">Yes / No</option>
+        <option value="rating">Rating (1–5)</option>
+        <option value="photo">Photo</option>
+        <option value="text">Text</option>
+      </select>
+    </div>
+    <div class="form-row"><label>Mandatory</label>
+      <select id="f-mandatory"><option value="Yes">Yes</option><option value="No">No</option></select>
+    </div>
+  </div>
+  <div class="form-2col">
+    <div class="form-row"><label>Photo Required</label>
+      <select id="f-photo"><option value="No">No</option><option value="Yes">Yes</option></select>
+    </div>
+    <div class="form-row"><label>Active</label>
+      <select id="f-active"><option value="Yes">Yes</option><option value="No">No</option></select>
+    </div>
+  </div>
+  <div class="drawer-btns">
+    <button class="drawer-cancel" onclick="closeTaskDrawer()">Cancel</button>
+    <button class="drawer-save" onclick="saveTask()">&#10003; Save Task</button>
+  </div>
+</div>
+
+<!-- USER DRAWER -->
+<div class="overlay" id="userOverlay" onclick="closeUserDrawer()"></div>
+<div class="drawer" id="userDrawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-title" id="userDrawerTitle">Add User</div>
+  <input type="hidden" id="editUserName"/>
+  <div class="form-row"><label>Full Name</label><input id="u-name" type="text" placeholder="e.g. Prem Kumar"/></div>
+  <div class="form-row"><label>Role</label>
+    <select id="u-role">
+      <option value="Store Manager">Store Manager</option>
+      <option value="Billing Manager">Billing Manager</option>
+      <option value="CRM Manager(1)">CRM Manager(1)</option>
+      <option value="CRM Manager(2)">CRM Manager(2)</option>
+      <option value="Electrical Manager">Electrical Manager</option>
+      <option value="Owner">Owner</option>
+    </select>
+  </div>
+  <div class="form-row"><label>PIN (4 digits)</label><input id="u-pin" type="number" placeholder="e.g. 4412" maxlength="4" min="1000" max="9999"/></div>
+  <div class="form-row"><label>Status</label>
+    <select id="u-active"><option value="Yes">Active</option><option value="No">Inactive</option></select>
+  </div>
+  <div class="drawer-btns">
+    <button class="drawer-cancel" onclick="closeUserDrawer()">Cancel</button>
+    <button class="drawer-save" onclick="saveUser()">&#10003; Save User</button>
+  </div>
+</div>
+
+<!-- PIN CONFIRM MODAL -->
+<div class="modal-wrap" id="pinModal">
+  <div class="modal">
+    <h3>&#128274; Confirm Identity</h3>
+    <p id="pinModalMsg">Enter your Store Manager or Owner PIN to save changes.</p>
+    <input class="pin-inp" id="confirmPin" type="password" maxlength="4" placeholder="••••" oninput="clearModalMsg()"/>
+    <div class="modal-msg" id="modalMsg"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closePinModal()">Cancel</button>
+      <button class="modal-confirm" onclick="confirmPinAction()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+var API='https://script.google.com/macros/s/AKfycbzT-GnqHn6EfZnNMl2JdqwTfaOoKLklHe0PN4CSynq-c2nZWa1t43_8vNyvCrkpHqSyhQ/exec';
+var BSC_LOGO='https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg';
+
+var me=null, pin='';
+var allTasks=[], allUsers=[], settings={};
+var pendingAction=null; // {fn, label}
+
+// ── LOGOS ──────────────────────────────────────────────────────
+document.getElementById('pinLogo').src=BSC_LOGO;
+document.getElementById('topLogo').src=BSC_LOGO;
+
+// ── PIN ────────────────────────────────────────────────────────
+function dots(){ for(var i=0;i<4;i++){ var el=document.getElementById('d'+i); if(i<pin.length) el.classList.add('on'); else el.classList.remove('on'); } }
+function kp(n){ if(pin.length>=4) return; pin+=String(n); dots(); if(pin.length===4) setTimeout(doLogin,200); }
+function kd(){ if(!pin.length) return; pin=pin.slice(0,-1); dots(); setMsg('',''); }
+function setMsg(t,c){ var el=document.getElementById('pmsg'); el.textContent=t; el.className='pin-msg'+(c?' '+c:''); }
+
+function doLogin(){
+  setMsg('Checking...','info');
+  apiGet('validatePin',{pin:pin},function(r){
+    if(!r.ok){ setMsg(r.error||'Invalid PIN','err'); pin=''; dots(); return; }
+    if(!r.isAdmin){ setMsg('Admin access only (Store Manager or Owner)','err'); pin=''; dots(); return; }
+    me={name:r.name,role:r.role,pin:pin};
+    goPage('pg-load');
+    loadAll();
+  });
+}
+
+// ── PAGES ──────────────────────────────────────────────────────
+function goPage(id){
+  ['pg-pin','pg-load','pg-main'].forEach(function(p){
+    var el=document.getElementById(p); if(!el) return;
+    if(p===id){ el.classList.add('active'); el.style.display=''; }
+    else{ el.classList.remove('active'); el.style.display='none'; }
+  });
+}
+
+// ── API ────────────────────────────────────────────────────────
+function apiGet(action,params,cb){
+  var q='action='+encodeURIComponent(action);
+  if(params) Object.keys(params).forEach(function(k){ q+='&'+encodeURIComponent(k)+'='+encodeURIComponent(String(params[k])); });
+  fetch(API+'?'+q,{redirect:'follow'}).then(function(r){return r.text();})
+    .then(function(t){try{cb(JSON.parse(t));}catch(e){cb({ok:false,error:'Bad response'});}})
+    .catch(function(e){cb({ok:false,error:e.message});});
+}
+function apiPost(data,cb){
+  fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data),redirect:'follow'})
+    .then(function(r){return r.text();})
+    .then(function(t){try{cb(JSON.parse(t));}catch(e){cb({ok:false,error:'Server error'});}})
+    .catch(function(e){cb({ok:false,error:e.message});});
+}
+function toast(msg,type){
+  var t=document.getElementById('toast'); t.textContent=msg;
+  t.className=(type==='err'?'err show':type==='ok'?'ok show':'show');
+  clearTimeout(t._t); t._t=setTimeout(function(){t.className='';},3000);
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── LOAD ALL ───────────────────────────────────────────────────
+function loadAll(){
+  var done=0;
+  function check(){ if(++done===3){ goPage('pg-main'); document.getElementById('tb-user').textContent=me.name+' · '+me.role; } }
+  apiGet('getTasks',{},function(r){ if(r.ok){ allTasks=r.tasks||[]; populateFilters(); renderTasks(); } check(); });
+  apiGet('getUsers',{},function(r){ if(r.ok){ allUsers=r.users||[]; renderUsers(); } check(); });
+  apiGet('getSettings',{},function(r){ if(r.ok){ settings=r.settings||{}; populateSettings(); } check(); });
+}
+
+// ── TABS ───────────────────────────────────────────────────────
+function switchTab(tab){
+  ['tasks','users','settings'].forEach(function(t){
+    document.querySelector('[onclick*="\''+t+'\'"]').classList.toggle('active',t===tab);
+    document.getElementById('panel-'+t).classList.toggle('active',t===tab);
+  });
+}
+
+// ── TASKS ──────────────────────────────────────────────────────
+function populateFilters(){
+  var secs=[...new Set(allTasks.map(function(t){return String(t.Section||'').trim();}))].filter(Boolean);
+  var roles=[...new Set(allTasks.flatMap(function(t){return [String(t.Role1||''),String(t.Role2||'')].filter(function(r){return r&&r!=='NA'&&r!=='na';});}))];
+  var sf=document.getElementById('secFilter'); sf.innerHTML='<option value="">All Sections</option>';
+  secs.forEach(function(s){ sf.innerHTML+='<option value="'+esc(s)+'">'+esc(s)+'</option>'; });
+  var rf=document.getElementById('roleFilter'); rf.innerHTML='<option value="">All Roles</option>';
+  roles.forEach(function(r){ rf.innerHTML+='<option value="'+esc(r)+'">'+esc(r)+'</option>'; });
+  // also populate section dropdown in drawer
+  var fd=document.getElementById('f-section');
+  fd.innerHTML='<option value="">— Select —</option>';
+  secs.forEach(function(s){ fd.innerHTML+='<option value="'+esc(s)+'">'+esc(s)+'</option>'; });
+  fd.innerHTML+='<option value="__new__">+ New section...</option>';
+}
+
+function renderTasks(){
+  var q=(document.getElementById('taskSearch').value||'').toLowerCase();
+  var sf=document.getElementById('secFilter').value;
+  var rf=document.getElementById('roleFilter').value;
+  var stf=document.getElementById('statusFilter').value;
+  var filtered=allTasks.filter(function(t){
+    if(sf&&String(t.Section||'').trim()!==sf) return false;
+    if(rf){ var r1=String(t.Role1||'').trim(),r2=String(t.Role2||'').trim(); if(r1!==rf&&r2!==rf) return false; }
+    if(stf==='active'&&String(t.Active||'').trim().toLowerCase()!=='yes') return false;
+    if(stf==='inactive'&&String(t.Active||'').trim().toLowerCase()==='yes') return false;
+    if(q){ var hay=(String(t.Task_ID||'')+String(t.Task_Name||'')+String(t.Section||'')).toLowerCase(); if(!hay.includes(q)) return false; }
+    return true;
+  });
+  var tbody=document.getElementById('taskBody');
+  tbody.innerHTML='';
+  document.getElementById('taskEmpty').style.display=filtered.length?'none':'block';
+  document.getElementById('taskTable').style.display=filtered.length?'':'none';
+  filtered.forEach(function(t){
+    var isActive=String(t.Active||'').trim().toLowerCase()==='yes';
+    var tr=document.createElement('tr');
+    tr.className=isActive?'':'inactive-row';
+    tr.innerHTML=
+      '<td><span class="tid">'+esc(t.Task_ID||'')+'</span></td>'
+      +'<td style="max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(t.Section||'')+'</td>'
+      +'<td style="max-width:220px">'+esc(t.Task_Name||'')+'</td>'
+      +'<td><span class="role-pill">'+esc(t.Role1||'')+'</span></td>'
+      +'<td>'+(t.Role2&&String(t.Role2).trim()!=='NA'?'<span class="role-pill">'+esc(t.Role2)+'</span>':'-')+'</td>'
+      +'<td><span class="type-pill">'+esc(t.Type||'')+'</span></td>'
+      +'<td style="text-align:center">'+(String(t.Mandatory||'').toLowerCase()==='yes'?'&#10003;':'-')+'</td>'
+      +'<td><button class="active-toggle '+(isActive?'on':'off')+'" title="Toggle active" onclick="toggleTask(\''+esc(String(t.Task_ID||''))+'\')" data-id="'+esc(String(t.Task_ID||''))+'"></button></td>'
+      +'<td><div class="action-btns">'
+        +'<button class="edit-btn" onclick="openTaskDrawer(\''+esc(String(t.Task_ID||''))+'\')" >Edit</button>'
+        +'<button class="del-btn" onclick="deleteTask(\''+esc(String(t.Task_ID||''))+'\')">Delete</button>'
+      +'</div></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+// ── TASK DRAWER ────────────────────────────────────────────────
+function openTaskDrawer(taskId){
+  document.getElementById('editTaskId').value=taskId||'';
+  if(taskId){
+    var t=allTasks.find(function(x){return String(x.Task_ID||'').trim()===taskId;});
+    if(!t) return;
+    document.getElementById('drawerTitle').textContent='Edit Task — '+taskId;
+    setVal('f-section',String(t.Section||'').trim());
+    setVal('f-taskName',String(t.Task_Name||'').trim());
+    setVal('f-role1',String(t.Role1||'').trim());
+    setVal('f-role2',String(t.Role2||'NA').trim());
+    setVal('f-type',String(t.Type||'yesno').trim().toLowerCase());
+    setVal('f-mandatory',String(t.Mandatory||'Yes').trim());
+    setVal('f-photo',String(t.Photo_Required||'No').trim());
+    setVal('f-active',String(t.Active||'Yes').trim());
+  } else {
+    document.getElementById('drawerTitle').textContent='Add New Task';
+    ['f-taskName','f-newSection'].forEach(function(id){document.getElementById(id).value='';});
+    setVal('f-section',''); setVal('f-role1','Store Manager'); setVal('f-role2','NA');
+    setVal('f-type','yesno'); setVal('f-mandatory','Yes'); setVal('f-photo','No'); setVal('f-active','Yes');
+    document.getElementById('newSecRow').style.display='none';
+  }
+  document.getElementById('taskOverlay').classList.add('open');
+  document.getElementById('taskDrawer').classList.add('open');
+}
+function closeTaskDrawer(){ document.getElementById('taskOverlay').classList.remove('open'); document.getElementById('taskDrawer').classList.remove('open'); }
+function checkNewSec(){ document.getElementById('newSecRow').style.display=document.getElementById('f-section').value==='__new__'?'block':'none'; }
+
+function saveTask(){
+  var taskId=document.getElementById('editTaskId').value;
+  var secVal=document.getElementById('f-section').value;
+  var section=secVal==='__new__'?document.getElementById('f-newSection').value.trim():secVal;
+  var taskName=document.getElementById('f-taskName').value.trim();
+  if(!section||!taskName){ toast('Section and Task Name are required','err'); return; }
+  var payload={
+    section,taskName,
+    role1:document.getElementById('f-role1').value,
+    role2:document.getElementById('f-role2').value,
+    type:document.getElementById('f-type').value,
+    mandatory:document.getElementById('f-mandatory').value,
+    photoRequired:document.getElementById('f-photo').value,
+    active:document.getElementById('f-active').value
+  };
+  if(taskId){ payload.action='updateTask'; payload.taskId=taskId; }
+  else { payload.action='addTask'; }
+  requirePin(taskId?'Confirm PIN to update task':'Confirm PIN to add task',function(adminPin){
+    payload.adminPin=adminPin;
+    closeTaskDrawer();
+    apiPost(payload,function(r){
+      if(r.ok){ toast(taskId?'Task updated':'Task added ✓','ok'); loadAll(); }
+      else toast(r.error||'Failed','err');
+    });
+  });
+}
+
+function toggleTask(taskId){
+  requirePin('Confirm PIN to toggle task',function(adminPin){
+    apiPost({action:'toggleTask',taskId,adminPin},function(r){
+      if(r.ok){ toast('Task '+(r.active==='Yes'?'activated':'deactivated')); loadAll(); }
+      else toast(r.error||'Failed','err');
+    });
+  });
+}
+
+function deleteTask(taskId){
+  if(!confirm('Delete task '+taskId+'?\n\nNote: Tasks with submission history cannot be deleted — use Toggle Active instead.')) return;
+  requirePin('Confirm PIN to delete task',function(adminPin){
+    apiPost({action:'deleteTask',taskId,adminPin},function(r){
+      if(r.ok){ toast('Task deleted','ok'); loadAll(); }
+      else toast(r.error||'Cannot delete: '+r.error,'err');
+    });
+  });
+}
+
+// ── USERS ──────────────────────────────────────────────────────
+function renderUsers(){
+  var grid=document.getElementById('userGrid'); grid.innerHTML='';
+  document.getElementById('userEmpty').style.display=allUsers.length?'none':'block';
+  allUsers.forEach(function(u){
+    var isActive=String(u.active||'').toLowerCase()==='yes';
+    var card=document.createElement('div');
+    card.className='user-card'+(isActive?'':' inactive');
+    var init=(u.name||'?').slice(0,1).toUpperCase();
+    card.innerHTML=
+      '<div class="u-avatar">'+esc(init)+'</div>'
+      +'<div class="u-info">'
+        +'<div class="u-name">'+esc(u.name||'')+'</div>'
+        +'<div class="u-role">'+esc(u.role||'')+'</div>'
+        +'<div class="u-pin">PIN: ****</div>'
+        +'<div style="font-size:10px;margin-top:2px;color:'+(isActive?'var(--green)':'var(--crimson)')+'">'+( isActive?'● Active':'● Inactive')+'</div>'
+      +'</div>'
+      +'<div class="u-actions">'
+        +'<button class="edit-btn" onclick="openUserDrawer(\''+esc(u.name||'')+'\')">Edit</button>'
+        +'<button class="del-btn" onclick="deactivateUser(\''+esc(u.name||'')+'\')">'+( isActive?'Deactivate':'Activate')+'</button>'
+      +'</div>';
+    grid.appendChild(card);
+  });
+}
+
+function openUserDrawer(userName){
+  document.getElementById('editUserName').value=userName||'';
+  if(userName){
+    var u=allUsers.find(function(x){return x.name===userName;});
+    if(!u) return;
+    document.getElementById('userDrawerTitle').textContent='Edit User';
+    document.getElementById('u-name').value=u.name||'';
+    document.getElementById('u-name').disabled=true;
+    setVal('u-role',u.role||'');
+    document.getElementById('u-pin').value='';
+    document.getElementById('u-pin').placeholder='Leave blank to keep current PIN';
+    setVal('u-active',u.active||'Yes');
+  } else {
+    document.getElementById('userDrawerTitle').textContent='Add New User';
+    document.getElementById('u-name').value='';
+    document.getElementById('u-name').disabled=false;
+    document.getElementById('u-pin').value='';
+    document.getElementById('u-pin').placeholder='4-digit PIN';
+    setVal('u-role','Billing Manager');
+    setVal('u-active','Yes');
+  }
+  document.getElementById('userOverlay').classList.add('open');
+  document.getElementById('userDrawer').classList.add('open');
+}
+function closeUserDrawer(){ document.getElementById('userOverlay').classList.remove('open'); document.getElementById('userDrawer').classList.remove('open'); }
+
+function saveUser(){
+  var isEdit=!!document.getElementById('editUserName').value;
+  var name=document.getElementById('u-name').value.trim();
+  var role=document.getElementById('u-role').value;
+  var pin=document.getElementById('u-pin').value.trim();
+  var active=document.getElementById('u-active').value;
+  if(!name){ toast('Name is required','err'); return; }
+  if(!isEdit&&(!pin||pin.length!==4||isNaN(pin))){ toast('Valid 4-digit PIN required','err'); return; }
+  var payload=isEdit
+    ?{action:'updateUser',name,role,active}
+    :{action:'addUser',name,role,pin,active};
+  if(isEdit&&pin&&pin.length===4) payload.newPin=pin;
+  requirePin('Confirm PIN to save user',function(adminPin){
+    payload.adminPin=adminPin;
+    closeUserDrawer();
+    apiPost(payload,function(r){
+      if(r.ok){ toast(isEdit?'User updated':'User added ✓','ok'); loadAll(); }
+      else toast(r.error||'Failed','err');
+    });
+  });
+}
+
+function deactivateUser(name){
+  var u=allUsers.find(function(x){return x.name===name;});
+  if(!u) return;
+  var isActive=String(u.active||'').toLowerCase()==='yes';
+  var action=isActive?'deactivate':'activate';
+  if(!confirm((isActive?'Deactivate':'Activate')+' user "'+name+'"?')) return;
+  requirePin('Confirm PIN to '+action+' user',function(adminPin){
+    apiPost({action:'updateUser',name,role:u.role,active:isActive?'No':'Yes',adminPin},function(r){
+      if(r.ok){ toast('User '+(isActive?'deactivated':'activated'),'ok'); loadAll(); }
+      else toast(r.error||'Failed','err');
+    });
+  });
+}
+
+// ── SETTINGS ───────────────────────────────────────────────────
+function populateSettings(){
+  var map={storeName:'s-storeName',location:'s-location',openTime:'s-openTime',closeTime:'s-closeTime'};
+  Object.keys(map).forEach(function(k){ var el=document.getElementById(map[k]); if(el&&settings[k]) el.value=settings[k]; });
+}
+function saveSettings(){
+  var s={
+    storeName:document.getElementById('s-storeName').value.trim(),
+    location:document.getElementById('s-location').value.trim(),
+    openTime:document.getElementById('s-openTime').value,
+    closeTime:document.getElementById('s-closeTime').value
+  };
+  requirePin('Confirm PIN to save settings',function(adminPin){
+    apiPost({action:'updateSettings',settings:s,adminPin},function(r){
+      if(r.ok) toast('Settings saved ✓','ok'); else toast(r.error||'Failed','err');
+    });
+  });
+}
+
+// ── PIN CONFIRM MODAL ──────────────────────────────────────────
+function requirePin(label,onConfirm){
+  document.getElementById('pinModalMsg').textContent=label;
+  document.getElementById('confirmPin').value='';
+  document.getElementById('modalMsg').textContent='';
+  pendingAction=onConfirm;
+  document.getElementById('pinModal').classList.add('open');
+  setTimeout(function(){ document.getElementById('confirmPin').focus(); },200);
+}
+function closePinModal(){ document.getElementById('pinModal').classList.remove('open'); pendingAction=null; }
+function clearModalMsg(){ document.getElementById('modalMsg').textContent=''; }
+function confirmPinAction(){
+  var entered=document.getElementById('confirmPin').value.trim();
+  if(!entered||entered.length!==4){ document.getElementById('modalMsg').textContent='Enter your 4-digit PIN.'; return; }
+  // verify PIN server-side
+  apiGet('validatePin',{pin:entered},function(r){
+    if(!r.ok||!r.isAdmin){ document.getElementById('modalMsg').textContent='Invalid or non-admin PIN.'; return; }
+    closePinModal();
+    if(pendingAction) pendingAction(entered);
+  });
+}
+// allow Enter key in PIN modal
+document.getElementById('confirmPin').addEventListener('keydown',function(e){ if(e.key==='Enter') confirmPinAction(); });
+
+// ── HELPERS ────────────────────────────────────────────────────
+function setVal(id,val){
+  var el=document.getElementById(id); if(!el) return;
+  if(el.tagName==='SELECT'){
+    for(var i=0;i<el.options.length;i++){ if(el.options[i].value===val){ el.selectedIndex=i; return; } }
+  } else el.value=val;
+}
+</script>
+</body>
+</html>
