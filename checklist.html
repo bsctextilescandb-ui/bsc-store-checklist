@@ -177,29 +177,8 @@ input,textarea{font-family:inherit;outline:0}
 </head>
 <body>
 
-<!-- PIN PAGE -->
-<div id="pg-pin" class="page active">
-  <div class="logo-icon"><img id="bscLogo" alt="BSC"/></div>
-  <div class="s-name">BSC The Textile Mall</div>
-  <div class="tagline">Belagavi &middot; Since 1938</div>
-  <div class="app-nm">Store Operation Checklist</div>
-  <div class="pin-hint">Enter your 4-digit PIN</div>
-  <div class="dots">
-    <div class="dot" id="d0"></div><div class="dot" id="d1"></div>
-    <div class="dot" id="d2"></div><div class="dot" id="d3"></div>
-  </div>
-  <div class="pad">
-    <button class="k" onclick="kp(1)">1</button><button class="k" onclick="kp(2)">2</button><button class="k" onclick="kp(3)">3</button>
-    <button class="k" onclick="kp(4)">4</button><button class="k" onclick="kp(5)">5</button><button class="k" onclick="kp(6)">6</button>
-    <button class="k" onclick="kp(7)">7</button><button class="k" onclick="kp(8)">8</button><button class="k" onclick="kp(9)">9</button>
-    <button class="k k-zero" onclick="kp(0)">0</button><button class="k k-del" onclick="kd()">&#9003;</button>
-  </div>
-  <div class="pin-msg" id="pmsg"></div>
-  <div class="cb-mark"><img id="cbLogo" alt="C&B"/></div>
-</div>
-
 <!-- LOADING PAGE -->
-<div id="pg-load" class="page">
+<div id="pg-load" class="page active">
   <div class="spinner"></div>
   <div style="font-size:13px;color:var(--ink-60)">Loading checklist...</div>
 </div>
@@ -273,64 +252,42 @@ input,textarea{font-family:inherit;outline:0}
 <script>
 var API = 'https://script.google.com/macros/s/AKfycbzT-GnqHn6EfZnNMl2JdqwTfaOoKLklHe0PN4CSynq-c2nZWa1t43_8vNyvCrkpHqSyhQ/exec';
 var RAW_BSC = 'https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg';
-var RAW_CB  = 'https://bsctextilescandb-ui.github.io/retail-crm/cnb-logo.png';
 
-var pin='', me=null, secs=[], ans={}, must=[], pics=[], tot=0;
+var me=null, secs=[], ans={}, must=[], pics=[], tot=0;
 var curMainTab='pending';
-// openSecs[tab][secIdx] = true/false
 var openSecs={pending:{},completed:{}};
 
-// ── LOGOS ─────────────────────────────────────────────────────
-(function(){
-  var el=document.getElementById('bscLogo'); if(el) el.src=RAW_BSC;
-  var tl=document.getElementById('topbarLogo'); if(tl) tl.src=RAW_BSC;
-  stripBlack(RAW_CB,40,function(c){
-    var el=document.getElementById('cbLogo'); if(el) el.src=c;
-  });
-})();
-function stripBlack(src,thresh,cb){
-  var img=new Image(); img.crossOrigin='anonymous';
-  img.onload=function(){
-    var c=document.createElement('canvas'); c.width=img.width; c.height=img.height;
-    var ctx=c.getContext('2d'); ctx.drawImage(img,0,0);
-    var d=ctx.getImageData(0,0,c.width,c.height),px=d.data;
-    for(var i=0;i<px.length;i+=4){ if(px[i]<thresh&&px[i+1]<thresh&&px[i+2]<thresh) px[i+3]=0; }
-    ctx.putImageData(d,0,0); cb(c.toDataURL('image/png'));
-  };
-  img.onerror=function(){ cb(src); };
-  img.src=src;
-}
+// ── SET LOGO ──────────────────────────────────────────────────
+document.getElementById('topbarLogo').src=RAW_BSC;
 
-// ── PIN ───────────────────────────────────────────────────────
-function dots(){
-  for(var i=0;i<4;i++){
-    var el=document.getElementById('d'+i);
-    if(i<pin.length) el.classList.add('on'); else el.classList.remove('on');
-  }
-}
-function kp(n){ if(pin.length>=4) return; pin+=String(n); dots(); if(pin.length===4) setTimeout(validatePin,200); }
-function kd(){ if(!pin.length) return; pin=pin.slice(0,-1); dots(); setMsg('',''); }
-function setMsg(txt,type){ var el=document.getElementById('pmsg'); el.textContent=txt; el.className='pin-msg'+(type?' '+type:''); }
+// ── SESSION CHECK — runs on page load ────────────────────────
+(function(){
+  var raw=sessionStorage.getItem('bscAuth');
+  if(!raw){ location.href='index.html'; return; }
+  try{
+    var auth=JSON.parse(raw);
+    var role=String(auth.role||'').trim().toLowerCase();
+    // if owner or store manager landed here by mistake → send to dashboard
+    if(role==='owner'||role==='store manager'){ location.href='dashboard.html'; return; }
+    me={name:auth.name,role:auth.role,isAdmin:auth.isAdmin||false};
+    loadChecklist(auth.role);
+  }catch(e){ location.href='index.html'; }
+})();
 
 // ── PAGES ─────────────────────────────────────────────────────
 function goPage(id){
-  ['pg-pin','pg-load','pg-list','pg-done'].forEach(function(p){
+  ['pg-load','pg-list','pg-done'].forEach(function(p){
     var el=document.getElementById(p); if(!el) return;
     if(p===id){ el.classList.add('active'); el.style.display=''; }
-    else { el.classList.remove('active'); el.style.display='none'; }
+    else{ el.classList.remove('active'); el.style.display='none'; }
   });
-  if(id!=='pg-pin') window.scrollTo(0,0);
+  window.scrollTo(0,0);
 }
 
 function goHome(){
-  pin=''; me=null; ans={}; secs=[]; must=[]; pics=[]; tot=0;
-  curMainTab='pending'; openSecs={pending:{},completed:{}};
-  dots(); setMsg('','');
-  document.getElementById('pending-body').innerHTML='';
-  document.getElementById('completed-body').innerHTML='';
-  var pf=document.getElementById('pf'); if(pf){ pf.style.width='0%'; pf.className='pfill'; }
-  document.getElementById('pn').textContent='0 / 0';
-  goPage('pg-pin');
+  clearDraft();
+  sessionStorage.removeItem('bscAuth');
+  location.href='index.html';
 }
 
 // ── API ───────────────────────────────────────────────────────
@@ -390,24 +347,12 @@ function toast(msg,type){
 }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-// ── VALIDATE PIN ──────────────────────────────────────────────
-function validatePin(){
-  setMsg('Checking...','info');
-  apiGet('validatePin',{pin:pin},function(r){
-    if(!r.ok){ setMsg(r.error||'Invalid PIN','err'); pin=''; dots(); return; }
-    me={name:r.name,role:r.role,isAdmin:r.isAdmin||false};
-    if(r.role==='Owner'){ sessionStorage.setItem('cbAuth',JSON.stringify(me)); location.href='dashboard.html'; return; }
-    goPage('pg-load');
-    loadChecklist(r.role);
-  });
-}
-
 // ── LOAD CHECKLIST ────────────────────────────────────────────
 function loadChecklist(role){
-  var tmr=setTimeout(function(){ toast('Checklist taking too long.','err'); goPage('pg-pin'); },15000);
+  var tmr=setTimeout(function(){ toast('Checklist taking too long.','err'); location.href='index.html'; },15000);
   apiGet('getChecklist',{role:role},function(r){
     clearTimeout(tmr);
-    if(!r.ok||!r.sections){ toast(r.error||'Could not load checklist.','err'); goPage('pg-pin'); return; }
+    if(!r.ok||!r.sections){ toast(r.error||'Could not load checklist.','err'); location.href='index.html'; return; }
     try{
       secs=r.sections; ans={}; must=[]; pics=[]; tot=0;
       secs.forEach(function(s){
@@ -439,7 +384,7 @@ function loadChecklist(role){
 
       buildChecklist();
       goPage('pg-list');
-    }catch(err){ toast('Error: '+err.message,'err'); goPage('pg-pin'); }
+    }catch(err){ toast('Error: '+err.message,'err'); location.href='index.html'; }
   });
 }
 
@@ -891,8 +836,14 @@ function doSubmit(){
       var dt=ist();
       document.getElementById('done-msg').textContent=me.name+' — '+me.role+' submitted.';
       document.getElementById('done-time').textContent=dt.lbl+' at '+dt.t+' IST';
-      clearDraft(); goPage('pg-done');
-      setTimeout(goHome,3000);
+      clearDraft();
+      goPage('pg-done');
+      // Store Manager goes back to dashboard, others to login
+      var fromDash=new URLSearchParams(window.location.search).get('from')==='dashboard';
+      setTimeout(function(){
+        if(fromDash) location.href='dashboard.html';
+        else { sessionStorage.removeItem('bscAuth'); location.href='index.html'; }
+      },2500);
     } else {
       toast(r.error||'Submission failed','err');
       btn.disabled=false; btn.textContent='Submit';
