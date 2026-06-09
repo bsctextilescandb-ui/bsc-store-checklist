@@ -2,23 +2,514 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Dashboard — BSC</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Dashboard — BSC Store Checklist</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap" rel="stylesheet"/>
 <style>
-body{margin:0;background:#1E2D5A;font-family:"DM Sans",sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:16px}
-h2{color:#fff;font-size:22px}
-p{color:rgba(255,255,255,.6);font-size:14px}
-a{color:#B8860B;font-size:13px}
+:root{
+  --navy:#1E2D5A;--navy-l:#EEF1FB;--gold:#B8860B;--gold-l:#FFF8E7;
+  --crimson:#C0392B;--crimson-l:#FFECEC;
+  --green:#1E7A1E;--green-l:#D1FAE5;
+  --orange:#D97706;--orange-l:#FEF3C7;
+  --ink:#1A1A2E;--ink-60:rgba(26,26,46,.6);--ink-30:rgba(26,26,46,.3);--ink-10:rgba(26,26,46,.06);
+  --ivory:#F9F7F0;--white:#fff;--border:#E8E4D8;
+  --r:12px;--r-sm:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--ivory);font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:0;outline:0;-webkit-tap-highlight-color:transparent}
+input,select{font-family:inherit;outline:0}
+
+/* topbar */
+.topbar{background:var(--navy);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-logo{height:36px;width:48px;object-fit:contain;background:rgba(255,255,255,.1);border-radius:8px;padding:4px}
+.tb-title{font-family:"DM Serif Display",serif;color:#fff;font-size:15px;line-height:1.2}
+.tb-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+.tb-right{display:flex;gap:8px;align-items:center}
+.tb-btn{padding:7px 13px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:0}
+.tb-admin{background:var(--gold);color:#fff}
+.tb-checklist{background:rgba(255,255,255,.15);color:#fff}
+.tb-logout{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);font-size:11px}
+
+/* date bar */
+.date-bar{background:var(--white);border-bottom:1px solid var(--border);padding:10px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.date-bar label{font-size:11px;font-weight:600;color:var(--ink-60);text-transform:uppercase;letter-spacing:.06em}
+.date-inp{padding:7px 10px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:12px;color:var(--ink);background:var(--ivory)}
+.date-go{padding:7px 16px;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-size:12px;font-weight:700}
+.date-quick{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.dq{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;background:var(--ink-10);color:var(--ink-60);border:1.5px solid transparent;transition:all .15s}
+.dq.active{background:var(--navy-l);color:var(--navy);border-color:var(--navy)}
+
+/* page body */
+.body{padding:16px;max-width:960px;margin:0 auto;padding-bottom:40px}
+
+/* score hero */
+.hero{background:var(--navy);border-radius:var(--r);padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.score-ring-wrap{position:relative;width:90px;height:90px;flex-shrink:0}
+.score-ring-wrap svg{width:90px;height:90px;transform:rotate(-90deg)}
+.score-bg{fill:none;stroke:rgba(255,255,255,.15);stroke-width:8}
+.score-fill{fill:none;stroke:var(--gold);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:"DM Serif Display",serif;font-size:22px;font-weight:700;color:#fff;line-height:1}
+.score-pct{font-size:11px;color:rgba(255,255,255,.5);position:absolute;bottom:12px;left:50%;transform:translateX(-50%);white-space:nowrap}
+.hero-stats{display:flex;gap:20px;flex-wrap:wrap;flex:1}
+.hstat{display:flex;flex-direction:column;gap:3px}
+.hstat-n{font-size:26px;font-weight:700;color:#fff;line-height:1}
+.hstat-l{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em}
+.hstat-n.green{color:#6EE7B7}
+.hstat-n.red{color:#FCA5A5}
+.hstat-n.amber{color:#FCD34D}
+
+/* summary cards */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.stat-card{background:var(--white);border-radius:var(--r);padding:14px;border:1.5px solid var(--border)}
+.stat-card .sc-n{font-size:28px;font-weight:700;color:var(--navy);line-height:1;font-family:"DM Serif Display",serif}
+.stat-card .sc-l{font-size:11px;color:var(--ink-60);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+.stat-card.green{border-color:rgba(30,122,30,.3);background:var(--green-l)}
+.stat-card.green .sc-n{color:var(--green)}
+.stat-card.red{border-color:rgba(192,57,43,.3);background:var(--crimson-l)}
+.stat-card.red .sc-n{color:var(--crimson)}
+.stat-card.amber{border-color:rgba(217,119,6,.3);background:var(--orange-l)}
+.stat-card.amber .sc-n{color:var(--orange)}
+
+/* section label */
+.sec-lbl{font-family:"DM Serif Display",serif;font-size:17px;color:var(--navy);margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* role cards */
+.role-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:4px}
+.role-card{background:var(--white);border-radius:var(--r);padding:14px;border:1.5px solid var(--border)}
+.role-card .rc-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.role-bar{height:6px;border-radius:3px;background:var(--border);margin-bottom:6px;overflow:hidden}
+.role-bar-fill{height:100%;border-radius:3px;background:var(--gold);transition:width .4s}
+.role-bar-fill.done{background:var(--green)}
+.role-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-60)}
+.role-card.all-done{border-color:rgba(30,122,30,.35);background:var(--green-l)}
+.role-card.has-fail{border-color:rgba(192,57,43,.35);background:var(--crimson-l)}
+.role-card.pending{border-color:rgba(217,119,6,.3);background:var(--orange-l)}
+
+/* section breakdown accordion */
+.sec-acc{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);margin-bottom:8px;overflow:hidden}
+.sec-acc.all-done{border-color:rgba(30,122,30,.3)}
+.sec-acc.has-fail{border-color:rgba(192,57,43,.3)}
+.sec-acc-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.sec-acc-left{display:flex;align-items:center;gap:10px}
+.sec-acc-num{width:26px;height:26px;border-radius:7px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-acc.all-done .sec-acc-num{background:var(--green)}
+.sec-acc.has-fail .sec-acc-num{background:var(--crimson)}
+.sec-acc-title{font-size:14px;font-weight:600;color:var(--ink)}
+.sec-acc-right{display:flex;align-items:center;gap:10px}
+.sec-score{font-size:13px;font-weight:700}
+.sec-score.green{color:var(--green)}
+.sec-score.amber{color:var(--orange)}
+.sec-score.red{color:var(--crimson)}
+.sec-chevron{font-size:11px;color:var(--ink-30);transition:transform .2s}
+.sec-acc.open .sec-chevron{transform:rotate(180deg)}
+.sec-acc-body{display:none;padding:0 12px 12px}
+.sec-acc.open .sec-acc-body{display:block}
+.task-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.task-row:last-child{border-bottom:0}
+.task-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.task-info{flex:1;min-width:0}
+.task-name{font-size:12px;color:var(--ink);line-height:1.4}
+.task-meta{font-size:11px;color:var(--ink-60);margin-top:2px}
+.task-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;flex-shrink:0}
+.task-status.ok{background:var(--green-l);color:var(--green)}
+.task-status.fail{background:var(--crimson-l);color:var(--crimson)}
+.task-status.pending{background:var(--orange-l);color:var(--orange)}
+
+/* override log */
+.override-card{background:var(--white);border-radius:var(--r);border:1.5px solid rgba(217,119,6,.4);padding:14px;margin-bottom:8px}
+.ov-task{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.ov-row{display:flex;gap:12px;flex-wrap:wrap}
+.ov-col{flex:1;min-width:140px;background:var(--ivory);border-radius:var(--r-sm);padding:10px}
+.ov-col-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+.ov-col-lbl.first{color:var(--crimson)}
+.ov-col-lbl.update{color:var(--green)}
+.ov-who{font-size:12px;font-weight:600;color:var(--ink)}
+.ov-resp{font-size:12px;color:var(--ink-60);margin-top:2px}
+.ov-section{font-size:10px;color:var(--ink-30);margin-bottom:4px}
+
+/* trend chart */
+.chart-wrap{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:16px;margin-bottom:8px}
+.chart-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px}
+.chart-area{position:relative;height:140px;display:flex;align-items:flex-end;gap:6px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%}
+.bar-wrap{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.bar{width:100%;border-radius:4px 4px 0 0;background:var(--navy-l);transition:height .4s ease;min-height:2px;position:relative}
+.bar.today{background:var(--navy)}
+.bar.good{background:var(--green)}
+.bar.bad{background:var(--crimson)}
+.bar-lbl{font-size:9px;color:var(--ink-60);text-align:center;white-space:nowrap}
+.bar-pct{font-size:9px;font-weight:700;color:var(--ink-60);text-align:center}
+
+/* loading overlay */
+#loadOverlay{position:fixed;inset:0;background:var(--ivory);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+#loadOverlay.hide{display:none}
+.spinner{width:36px;height:36px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--navy);animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* toast */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;z-index:9999;transition:transform .3s,opacity .3s;white-space:nowrap;pointer-events:none;opacity:0}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#toast.err{background:var(--crimson)}
+
+/* empty */
+.empty{text-align:center;padding:32px;color:var(--ink-60);font-size:13px}
+
+@media(max-width:500px){
+  .hero{flex-direction:column;align-items:flex-start}
+  .hero-stats{gap:14px}
+  .hstat-n{font-size:20px}
+  .tb-btn span{display:none}
+}
 </style>
 </head>
 <body>
-<h2>✅ Routing works!</h2>
-<p id="msg">Dashboard coming soon...</p>
-<a href="index.html">← Logout</a>
+
+<div id="loadOverlay">
+  <div class="spinner"></div>
+  <div style="font-size:13px;color:var(--ink-60)">Loading dashboard...</div>
+</div>
+
+<div class="topbar">
+  <div class="tb-left">
+    <img class="tb-logo" id="topLogo" alt="BSC"/>
+    <div>
+      <div class="tb-title">Operations Dashboard</div>
+      <div class="tb-sub" id="tbSub">BSC The Textile Mall</div>
+    </div>
+  </div>
+  <div class="tb-right" id="tbRight">
+    <!-- buttons injected by JS based on role -->
+  </div>
+</div>
+
+<div class="date-bar">
+  <label>From</label>
+  <input class="date-inp" type="date" id="dateFrom"/>
+  <label>To</label>
+  <input class="date-inp" type="date" id="dateTo"/>
+  <button class="date-go" onclick="loadDashboard()">Go</button>
+  <div class="date-quick">
+    <button class="dq active" id="dq-today" onclick="quickDate('today')">Today</button>
+    <button class="dq" id="dq-7" onclick="quickDate('7')">Last 7</button>
+    <button class="dq" id="dq-30" onclick="quickDate('30')">Last 30</button>
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- HERO SCORE -->
+  <div class="hero" id="heroWrap">
+    <div class="score-ring-wrap">
+      <svg viewBox="0 0 90 90">
+        <circle class="score-bg" cx="45" cy="45" r="38"/>
+        <circle class="score-fill" id="scoreArc" cx="45" cy="45" r="38"
+          stroke-dasharray="239" stroke-dashoffset="239"/>
+      </svg>
+      <div class="score-num" id="scoreNum">0%</div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n" id="hTotal">0</div><div class="hstat-l">Total Tasks</div></div>
+      <div class="hstat"><div class="hstat-n green" id="hDone">0</div><div class="hstat-l">Completed</div></div>
+      <div class="hstat"><div class="hstat-n amber" id="hPending">0</div><div class="hstat-l">Pending</div></div>
+      <div class="hstat"><div class="hstat-n red" id="hFailed">0</div><div class="hstat-l">Failed</div></div>
+      <div class="hstat"><div class="hstat-n" style="color:#C084FC" id="hOverride">0</div><div class="hstat-l">Overridden</div></div>
+    </div>
+  </div>
+
+  <!-- TREND CHART -->
+  <div class="sec-lbl">&#128200; Completion Trend</div>
+  <div class="chart-wrap">
+    <div class="chart-title" id="chartTitle">Daily completion %</div>
+    <div class="chart-area" id="chartArea"></div>
+  </div>
+
+  <!-- ROLE BREAKDOWN -->
+  <div class="sec-lbl">&#128100; Role Breakdown</div>
+  <div class="role-grid" id="roleGrid"></div>
+
+  <!-- SECTION BREAKDOWN -->
+  <div class="sec-lbl">&#128203; Section Breakdown</div>
+  <div id="sectionBody"></div>
+
+  <!-- OVERRIDE LOG -->
+  <div class="sec-lbl" id="overrideLbl" style="display:none">&#9888;&#65039; Override Log</div>
+  <div id="overrideBody"></div>
+
+</div>
+
+<div id="toast"></div>
+
 <script>
-var auth=sessionStorage.getItem('bscAuth');
-if(auth){ var u=JSON.parse(auth); document.getElementById('msg').textContent='Logged in as: '+u.name+' ('+u.role+')'; }
-else{ location.href='index.html'; }
+var API='https://script.google.com/macros/s/AKfycbzT-GnqHn6EfZnNMl2JdqwTfaOoKLklHe0PN4CSynq-c2nZWa1t43_8vNyvCrkpHqSyhQ/exec';
+var BSC='https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg';
+var me=null;
+
+// ── SESSION CHECK ─────────────────────────────────────────────
+(function(){
+  var raw=sessionStorage.getItem('bscAuth');
+  if(!raw){ location.href='index.html'; return; }
+  try{
+    var auth=JSON.parse(raw);
+    var role=String(auth.role||'').trim().toLowerCase();
+    if(role!=='owner'&&role!=='store manager'){ location.href='index.html'; return; }
+    me=auth;
+    initDashboard();
+  }catch(e){ location.href='index.html'; }
+})();
+
+function initDashboard(){
+  document.getElementById('topLogo').src=BSC;
+  document.getElementById('tbSub').textContent=me.name+' · '+me.role;
+
+  // topbar buttons
+  var tbR=document.getElementById('tbRight');
+  var isAdmin=me.isAdmin||String(me.role||'').toLowerCase()==='store manager';
+  tbR.innerHTML=
+    (isAdmin?'<button class="tb-btn tb-admin" onclick="location.href=\'admin.html\'">&#9881; <span>Admin</span></button>':'')
+    +'<button class="tb-btn tb-checklist" onclick="goChecklist()">&#9776; <span>My Checklist</span></button>'
+    +'<button class="tb-btn tb-logout" onclick="logout()">&#8617; Logout</button>';
+
+  // set default dates to today
+  var today=istDate();
+  document.getElementById('dateFrom').value=today;
+  document.getElementById('dateTo').value=today;
+
+  loadDashboard();
+}
+
+function goChecklist(){
+  location.href='checklist.html?from=dashboard';
+}
+function logout(){
+  sessionStorage.removeItem('bscAuth');
+  location.href='index.html';
+}
+
+// ── DATE HELPERS ──────────────────────────────────────────────
+function istDate(){
+  var d=new Date(new Date().getTime()+19800000);
+  var p=function(n){return ('0'+n).slice(-2);};
+  return d.getUTCFullYear()+'-'+p(d.getUTCMonth()+1)+'-'+p(d.getUTCDate());
+}
+function addDays(dateStr,n){
+  var d=new Date(dateStr+'T00:00:00Z');
+  d=new Date(d.getTime()+n*86400000);
+  var p=function(x){return ('0'+x).slice(-2);};
+  return d.getUTCFullYear()+'-'+p(d.getUTCMonth()+1)+'-'+p(d.getUTCDate());
+}
+function fmtDisplay(dateStr){
+  var d=new Date(dateStr+'T00:00:00Z');
+  var dy=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return dy[d.getUTCDay()]+' '+d.getUTCDate()+' '+mo[d.getUTCMonth()];
+}
+
+function quickDate(key){
+  var today=istDate();
+  document.querySelectorAll('.dq').forEach(function(b){b.classList.remove('active');});
+  if(key==='today'){
+    document.getElementById('dateFrom').value=today;
+    document.getElementById('dateTo').value=today;
+    document.getElementById('dq-today').classList.add('active');
+  } else if(key==='7'){
+    document.getElementById('dateFrom').value=addDays(today,-6);
+    document.getElementById('dateTo').value=today;
+    document.getElementById('dq-7').classList.add('active');
+  } else if(key==='30'){
+    document.getElementById('dateFrom').value=addDays(today,-29);
+    document.getElementById('dateTo').value=today;
+    document.getElementById('dq-30').classList.add('active');
+  }
+  loadDashboard();
+}
+
+// ── API ───────────────────────────────────────────────────────
+function apiGet(action,params,cb){
+  var q='action='+encodeURIComponent(action);
+  if(params) Object.keys(params).forEach(function(k){ q+='&'+encodeURIComponent(k)+'='+encodeURIComponent(String(params[k])); });
+  fetch(API+'?'+q,{redirect:'follow'})
+    .then(function(r){return r.text();})
+    .then(function(t){try{cb(JSON.parse(t));}catch(e){cb({ok:false,error:'Bad response'});}})
+    .catch(function(e){cb({ok:false,error:e.message});});
+}
+
+function toast(msg,type){
+  var t=document.getElementById('toast'); t.textContent=msg;
+  t.className=(type==='err'?'err show':'show');
+  clearTimeout(t._t); t._t=setTimeout(function(){t.className='';},3000);
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── LOAD DASHBOARD ────────────────────────────────────────────
+function loadDashboard(){
+  var from=document.getElementById('dateFrom').value;
+  var to=document.getElementById('dateTo').value;
+  if(!from||!to){ toast('Select a date range','err'); return; }
+  document.getElementById('loadOverlay').classList.remove('hide');
+  apiGet('getDashboard',{dateFrom:from,dateTo:to},function(r){
+    document.getElementById('loadOverlay').classList.add('hide');
+    if(!r.ok){ toast(r.error||'Failed to load dashboard','err'); return; }
+    render(r);
+  });
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function render(d){
+  // hero score
+  var pct=d.overallScore||0;
+  var arc=239;
+  var offset=arc - Math.round((pct/100)*arc);
+  document.getElementById('scoreArc').setAttribute('stroke-dashoffset',offset);
+  document.getElementById('scoreNum').textContent=pct+'%';
+  // colour arc
+  var arcEl=document.getElementById('scoreArc');
+  arcEl.style.stroke=pct>=80?'#6EE7B7':pct>=50?'#FCD34D':'#FCA5A5';
+
+  document.getElementById('hTotal').textContent=d.totalTasks||0;
+  document.getElementById('hDone').textContent=d.totalCompleted||0;
+  document.getElementById('hPending').textContent=d.totalPending||0;
+  document.getElementById('hFailed').textContent=d.totalFailed||0;
+  document.getElementById('hOverride').textContent=d.totalOverridden||0;
+
+  renderTrend(d.trend||[]);
+  renderRoles(d.roles||[],d.allRoles||[]);
+  renderSections(d.sections||[]);
+  renderOverrides(d.overrideLog||[]);
+}
+
+// ── TREND CHART ───────────────────────────────────────────────
+function renderTrend(trend){
+  var area=document.getElementById('chartArea');
+  area.innerHTML='';
+  if(!trend.length){ area.innerHTML='<div class="empty">No data for this range.</div>'; return; }
+  var today=istDate();
+  var maxScore=Math.max.apply(null,trend.map(function(t){return t.score||0;}))||100;
+  trend.forEach(function(t){
+    var isToday=t.date===today;
+    var pct=Math.round(((t.score||0)/100)*100);
+    var col=document.createElement('div');
+    col.className='bar-col';
+    var barH=Math.max(4,Math.round((t.score/100)*120));
+    var barCls='bar'+(isToday?' today':'')+(t.score>=80?' good':t.score<50&&t.score>0?' bad':'');
+    col.innerHTML=
+      '<div class="bar-pct">'+(t.score||0)+'%</div>'
+      +'<div class="bar-wrap"><div class="'+barCls+'" style="height:'+barH+'px" title="'+t.score+'%"></div></div>'
+      +'<div class="bar-lbl">'+fmtDisplay(t.date).slice(0,6)+'</div>';
+    area.appendChild(col);
+  });
+  document.getElementById('chartTitle').textContent=
+    'Completion % · '+fmtDisplay(trend[0].date)+' → '+fmtDisplay(trend[trend.length-1].date);
+}
+
+// ── ROLE GRID ─────────────────────────────────────────────────
+function renderRoles(roles,allRoles){
+  var grid=document.getElementById('roleGrid');
+  grid.innerHTML='';
+  if(!roles.length){ grid.innerHTML='<div class="empty">No submission data.</div>'; return; }
+  roles.forEach(function(r){
+    var pct=r.assigned>0?Math.min(100,Math.round((r.completed/r.assigned)*100)):0;
+    var cls='role-card'+(pct===100?' all-done':r.failed>0?' has-fail':pct<100&&r.completed>0?' pending':'');
+    var card=document.createElement('div');
+    card.className=cls;
+    card.innerHTML=
+      '<div class="rc-name">'+esc(r.role)+'</div>'
+      +'<div class="role-bar"><div class="role-bar-fill'+(pct===100?' done':'')+'" style="width:'+pct+'%"></div></div>'
+      +'<div class="role-meta">'
+        +'<span>'+r.completed+' / '+r.assigned+' tasks</span>'
+        +'<span style="font-weight:700;color:'+(pct===100?'var(--green)':pct<50?'var(--crimson)':'var(--orange)')+'">'+pct+'%</span>'
+      +'</div>'
+      +(r.failed>0?'<div style="font-size:11px;color:var(--crimson);margin-top:5px">'+r.failed+' failed</div>':'');
+    grid.appendChild(card);
+  });
+}
+
+// ── SECTIONS ──────────────────────────────────────────────────
+function renderSections(sections){
+  var body=document.getElementById('sectionBody');
+  body.innerHTML='';
+  sections.forEach(function(s,i){
+    var allDone=s.score===100;
+    var hasFail=s.failed>0;
+    var cls='sec-acc'+(allDone?' all-done':hasFail?' has-fail':'');
+    var scoreColor=s.score>=80?'green':s.score>=50?'amber':'red';
+    var div=document.createElement('div');
+    div.className=cls;
+    div.id='sacc-'+i;
+    div.innerHTML=
+      '<div class="sec-acc-hdr" onclick="toggleSecAcc('+i+')">'
+        +'<div class="sec-acc-left">'
+          +'<div class="sec-acc-num">'+(i+1)+'</div>'
+          +'<div class="sec-acc-title">'+esc(s.section)+'</div>'
+        +'</div>'
+        +'<div class="sec-acc-right">'
+          +'<span class="sec-score '+scoreColor+'">'+s.score+'%</span>'
+          +'<span style="font-size:11px;color:var(--ink-60)">'+s.completed+'/'+s.total+'</span>'
+          +(hasFail?'<span style="font-size:10px;font-weight:700;color:var(--crimson);background:var(--crimson-l);padding:2px 7px;border-radius:5px">'+s.failed+' ❌</span>':'')
+          +'<span class="sec-chevron">&#9660;</span>'
+        +'</div>'
+      +'</div>'
+      +'<div class="sec-acc-body" id="sb-'+i+'"></div>';
+
+    var taskBody=div.querySelector('.sec-acc-body');
+    (s.tasks||[]).forEach(function(t){
+      var icon=t.status==='PENDING'?'⏳':t.status==='FAIL'?'❌':'✅';
+      var statusCls=t.status==='PENDING'?'pending':t.status==='FAIL'?'fail':'ok';
+      var statusTxt=t.status==='PENDING'?'Pending':t.status==='FAIL'?'Failed':'Done';
+      var row=document.createElement('div');
+      row.className='task-row';
+      row.innerHTML=
+        '<div class="task-icon">'+icon+'</div>'
+        +'<div class="task-info">'
+          +'<div class="task-name">'+esc(t.taskName||'')+'</div>'
+          +(t.staffName?'<div class="task-meta">'+esc(t.staffName)+' · '+esc(t.role||'')+(t.remarks?' · "'+esc(t.remarks)+'"':'')+'</div>':'')
+        +'</div>'
+        +'<span class="task-status '+statusCls+'">'+statusTxt+'</span>';
+      taskBody.appendChild(row);
+    });
+
+    body.appendChild(div);
+  });
+}
+
+function toggleSecAcc(i){
+  var el=document.getElementById('sacc-'+i); if(!el) return;
+  el.classList.toggle('open');
+}
+
+// ── OVERRIDE LOG ──────────────────────────────────────────────
+function renderOverrides(log){
+  var lbl=document.getElementById('overrideLbl');
+  var body=document.getElementById('overrideBody');
+  body.innerHTML='';
+  if(!log.length){ lbl.style.display='none'; return; }
+  lbl.style.display='flex';
+  lbl.innerHTML='&#9888;&#65039; Override Log <span style="font-size:12px;font-weight:600;background:var(--orange-l);color:var(--orange);padding:2px 10px;border-radius:8px;margin-left:8px">'+log.length+'</span>';
+  log.forEach(function(o){
+    var card=document.createElement('div');
+    card.className='override-card';
+    card.innerHTML=
+      '<div class="ov-section">'+esc(o.section||'')+'</div>'
+      +'<div class="ov-task">'+esc(o.taskName||'')+'</div>'
+      +'<div class="ov-row">'
+        +'<div class="ov-col">'
+          +'<div class="ov-col-lbl first">First Entry</div>'
+          +'<div class="ov-who">'+esc(o.firstBy||'')+'</div>'
+          +'<div class="ov-resp">'+esc(o.firstResponse||'')+(o.firstRemarks?' — '+esc(o.firstRemarks):'')+'</div>'
+        +'</div>'
+        +'<div class="ov-col">'
+          +'<div class="ov-col-lbl update">Updated To</div>'
+          +'<div class="ov-who">'+esc(o.latestBy||'')+'</div>'
+          +'<div class="ov-resp">'+esc(o.latestResponse||'')+(o.latestRemarks?' — '+esc(o.latestRemarks):'')+'</div>'
+          +(o.latestPhoto?'<a href="'+o.latestPhoto+'" target="_blank" style="font-size:11px;color:var(--navy);font-weight:600;margin-top:4px;display:block">📷 View Photo</a>':'')
+        +'</div>'
+      +'</div>'
+      +'<div style="font-size:10px;color:var(--ink-30);margin-top:8px">'+o.date+' · '+o.totalUpdates+' entr'+(o.totalUpdates===1?'y':'ies')+'</div>';
+    body.appendChild(card);
+  });
+}
 </script>
 </body>
 </html>
