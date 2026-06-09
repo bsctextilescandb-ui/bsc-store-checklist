@@ -166,28 +166,8 @@ input,select,textarea{font-family:inherit;outline:0}
 </head>
 <body>
 
-<!-- PIN PAGE -->
-<div id="pg-pin" class="page active">
-  <div class="logo-icon"><img id="pinLogo" alt="BSC"/></div>
-  <div class="s-name">BSC The Textile Mall</div>
-  <div class="tagline">Belagavi &middot; Since 1938</div>
-  <div class="app-nm">Admin Panel</div>
-  <div class="pin-hint">Store Manager or Owner PIN</div>
-  <div class="dots">
-    <div class="dot" id="d0"></div><div class="dot" id="d1"></div>
-    <div class="dot" id="d2"></div><div class="dot" id="d3"></div>
-  </div>
-  <div class="pad">
-    <button class="k" onclick="kp(1)">1</button><button class="k" onclick="kp(2)">2</button><button class="k" onclick="kp(3)">3</button>
-    <button class="k" onclick="kp(4)">4</button><button class="k" onclick="kp(5)">5</button><button class="k" onclick="kp(6)">6</button>
-    <button class="k" onclick="kp(7)">7</button><button class="k" onclick="kp(8)">8</button><button class="k" onclick="kp(9)">9</button>
-    <button class="k k-zero" onclick="kp(0)">0</button><button class="k k-del" onclick="kd()">&#9003;</button>
-  </div>
-  <div class="pin-msg" id="pmsg"></div>
-</div>
-
 <!-- LOADING -->
-<div id="pg-load" class="page">
+<div id="pg-load" class="page active">
   <div class="spinner"></div>
   <div style="font-size:13px;color:var(--ink-60)">Loading...</div>
 </div>
@@ -380,34 +360,30 @@ input,select,textarea{font-family:inherit;outline:0}
 var API='https://script.google.com/macros/s/AKfycbzT-GnqHn6EfZnNMl2JdqwTfaOoKLklHe0PN4CSynq-c2nZWa1t43_8vNyvCrkpHqSyhQ/exec';
 var BSC_LOGO='https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg';
 
-var me=null, pin='';
+var me=null;
 var allTasks=[], allUsers=[], settings={};
-var pendingAction=null; // {fn, label}
+var pendingAction=null;
 
 // ── LOGOS ──────────────────────────────────────────────────────
-document.getElementById('pinLogo').src=BSC_LOGO;
 document.getElementById('topLogo').src=BSC_LOGO;
 
-// ── PIN ────────────────────────────────────────────────────────
-function dots(){ for(var i=0;i<4;i++){ var el=document.getElementById('d'+i); if(i<pin.length) el.classList.add('on'); else el.classList.remove('on'); } }
-function kp(n){ if(pin.length>=4) return; pin+=String(n); dots(); if(pin.length===4) setTimeout(doLogin,200); }
-function kd(){ if(!pin.length) return; pin=pin.slice(0,-1); dots(); setMsg('',''); }
-function setMsg(t,c){ var el=document.getElementById('pmsg'); el.textContent=t; el.className='pin-msg'+(c?' '+c:''); }
-
-function doLogin(){
-  setMsg('Checking...','info');
-  apiGet('validatePin',{pin:pin},function(r){
-    if(!r.ok){ setMsg(r.error||'Invalid PIN','err'); pin=''; dots(); return; }
-    if(!r.isAdmin){ setMsg('Admin access only (Store Manager or Owner)','err'); pin=''; dots(); return; }
-    me={name:r.name,role:r.role,pin:pin};
-    goPage('pg-load');
+// ── SESSION CHECK ──────────────────────────────────────────────
+(function(){
+  var raw=sessionStorage.getItem('bscAuth');
+  if(!raw){ location.href='index.html'; return; }
+  try{
+    var auth=JSON.parse(raw);
+    var role=String(auth.role||'').trim().toLowerCase();
+    // Only Store Manager can access admin (not Owner)
+    if(role!=='store manager'){ location.href='dashboard.html'; return; }
+    me=auth;
     loadAll();
-  });
-}
+  }catch(e){ location.href='index.html'; }
+})();
 
 // ── PAGES ──────────────────────────────────────────────────────
 function goPage(id){
-  ['pg-pin','pg-load','pg-main'].forEach(function(p){
+  ['pg-load','pg-main'].forEach(function(p){
     var el=document.getElementById(p); if(!el) return;
     if(p===id){ el.classList.add('active'); el.style.display=''; }
     else{ el.classList.remove('active'); el.style.display='none'; }
@@ -685,29 +661,24 @@ function saveSettings(){
   });
 }
 
-// ── PIN CONFIRM MODAL ──────────────────────────────────────────
+// ── PIN CONFIRM — uses session PIN directly ────────────────────
 function requirePin(label,onConfirm){
-  document.getElementById('pinModalMsg').textContent=label;
-  document.getElementById('confirmPin').value='';
-  document.getElementById('modalMsg').textContent='';
-  pendingAction=onConfirm;
-  document.getElementById('pinModal').classList.add('open');
-  setTimeout(function(){ document.getElementById('confirmPin').focus(); },200);
+  // Session already has the PIN from login — use it directly
+  // Still show a simple confirm dialog so accidental clicks don't fire
+  if(!confirm(label+'\n\nClick OK to confirm with your login PIN.')){ return; }
+  if(onConfirm) onConfirm(me.pin);
 }
 function closePinModal(){ document.getElementById('pinModal').classList.remove('open'); pendingAction=null; }
 function clearModalMsg(){ document.getElementById('modalMsg').textContent=''; }
 function confirmPinAction(){
   var entered=document.getElementById('confirmPin').value.trim();
   if(!entered||entered.length!==4){ document.getElementById('modalMsg').textContent='Enter your 4-digit PIN.'; return; }
-  // verify PIN server-side
   apiGet('validatePin',{pin:entered},function(r){
     if(!r.ok||!r.isAdmin){ document.getElementById('modalMsg').textContent='Invalid or non-admin PIN.'; return; }
     closePinModal();
     if(pendingAction) pendingAction(entered);
   });
 }
-// allow Enter key in PIN modal
-document.getElementById('confirmPin').addEventListener('keydown',function(e){ if(e.key==='Enter') confirmPinAction(); });
 
 // ── HELPERS ────────────────────────────────────────────────────
 function setVal(id,val){
