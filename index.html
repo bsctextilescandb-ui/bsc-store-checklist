@@ -25,7 +25,8 @@ input,textarea{font-family:inherit;outline:0}
 .page.active{display:block}
 
 /* ── PIN PAGE ───────────────────────────────────────────────── */
-#pg-pin{background:#1C2951;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+#pg-pin{background:#1C2951;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+#pg-pin.active{display:flex}
 .logo-icon{width:88px;height:88px;background:#fff;border-radius:20px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,.35)}
 .logo-icon img{width:100%;height:100%;object-fit:cover}
 .s-name{font-family:"DM Serif Display",serif;font-size:21px;color:#fff;margin-bottom:4px;text-align:center}
@@ -47,7 +48,8 @@ input,textarea{font-family:inherit;outline:0}
 .cb-mark img{height:22px;width:auto;opacity:.55}
 
 /* ── LOADING PAGE ───────────────────────────────────────────── */
-#pg-load{background:var(--ivory);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#pg-load{background:var(--ivory);flex-direction:column;align-items:center;justify-content:center;gap:16px}
+#pg-load.active{display:flex}
 .spinner{width:40px;height:40px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--navy);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -137,7 +139,8 @@ input,textarea{font-family:inherit;outline:0}
 .sub-btn:disabled{opacity:.45;cursor:not-allowed}
 
 /* ── SUCCESS PAGE ───────────────────────────────────────────── */
-#pg-done{background:var(--ivory);display:flex;align-items:center;justify-content:center}
+#pg-done{background:var(--ivory);flex-direction:column;align-items:center;justify-content:center}
+#pg-done.active{display:flex}
 .done-body{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px;gap:12px;justify-content:center}
 .done-body h2{font-family:"DM Serif Display",serif;font-size:28px;color:var(--navy)}
 .done-body p{font-size:14px;color:var(--ink-60)}
