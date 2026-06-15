@@ -268,7 +268,9 @@ document.getElementById('topbarLogo').src=RAW_BSC;
     var auth=JSON.parse(raw);
     var role=String(auth.role||'').trim().toLowerCase();
     // if owner or store manager landed here by mistake → send to dashboard
-    if(role==='owner'||role==='store manager'){ location.href='dashboard.html'; return; }
+    // but allow through if explicitly coming from dashboard via "My Checklist"
+    var fromDash=new URLSearchParams(window.location.search).get('from')==='dashboard';
+    if((role==='owner'||role==='store manager')&&!fromDash){ location.href='dashboard.html'; return; }
     me={name:auth.name,role:auth.role,isAdmin:auth.isAdmin||false};
     loadChecklist(auth.role);
   }catch(e){ location.href='index.html'; }
