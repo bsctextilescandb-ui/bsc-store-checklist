@@ -219,7 +219,11 @@ document.getElementById('topbarLogo').src=BSC;
   try{
     var auth=JSON.parse(raw);
     var role=String(auth.role||'').trim().toLowerCase();
-    if(role==='owner'||role==='store manager'){location.href='dashboard.html';return;}
+    var fromDash=new URLSearchParams(window.location.search).get('from')==='dashboard';
+    // Only redirect to dashboard if NOT coming from dashboard
+    if(!fromDash&&(role==='owner'||role==='store manager')){location.href='dashboard.html';return;}
+    // Owner should never access checklist even from dashboard
+    if(role==='owner'){location.href='dashboard.html';return;}
     me={name:auth.name,role:auth.role,isAdmin:auth.isAdmin||false};
     loadChecklist(auth.role);
   }catch(e){location.href='index.html';}
