@@ -16,152 +16,173 @@
   --r:12px;--r-sm:8px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--ivory);font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+html,body{background:var(--ivory);font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
 button{font-family:inherit;cursor:pointer;border:0;outline:0;-webkit-tap-highlight-color:transparent}
 input,select{font-family:inherit;outline:0}
 
-/* topbar */
-.topbar{background:var(--navy);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+/* TOPBAR */
+.topbar{background:var(--navy);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .tb-left{display:flex;align-items:center;gap:10px}
-.tb-logo{height:36px;width:48px;object-fit:contain;background:rgba(255,255,255,.1);border-radius:8px;padding:4px}
-.tb-title{font-family:"DM Serif Display",serif;color:#fff;font-size:15px;line-height:1.2}
-.tb-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
-.tb-right{display:flex;gap:8px;align-items:center}
-.tb-btn{padding:7px 13px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:0}
+.tb-logo{height:34px;width:44px;object-fit:contain;background:rgba(255,255,255,.1);border-radius:7px;padding:3px}
+.tb-store{font-family:"DM Serif Display",serif;color:#fff;font-size:15px;line-height:1.2}
+.tb-date{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+.tb-right{display:flex;gap:6px;align-items:center}
+.tb-btn{padding:6px 12px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer}
 .tb-admin{background:var(--gold);color:#fff}
-.tb-checklist{background:rgba(255,255,255,.15);color:#fff}
-.tb-logout{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);font-size:11px}
+.tb-cl{background:rgba(255,255,255,.15);color:#fff}
+.tb-logout{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);font-size:11px}
 
-/* date bar */
-.date-bar{background:var(--white);border-bottom:1px solid var(--border);padding:10px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.date-bar label{font-size:11px;font-weight:600;color:var(--ink-60);text-transform:uppercase;letter-spacing:.06em}
-.date-inp{padding:7px 10px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:12px;color:var(--ink);background:var(--ivory)}
-.date-go{padding:7px 16px;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-size:12px;font-weight:700}
-.date-quick{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
-.dq{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;background:var(--ink-10);color:var(--ink-60);border:1.5px solid transparent;transition:all .15s}
-.dq.active{background:var(--navy-l);color:var(--navy);border-color:var(--navy)}
+/* DATE BAR */
+.date-bar{background:var(--white);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.date-inp{padding:7px 10px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:12px;color:var(--ink);background:var(--ivory);width:130px}
+.date-go{padding:7px 14px;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-size:12px;font-weight:700}
+.quick-btns{display:flex;gap:5px;margin-left:auto}
+.qb{padding:5px 11px;border-radius:20px;font-size:11px;font-weight:600;background:var(--ink-10);color:var(--ink-60);border:1.5px solid transparent;transition:all .15s}
+.qb.on{background:var(--navy-l);color:var(--navy);border-color:var(--navy)}
 
-/* page body */
-.body{padding:16px;max-width:960px;margin:0 auto;padding-bottom:40px}
+/* BODY */
+.body{padding:14px;max-width:680px;margin:0 auto;padding-bottom:40px}
 
-/* score hero */
-.hero{background:var(--navy);border-radius:var(--r);padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.score-ring-wrap{position:relative;width:90px;height:90px;flex-shrink:0}
-.score-ring-wrap svg{width:90px;height:90px;transform:rotate(-90deg)}
-.score-bg{fill:none;stroke:rgba(255,255,255,.15);stroke-width:8}
-.score-fill{fill:none;stroke:var(--gold);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
-.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:"DM Serif Display",serif;font-size:22px;font-weight:700;color:#fff;line-height:1}
-.score-pct{font-size:11px;color:rgba(255,255,255,.5);position:absolute;bottom:12px;left:50%;transform:translateX(-50%);white-space:nowrap}
-.hero-stats{display:flex;gap:20px;flex-wrap:wrap;flex:1}
-.hstat{display:flex;flex-direction:column;gap:3px}
-.hstat-n{font-size:26px;font-weight:700;color:#fff;line-height:1}
-.hstat-l{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em}
-.hstat-n.green{color:#6EE7B7}
-.hstat-n.red{color:#FCA5A5}
-.hstat-n.amber{color:#FCD34D}
+/* IMPACT BANNER */
+.impact{border-radius:var(--r);padding:16px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:14px}
+.impact.great{background:var(--green-l);border:1.5px solid rgba(30,122,30,.3)}
+.impact.ok{background:var(--gold-l);border:1.5px solid rgba(184,134,11,.3)}
+.impact.bad{background:var(--crimson-l);border:1.5px solid rgba(192,57,43,.3)}
+.impact-icon{font-size:32px;flex-shrink:0;line-height:1}
+.impact-text{}
+.impact-title{font-family:"DM Serif Display",serif;font-size:18px;line-height:1.2;margin-bottom:4px}
+.impact.great .impact-title{color:var(--green)}
+.impact.ok .impact-title{color:var(--gold)}
+.impact.bad .impact-title{color:var(--crimson)}
+.impact-sub{font-size:12px;color:var(--ink-60);line-height:1.5}
 
-/* summary cards */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px}
-.stat-card{background:var(--white);border-radius:var(--r);padding:14px;border:1.5px solid var(--border)}
-.stat-card .sc-n{font-size:28px;font-weight:700;color:var(--navy);line-height:1;font-family:"DM Serif Display",serif}
-.stat-card .sc-l{font-size:11px;color:var(--ink-60);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
-.stat-card.green{border-color:rgba(30,122,30,.3);background:var(--green-l)}
-.stat-card.green .sc-n{color:var(--green)}
-.stat-card.red{border-color:rgba(192,57,43,.3);background:var(--crimson-l)}
-.stat-card.red .sc-n{color:var(--crimson)}
-.stat-card.amber{border-color:rgba(217,119,6,.3);background:var(--orange-l)}
-.stat-card.amber .sc-n{color:var(--orange)}
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.stat-card{background:var(--white);border-radius:var(--r-sm);padding:12px 10px;border:1.5px solid var(--border);text-align:center}
+.stat-card .sn{font-family:"DM Serif Display",serif;font-size:26px;color:var(--navy);line-height:1}
+.stat-card .sl{font-size:10px;color:var(--ink-60);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+.stat-card.green .sn{color:var(--green)}
+.stat-card.red .sn{color:var(--crimson)}
+.stat-card.amber .sn{color:var(--orange)}
 
-/* section label */
-.sec-lbl{font-family:"DM Serif Display",serif;font-size:17px;color:var(--navy);margin:20px 0 10px;display:flex;align-items:center;gap:8px}
-.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+/* SECTION LABEL */
+.slbl{font-family:"DM Serif Display",serif;font-size:16px;color:var(--navy);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.slbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.slbl .badge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:8px;background:var(--crimson-l);color:var(--crimson);font-family:"DM Sans",sans-serif}
+.slbl .badge.green{background:var(--green-l);color:var(--green)}
 
-/* role cards */
-.role-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:4px}
-.role-card{background:var(--white);border-radius:var(--r);padding:14px;border:1.5px solid var(--border)}
-.role-card .rc-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
-.role-bar{height:6px;border-radius:3px;background:var(--border);margin-bottom:6px;overflow:hidden}
-.role-bar-fill{height:100%;border-radius:3px;background:var(--gold);transition:width .4s}
-.role-bar-fill.done{background:var(--green)}
-.role-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-60)}
-.role-card.all-done{border-color:rgba(30,122,30,.35);background:var(--green-l)}
-.role-card.has-fail{border-color:rgba(192,57,43,.35);background:var(--crimson-l)}
-.role-card.pending{border-color:rgba(217,119,6,.3);background:var(--orange-l)}
+/* FAILED TASKS */
+.fail-card{background:var(--white);border-radius:var(--r);border:1.5px solid rgba(192,57,43,.25);padding:13px;margin-bottom:8px}
+.fail-card-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px}
+.fail-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.fail-task{font-size:13px;font-weight:600;color:var(--ink);flex:1}
+.fail-sec{font-size:10px;font-weight:700;padding:1px 8px;border-radius:5px;background:var(--navy-l);color:var(--navy);flex-shrink:0}
+.fail-meta{font-size:11px;color:var(--ink-60);margin-bottom:4px}
+.fail-remark{font-size:12px;color:var(--crimson);background:var(--crimson-l);padding:6px 10px;border-radius:6px;line-height:1.4}
 
-/* section breakdown accordion */
-.sec-acc{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);margin-bottom:8px;overflow:hidden}
-.sec-acc.all-done{border-color:rgba(30,122,30,.3)}
-.sec-acc.has-fail{border-color:rgba(192,57,43,.3)}
-.sec-acc-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
-.sec-acc-left{display:flex;align-items:center;gap:10px}
-.sec-acc-num{width:26px;height:26px;border-radius:7px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sec-acc.all-done .sec-acc-num{background:var(--green)}
-.sec-acc.has-fail .sec-acc-num{background:var(--crimson)}
-.sec-acc-title{font-size:14px;font-weight:600;color:var(--ink)}
-.sec-acc-right{display:flex;align-items:center;gap:10px}
-.sec-score{font-size:13px;font-weight:700}
-.sec-score.green{color:var(--green)}
-.sec-score.amber{color:var(--orange)}
-.sec-score.red{color:var(--crimson)}
-.sec-chevron{font-size:11px;color:var(--ink-30);transition:transform .2s}
-.sec-acc.open .sec-chevron{transform:rotate(180deg)}
-.sec-acc-body{display:none;padding:0 12px 12px}
-.sec-acc.open .sec-acc-body{display:block}
-.task-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
-.task-row:last-child{border-bottom:0}
-.task-icon{font-size:14px;flex-shrink:0;margin-top:1px}
-.task-info{flex:1;min-width:0}
-.task-name{font-size:12px;color:var(--ink);line-height:1.4}
-.task-meta{font-size:11px;color:var(--ink-60);margin-top:2px}
-.task-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;flex-shrink:0}
-.task-status.ok{background:var(--green-l);color:var(--green)}
-.task-status.fail{background:var(--crimson-l);color:var(--crimson)}
-.task-status.pending{background:var(--orange-l);color:var(--orange)}
+/* MISSED TASKS */
+.miss-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border)}
+.miss-table th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:8px 12px;text-align:left}
+.miss-table td{padding:9px 12px;font-size:12px;color:var(--ink);border-bottom:1px solid var(--border)}
+.miss-table tr:last-child td{border-bottom:0}
+.miss-table tr:nth-child(even) td{background:var(--ivory)}
+.role-tag{display:inline-block;padding:1px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--orange-l);color:var(--orange)}
 
-/* override log */
-.override-card{background:var(--white);border-radius:var(--r);border:1.5px solid rgba(217,119,6,.4);padding:14px;margin-bottom:8px}
+/* PHOTO GRID */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
+.photo-item{position:relative;border-radius:var(--r-sm);overflow:hidden;border:1.5px solid var(--border);background:var(--ink-10);aspect-ratio:1}
+.photo-item img{width:100%;height:100%;object-fit:cover;cursor:pointer;display:block}
+.photo-item-label{position:absolute;bottom:0;left:0;right:0;padding:4px 6px;background:rgba(0,0,0,.65);color:#fff;font-size:9px;line-height:1.3}
+.photo-empty{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:24px;text-align:center;color:var(--ink-60);font-size:13px}
+
+/* SECTION TABLE */
+.sec-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border);margin-bottom:4px}
+.sec-table th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:9px 12px;text-align:left}
+.sec-table td{padding:10px 12px;font-size:12px;color:var(--ink);border-bottom:1px solid var(--border);vertical-align:middle}
+.sec-table tr:last-child td{border-bottom:0}
+.sec-table tr:nth-child(even) td{background:var(--ivory)}
+.score-bar-wrap{display:flex;align-items:center;gap:8px}
+.score-bar{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;transition:width .4s}
+.score-bar-fill.green{background:var(--green)}
+.score-bar-fill.amber{background:var(--orange)}
+.score-bar-fill.red{background:var(--crimson)}
+.score-pct{font-size:11px;font-weight:700;width:32px;text-align:right;flex-shrink:0}
+.score-pct.green{color:var(--green)}
+.score-pct.amber{color:var(--orange)}
+.score-pct.red{color:var(--crimson)}
+
+/* ROLE CARDS */
+.role-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:4px}
+.role-card{background:var(--white);border-radius:var(--r-sm);padding:12px;border:1.5px solid var(--border)}
+.role-card.done{border-color:rgba(30,122,30,.3);background:var(--green-l)}
+.role-card.fail{border-color:rgba(192,57,43,.3)}
+.role-card.partial{border-color:rgba(217,119,6,.3)}
+.rc-name{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.rc-bar{height:5px;border-radius:3px;background:var(--border);margin-bottom:5px;overflow:hidden}
+.rc-fill{height:100%;border-radius:3px}
+.rc-fill.green{background:var(--green)}
+.rc-fill.amber{background:var(--orange)}
+.rc-fill.red{background:var(--crimson)}
+.rc-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-60)}
+
+/* OVERRIDE */
+.ov-card{background:var(--white);border-radius:var(--r);border:1.5px solid rgba(217,119,6,.3);padding:13px;margin-bottom:8px}
 .ov-task{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
-.ov-row{display:flex;gap:12px;flex-wrap:wrap}
-.ov-col{flex:1;min-width:140px;background:var(--ivory);border-radius:var(--r-sm);padding:10px}
-.ov-col-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+.ov-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ov-col{padding:8px 10px;border-radius:var(--r-sm);background:var(--ivory)}
+.ov-col-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
 .ov-col-lbl.first{color:var(--crimson)}
-.ov-col-lbl.update{color:var(--green)}
+.ov-col-lbl.updated{color:var(--green)}
 .ov-who{font-size:12px;font-weight:600;color:var(--ink)}
-.ov-resp{font-size:12px;color:var(--ink-60);margin-top:2px}
-.ov-section{font-size:10px;color:var(--ink-30);margin-bottom:4px}
+.ov-resp{font-size:11px;color:var(--ink-60);margin-top:2px}
 
-/* trend chart */
-.chart-wrap{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:16px;margin-bottom:8px}
-.chart-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px}
-.chart-area{position:relative;height:140px;display:flex;align-items:flex-end;gap:6px}
-.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%}
+/* TREND */
+.trend-wrap{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:14px;margin-bottom:8px}
+.trend-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:12px}
+.bars{display:flex;align-items:flex-end;gap:5px;height:80px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
 .bar-wrap{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
-.bar{width:100%;border-radius:4px 4px 0 0;background:var(--navy-l);transition:height .4s ease;min-height:2px;position:relative}
-.bar.today{background:var(--navy)}
-.bar.good{background:var(--green)}
+.bar{width:100%;border-radius:3px 3px 0 0;min-height:2px}
+.bar.great{background:var(--green)}
+.bar.ok{background:var(--gold)}
 .bar.bad{background:var(--crimson)}
-.bar-lbl{font-size:9px;color:var(--ink-60);text-align:center;white-space:nowrap}
-.bar-pct{font-size:9px;font-weight:700;color:var(--ink-60);text-align:center}
+.bar.today{background:var(--navy)}
+.bar-lbl{font-size:8px;color:var(--ink-60);text-align:center;white-space:nowrap}
+.bar-pct{font-size:8px;font-weight:700;color:var(--ink-60);text-align:center}
 
-/* loading overlay */
-#loadOverlay{position:fixed;inset:0;background:var(--ivory);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+/* RECURRING FAILS */
+.recur-card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);overflow:hidden;margin-bottom:8px}
+.recur-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border)}
+.recur-row:last-child{border-bottom:0}
+.recur-count{width:32px;height:32px;border-radius:8px;background:var(--crimson-l);color:var(--crimson);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.recur-name{flex:1;font-size:12px;color:var(--ink);line-height:1.4}
+.recur-role{font-size:10px;font-weight:600;color:var(--ink-60);background:var(--ink-10);padding:1px 7px;border-radius:5px;flex-shrink:0}
+
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px;gap:12px}
+#lightbox.open{display:flex}
+#lightbox img{max-width:100%;max-height:75vh;object-fit:contain;border-radius:var(--r-sm)}
+#lightbox-meta{color:rgba(255,255,255,.7);font-size:12px;text-align:center}
+#lightbox-close{padding:10px 24px;border-radius:var(--r-sm);background:rgba(255,255,255,.15);color:#fff;font-size:13px;font-weight:600;cursor:pointer;border:0}
+
+/* LOAD OVERLAY */
+#loadOverlay{position:fixed;inset:0;background:var(--ivory);z-index:888;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
 #loadOverlay.hide{display:none}
-.spinner{width:36px;height:36px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--navy);animation:spin .7s linear infinite}
+.spinner{width:32px;height:32px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--navy);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+.load-txt{font-size:13px;color:var(--ink-60)}
 
-/* toast */
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;z-index:9999;transition:transform .3s,opacity .3s;white-space:nowrap;pointer-events:none;opacity:0}
+/* TOAST */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:9px;font-size:12px;z-index:9999;transition:transform .3s,opacity .3s;white-space:nowrap;pointer-events:none;opacity:0}
 #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-#toast.err{background:var(--crimson)}
 
-/* empty */
-.empty{text-align:center;padding:32px;color:var(--ink-60);font-size:13px}
+.empty{text-align:center;padding:24px;color:var(--ink-60);font-size:13px;background:var(--white);border-radius:var(--r);border:1.5px solid var(--border)}
 
-@media(max-width:500px){
-  .hero{flex-direction:column;align-items:flex-start}
-  .hero-stats{gap:14px}
-  .hstat-n{font-size:20px}
-  .tb-btn span{display:none}
+@media(max-width:400px){
+  .stat-row{grid-template-columns:repeat(2,1fr)}
+  .photo-grid{grid-template-columns:repeat(2,1fr)}
+  .role-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -169,75 +190,73 @@ input,select{font-family:inherit;outline:0}
 
 <div id="loadOverlay">
   <div class="spinner"></div>
-  <div style="font-size:13px;color:var(--ink-60)">Loading dashboard...</div>
+  <div class="load-txt">Loading dashboard...</div>
 </div>
 
+<!-- TOPBAR -->
 <div class="topbar">
   <div class="tb-left">
     <img class="tb-logo" id="topLogo" alt="BSC"/>
     <div>
-      <div class="tb-title">Operations Dashboard</div>
-      <div class="tb-sub" id="tbSub">BSC The Textile Mall</div>
+      <div class="tb-store">BSC Operations</div>
+      <div class="tb-date" id="tbDate">—</div>
     </div>
   </div>
-  <div class="tb-right" id="tbRight">
-    <!-- buttons injected by JS based on role -->
-  </div>
+  <div class="tb-right" id="tbRight"></div>
 </div>
 
+<!-- DATE BAR -->
 <div class="date-bar">
-  <label>From</label>
   <input class="date-inp" type="date" id="dateFrom"/>
-  <label>To</label>
+  <span style="font-size:12px;color:var(--ink-60)">to</span>
   <input class="date-inp" type="date" id="dateTo"/>
   <button class="date-go" onclick="loadDashboard()">Go</button>
-  <div class="date-quick">
-    <button class="dq active" id="dq-today" onclick="quickDate('today')">Today</button>
-    <button class="dq" id="dq-7" onclick="quickDate('7')">Last 7</button>
-    <button class="dq" id="dq-30" onclick="quickDate('30')">Last 30</button>
+  <div class="quick-btns">
+    <button class="qb" id="qb-yday" onclick="quickDate('yday')">Yesterday</button>
+    <button class="qb on" id="qb-today" onclick="quickDate('today')">Today</button>
+    <button class="qb" id="qb-7" onclick="quickDate('7')">7 Days</button>
+    <button class="qb" id="qb-30" onclick="quickDate('30')">30 Days</button>
   </div>
 </div>
 
+<!-- BODY -->
 <div class="body">
+  <!-- IMPACT BANNER -->
+  <div id="impactBanner"></div>
 
-  <!-- HERO SCORE -->
-  <div class="hero" id="heroWrap">
-    <div class="score-ring-wrap">
-      <svg viewBox="0 0 90 90">
-        <circle class="score-bg" cx="45" cy="45" r="38"/>
-        <circle class="score-fill" id="scoreArc" cx="45" cy="45" r="38"
-          stroke-dasharray="239" stroke-dashoffset="239"/>
-      </svg>
-      <div class="score-num" id="scoreNum">0%</div>
-    </div>
-    <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n" id="hTotal">0</div><div class="hstat-l">Total Tasks</div></div>
-      <div class="hstat"><div class="hstat-n green" id="hDone">0</div><div class="hstat-l">Completed</div></div>
-      <div class="hstat"><div class="hstat-n amber" id="hPending">0</div><div class="hstat-l">Pending</div></div>
-      <div class="hstat"><div class="hstat-n red" id="hFailed">0</div><div class="hstat-l">Failed</div></div>
-      <div class="hstat"><div class="hstat-n" style="color:#C084FC" id="hOverride">0</div><div class="hstat-l">Overridden</div></div>
-    </div>
-  </div>
+  <!-- STAT ROW -->
+  <div class="stat-row" id="statRow"></div>
 
-  <!-- TREND CHART -->
-  <div class="sec-lbl">&#128200; Completion Trend</div>
-  <div class="chart-wrap">
-    <div class="chart-title" id="chartTitle">Daily completion %</div>
-    <div class="chart-area" id="chartArea"></div>
-  </div>
+  <!-- FAILED TASKS -->
+  <div id="failSection"></div>
+
+  <!-- MISSED TASKS -->
+  <div id="missSection"></div>
+
+  <!-- PHOTOS -->
+  <div id="photoSection"></div>
 
   <!-- ROLE BREAKDOWN -->
-  <div class="sec-lbl">&#128100; Role Breakdown</div>
-  <div class="role-grid" id="roleGrid"></div>
+  <div id="roleSection"></div>
 
-  <!-- SECTION BREAKDOWN -->
-  <div class="sec-lbl">&#128203; Section Breakdown</div>
-  <div id="sectionBody"></div>
+  <!-- SECTION TABLE -->
+  <div id="secTableSection"></div>
+
+  <!-- TREND -->
+  <div id="trendSection"></div>
+
+  <!-- RECURRING FAILURES -->
+  <div id="recurSection"></div>
 
   <!-- OVERRIDE LOG -->
-  <div class="sec-lbl" id="overrideLbl" style="display:none">&#9888;&#65039; Override Log</div>
-  <div id="overrideBody"></div>
+  <div id="overrideSection"></div>
+</div>
 
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <img id="lbImg" alt=""/>
+  <div id="lightbox-meta"></div>
+  <button id="lightbox-close" onclick="closeLB()">Close</button>
 </div>
 
 <div id="toast"></div>
@@ -250,43 +269,30 @@ var me=null;
 // ── SESSION CHECK ─────────────────────────────────────────────
 (function(){
   var raw=sessionStorage.getItem('bscAuth');
-  if(!raw){ location.href='index.html'; return; }
+  if(!raw){location.href='index.html';return;}
   try{
     var auth=JSON.parse(raw);
     var role=String(auth.role||'').trim().toLowerCase();
-    if(role!=='owner'&&role!=='store manager'){ location.href='index.html'; return; }
+    if(role!=='owner'&&role!=='store manager'){location.href='index.html';return;}
     me=auth;
     initDashboard();
-  }catch(e){ location.href='index.html'; }
+  }catch(e){location.href='index.html';}
 })();
 
 function initDashboard(){
   document.getElementById('topLogo').src=BSC;
-  document.getElementById('tbSub').textContent=me.name+' · '+me.role;
-
-  // topbar buttons
+  var isAdmin=String(me.role||'').toLowerCase()==='store manager';
   var tbR=document.getElementById('tbRight');
-  var isAdmin=me.isAdmin||String(me.role||'').toLowerCase()==='store manager';
   tbR.innerHTML=
-    (isAdmin?'<button class="tb-btn tb-admin" onclick="location.href=\'admin.html\'">&#9881; <span>Admin</span></button>':'')
-    +'<button class="tb-btn tb-checklist" onclick="goChecklist()">&#9776; <span>My Checklist</span></button>'
-    +'<button class="tb-btn tb-logout" onclick="logout()">&#8617; Logout</button>';
-
-  // set default dates to today
-  var today=istDate();
-  document.getElementById('dateFrom').value=today;
-  document.getElementById('dateTo').value=today;
-
-  loadDashboard();
+    (isAdmin?'<button class="tb-btn tb-admin" onclick="location.href=\'admin.html\'">&#9881; Admin</button>':'')
+    +'<button class="tb-btn tb-cl" onclick="goChecklist()">&#9776; Checklist</button>'
+    +'<button class="tb-btn tb-logout" onclick="logout()">&#8617;</button>';
+  // Default: yesterday
+  quickDate('yday');
 }
 
-function goChecklist(){
-  location.href='checklist.html?from=dashboard';
-}
-function logout(){
-  sessionStorage.removeItem('bscAuth');
-  location.href='index.html';
-}
+function goChecklist(){ location.href='checklist.html?from=dashboard'; }
+function logout(){ sessionStorage.removeItem('bscAuth'); location.href='index.html'; }
 
 // ── DATE HELPERS ──────────────────────────────────────────────
 function istDate(){
@@ -294,222 +300,346 @@ function istDate(){
   var p=function(n){return ('0'+n).slice(-2);};
   return d.getUTCFullYear()+'-'+p(d.getUTCMonth()+1)+'-'+p(d.getUTCDate());
 }
-function addDays(dateStr,n){
-  var d=new Date(dateStr+'T00:00:00Z');
+function addDays(s,n){
+  var d=new Date(s+'T00:00:00Z');
   d=new Date(d.getTime()+n*86400000);
   var p=function(x){return ('0'+x).slice(-2);};
   return d.getUTCFullYear()+'-'+p(d.getUTCMonth()+1)+'-'+p(d.getUTCDate());
 }
-function fmtDisplay(dateStr){
-  var d=new Date(dateStr+'T00:00:00Z');
+function fmtDate(s){
+  var d=new Date(s+'T00:00:00Z');
   var dy=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return dy[d.getUTCDay()]+' '+d.getUTCDate()+' '+mo[d.getUTCMonth()];
+  return dy[d.getUTCDay()]+' '+d.getUTCDate()+' '+mo[d.getUTCMonth()]+' '+d.getUTCFullYear();
+}
+function fmtShort(s){
+  var d=new Date(s+'T00:00:00Z');
+  var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return d.getUTCDate()+' '+mo[d.getUTCMonth()];
 }
 
 function quickDate(key){
   var today=istDate();
-  document.querySelectorAll('.dq').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.qb').forEach(function(b){b.classList.remove('on');});
   if(key==='today'){
-    document.getElementById('dateFrom').value=today;
-    document.getElementById('dateTo').value=today;
-    document.getElementById('dq-today').classList.add('active');
+    setDates(today,today);
+    document.getElementById('qb-today').classList.add('on');
+  } else if(key==='yday'){
+    var y=addDays(today,-1);
+    setDates(y,y);
+    document.getElementById('qb-yday').classList.add('on');
   } else if(key==='7'){
-    document.getElementById('dateFrom').value=addDays(today,-6);
-    document.getElementById('dateTo').value=today;
-    document.getElementById('dq-7').classList.add('active');
+    setDates(addDays(today,-6),today);
+    document.getElementById('qb-7').classList.add('on');
   } else if(key==='30'){
-    document.getElementById('dateFrom').value=addDays(today,-29);
-    document.getElementById('dateTo').value=today;
-    document.getElementById('dq-30').classList.add('active');
+    setDates(addDays(today,-29),today);
+    document.getElementById('qb-30').classList.add('on');
   }
   loadDashboard();
+}
+function setDates(from,to){
+  document.getElementById('dateFrom').value=from;
+  document.getElementById('dateTo').value=to;
 }
 
 // ── API ───────────────────────────────────────────────────────
 function apiGet(action,params,cb){
   var q='action='+encodeURIComponent(action);
-  if(params) Object.keys(params).forEach(function(k){ q+='&'+encodeURIComponent(k)+'='+encodeURIComponent(String(params[k])); });
+  if(params) Object.keys(params).forEach(function(k){q+='&'+encodeURIComponent(k)+'='+encodeURIComponent(String(params[k]));});
   fetch(API+'?'+q,{redirect:'follow'})
     .then(function(r){return r.text();})
     .then(function(t){try{cb(JSON.parse(t));}catch(e){cb({ok:false,error:'Bad response'});}})
     .catch(function(e){cb({ok:false,error:e.message});});
 }
-
-function toast(msg,type){
-  var t=document.getElementById('toast'); t.textContent=msg;
-  t.className=(type==='err'?'err show':'show');
-  clearTimeout(t._t); t._t=setTimeout(function(){t.className='';},3000);
+function toast(msg){
+  var t=document.getElementById('toast');t.textContent=msg;t.className='show';
+  clearTimeout(t._t);t._t=setTimeout(function(){t.className='';},3000);
 }
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 // ── LOAD DASHBOARD ────────────────────────────────────────────
 function loadDashboard(){
   var from=document.getElementById('dateFrom').value;
   var to=document.getElementById('dateTo').value;
-  if(!from||!to){ toast('Select a date range','err'); return; }
+  if(!from||!to) return;
+
+  // Update topbar date
+  var dateLabel=from===to?fmtDate(from):fmtShort(from)+' — '+fmtShort(to);
+  document.getElementById('tbDate').textContent=dateLabel;
+
   document.getElementById('loadOverlay').classList.remove('hide');
   apiGet('getDashboard',{dateFrom:from,dateTo:to},function(r){
     document.getElementById('loadOverlay').classList.add('hide');
-    if(!r.ok){ toast(r.error||'Failed to load dashboard','err'); return; }
-    render(r);
+    if(!r.ok){toast(r.error||'Failed to load');return;}
+    render(r,from,to);
   });
 }
 
 // ── RENDER ────────────────────────────────────────────────────
-function render(d){
-  // hero score
-  var pct=d.overallScore||0;
-  var arc=239;
-  var offset=arc - Math.round((pct/100)*arc);
-  document.getElementById('scoreArc').setAttribute('stroke-dashoffset',offset);
-  document.getElementById('scoreNum').textContent=pct+'%';
-  // colour arc
-  var arcEl=document.getElementById('scoreArc');
-  arcEl.style.stroke=pct>=80?'#6EE7B7':pct>=50?'#FCD34D':'#FCA5A5';
+function render(d,from,to){
+  var score=d.overallScore||0;
+  var isSingleDay=from===to;
 
-  document.getElementById('hTotal').textContent=d.totalTasks||0;
-  document.getElementById('hDone').textContent=d.totalCompleted||0;
-  document.getElementById('hPending').textContent=d.totalPending||0;
-  document.getElementById('hFailed').textContent=d.totalFailed||0;
-  document.getElementById('hOverride').textContent=d.totalOverridden||0;
+  // ── IMPACT BANNER ──
+  var cls=score>=90?'great':score>=70?'ok':'bad';
+  var icon=score>=90?'🟢':score>=70?'🟡':'🔴';
+  var title=score>=90?'Store is operating well'
+    :score>=70?'Store needs attention'
+    :'Store has serious gaps';
+  var lines=[];
+  lines.push((d.totalCompleted||0)+' of '+(d.totalTasks||0)+' tasks completed ('+score+'%)');
+  if(d.totalFailed>0) lines.push(d.totalFailed+' task'+(d.totalFailed>1?'s':'')+' failed — action needed');
+  if(d.totalPending>0) lines.push(d.totalPending+' task'+(d.totalPending>1?'s':'')+' not yet submitted');
+  if(d.totalOverridden>0) lines.push(d.totalOverridden+' task'+(d.totalOverridden>1?'s':'')+' updated after first submission');
+  if(score>=90&&d.totalFailed===0) lines.push('No failures — great work today');
+  document.getElementById('impactBanner').innerHTML=
+    '<div class="impact '+cls+'">'
+      +'<div class="impact-icon">'+icon+'</div>'
+      +'<div class="impact-text">'
+        +'<div class="impact-title">'+title+'</div>'
+        +'<div class="impact-sub">'+lines.map(function(l){return '· '+l;}).join('<br/>')+'</div>'
+      +'</div>'
+    +'</div>';
 
-  renderTrend(d.trend||[]);
-  renderRoles(d.roles||[],d.allRoles||[]);
+  // ── STAT ROW ──
+  document.getElementById('statRow').innerHTML=
+    statCard(d.totalTasks||0,'Total','')
+    +statCard(d.totalCompleted||0,'Done','green')
+    +statCard(d.totalFailed||0,'Failed','red')
+    +statCard(d.totalPending||0,'Pending','amber');
+
+  // ── FAILED TASKS ──
+  renderFailed(d.sections||[]);
+
+  // ── MISSED TASKS ──
+  renderMissed(d.sections||[]);
+
+  // ── PHOTOS ──
+  renderPhotos(d.sections||[]);
+
+  // ── ROLE BREAKDOWN ──
+  renderRoles(d.roles||[]);
+
+  // ── SECTION TABLE ──
   renderSections(d.sections||[]);
+
+  // ── TREND ──
+  if(d.trend&&d.trend.length>1) renderTrend(d.trend);
+  else document.getElementById('trendSection').innerHTML='';
+
+  // ── RECURRING FAILURES (only for multi-day) ──
+  if(!isSingleDay&&d.overrideLog) renderRecurring(d.sections||[],d.trend||[]);
+  else document.getElementById('recurSection').innerHTML='';
+
+  // ── OVERRIDE LOG ──
   renderOverrides(d.overrideLog||[]);
+}
+
+function statCard(n,label,cls){
+  return '<div class="stat-card '+cls+'">'
+    +'<div class="sn">'+n+'</div>'
+    +'<div class="sl">'+label+'</div>'
+    +'</div>';
+}
+
+// ── FAILED TASKS ──────────────────────────────────────────────
+function renderFailed(sections){
+  var failed=[];
+  sections.forEach(function(s){
+    (s.tasks||[]).forEach(function(t){
+      if(t.status==='FAIL') failed.push({sec:s.section,task:t});
+    });
+  });
+  var el=document.getElementById('failSection');
+  if(!failed.length){el.innerHTML='';return;}
+  var html='<div class="slbl">❌ Failed Tasks <span class="badge">'+failed.length+'</span></div>';
+  failed.forEach(function(f){
+    var t=f.task;
+    html+='<div class="fail-card">'
+      +'<div class="fail-card-top">'
+        +'<div class="fail-icon">❌</div>'
+        +'<div class="fail-task">'+esc(t.taskName||'')+'</div>'
+        +'<span class="fail-sec">'+esc(f.sec)+'</span>'
+      +'</div>'
+      +'<div class="fail-meta">'+esc(t.staffName||'—')+' · '+esc(t.role||'')+'</div>'
+      +(t.remarks?'<div class="fail-remark">"'+esc(t.remarks)+'"</div>':'')
+    +'</div>';
+  });
+  el.innerHTML=html;
+}
+
+// ── MISSED TASKS ──────────────────────────────────────────────
+function renderMissed(sections){
+  var missed=[];
+  sections.forEach(function(s){
+    (s.tasks||[]).forEach(function(t){
+      if(t.status==='PENDING') missed.push({sec:s.section,task:t});
+    });
+  });
+  var el=document.getElementById('missSection');
+  if(!missed.length){el.innerHTML='';return;}
+  var html='<div class="slbl">⏳ Not Submitted <span class="badge">'+missed.length+'</span></div>'
+    +'<table class="miss-table"><thead><tr><th>Task</th><th>Section</th><th>Role</th></tr></thead><tbody>';
+  missed.forEach(function(m){
+    html+='<tr>'
+      +'<td>'+esc(m.task.taskName||'')+'</td>'
+      +'<td>'+esc(m.sec)+'</td>'
+      +'<td><span class="role-tag">'+esc(m.task.role1||'—')+'</span></td>'
+      +'</tr>';
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+
+// ── PHOTO GRID ────────────────────────────────────────────────
+function renderPhotos(sections){
+  var photos=[];
+  sections.forEach(function(s){
+    (s.tasks||[]).forEach(function(t){
+      if(t.photoUrl&&String(t.photoUrl).startsWith('http')){
+        photos.push({url:t.photoUrl,task:t.taskName||'',who:t.staffName||'',sec:s.section});
+      }
+    });
+  });
+  var el=document.getElementById('photoSection');
+  if(!photos.length){el.innerHTML='';return;}
+  var html='<div class="slbl">📷 Photo Evidence <span class="badge green">'+photos.length+'</span></div>'
+    +'<div class="photo-grid">';
+  photos.forEach(function(p,i){
+    html+='<div class="photo-item" onclick="openLB(\''+esc(p.url)+'\',\''+esc(p.task)+'\',\''+esc(p.who)+'\')">'
+      +'<img src="'+esc(p.url)+'" alt="'+esc(p.task)+'" loading="lazy" onerror="this.parentElement.style.display=\'none\'"/>'
+      +'<div class="photo-item-label">'+esc(p.task.slice(0,30))+'<br/>'+esc(p.who)+'</div>'
+    +'</div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// ── ROLE BREAKDOWN ────────────────────────────────────────────
+function renderRoles(roles){
+  var el=document.getElementById('roleSection');
+  if(!roles.length){el.innerHTML='';return;}
+  var html='<div class="slbl">👥 Role Breakdown</div><div class="role-grid">';
+  roles.forEach(function(r){
+    var pct=r.assigned>0?Math.min(100,Math.round((r.completed/r.assigned)*100)):0;
+    var fillCls=pct>=90?'green':pct>=60?'amber':'red';
+    var cardCls=pct===100?'done':r.failed>0?'fail':'partial';
+    html+='<div class="role-card '+cardCls+'">'
+      +'<div class="rc-name">'+esc(r.role)+'</div>'
+      +'<div class="rc-bar"><div class="rc-fill '+fillCls+'" style="width:'+pct+'%"></div></div>'
+      +'<div class="rc-meta"><span>'+r.completed+' / '+r.assigned+'</span>'
+        +'<span style="font-weight:700;color:'+(pct>=90?'var(--green)':pct>=60?'var(--orange)':'var(--crimson)')+'">'+pct+'%</span></div>'
+      +(r.failed>0?'<div style="font-size:10px;color:var(--crimson);margin-top:4px">'+r.failed+' failed</div>':'')
+    +'</div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// ── SECTION TABLE ─────────────────────────────────────────────
+function renderSections(sections){
+  var el=document.getElementById('secTableSection');
+  if(!sections.length){el.innerHTML='';return;}
+  var html='<div class="slbl">📋 Section Breakdown</div>'
+    +'<table class="sec-table"><thead><tr><th>#</th><th>Section</th><th>Score</th><th>Done</th><th>Failed</th></tr></thead><tbody>';
+  sections.forEach(function(s,i){
+    var cls=s.score>=90?'green':s.score>=60?'amber':'red';
+    html+='<tr>'
+      +'<td style="color:var(--ink-60);font-size:11px">'+(i+1)+'</td>'
+      +'<td style="font-weight:600">'+esc(s.section)+'</td>'
+      +'<td><div class="score-bar-wrap">'
+        +'<div class="score-bar"><div class="score-bar-fill '+cls+'" style="width:'+s.score+'%"></div></div>'
+        +'<span class="score-pct '+cls+'">'+s.score+'%</span>'
+      +'</div></td>'
+      +'<td style="color:var(--green);font-weight:600">'+s.completed+'</td>'
+      +'<td style="color:'+(s.failed>0?'var(--crimson)':'var(--ink-30)')+';font-weight:'+(s.failed>0?'700':'400')+'">'+s.failed+'</td>'
+    +'</tr>';
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
 }
 
 // ── TREND CHART ───────────────────────────────────────────────
 function renderTrend(trend){
-  var area=document.getElementById('chartArea');
-  area.innerHTML='';
-  if(!trend.length){ area.innerHTML='<div class="empty">No data for this range.</div>'; return; }
   var today=istDate();
-  var maxScore=Math.max.apply(null,trend.map(function(t){return t.score||0;}))||100;
+  var html='<div class="trend-wrap">'
+    +'<div class="trend-title">📈 Completion Trend</div>'
+    +'<div class="bars">';
   trend.forEach(function(t){
     var isToday=t.date===today;
-    var pct=Math.round(((t.score||0)/100)*100);
-    var col=document.createElement('div');
-    col.className='bar-col';
-    var barH=Math.max(4,Math.round((t.score/100)*120));
-    var barCls='bar'+(isToday?' today':'')+(t.score>=80?' good':t.score<50&&t.score>0?' bad':'');
-    col.innerHTML=
-      '<div class="bar-pct">'+(t.score||0)+'%</div>'
-      +'<div class="bar-wrap"><div class="'+barCls+'" style="height:'+barH+'px" title="'+t.score+'%"></div></div>'
-      +'<div class="bar-lbl">'+fmtDisplay(t.date).slice(0,6)+'</div>';
-    area.appendChild(col);
+    var cls=isToday?'today':t.score>=90?'great':t.score>=60?'ok':'bad';
+    var h=Math.max(4,Math.round((t.score/100)*72));
+    html+='<div class="bar-col">'
+      +'<div class="bar-pct">'+t.score+'%</div>'
+      +'<div class="bar-wrap"><div class="bar '+cls+'" style="height:'+h+'px"></div></div>'
+      +'<div class="bar-lbl">'+fmtShort(t.date).replace(' ','<br/>')+'</div>'
+    +'</div>';
   });
-  document.getElementById('chartTitle').textContent=
-    'Completion % · '+fmtDisplay(trend[0].date)+' → '+fmtDisplay(trend[trend.length-1].date);
+  html+='</div></div>';
+  document.getElementById('trendSection').innerHTML=html;
 }
 
-// ── ROLE GRID ─────────────────────────────────────────────────
-function renderRoles(roles,allRoles){
-  var grid=document.getElementById('roleGrid');
-  grid.innerHTML='';
-  if(!roles.length){ grid.innerHTML='<div class="empty">No submission data.</div>'; return; }
-  roles.forEach(function(r){
-    var pct=r.assigned>0?Math.min(100,Math.round((r.completed/r.assigned)*100)):0;
-    var cls='role-card'+(pct===100?' all-done':r.failed>0?' has-fail':pct<100&&r.completed>0?' pending':'');
-    var card=document.createElement('div');
-    card.className=cls;
-    card.innerHTML=
-      '<div class="rc-name">'+esc(r.role)+'</div>'
-      +'<div class="role-bar"><div class="role-bar-fill'+(pct===100?' done':'')+'" style="width:'+pct+'%"></div></div>'
-      +'<div class="role-meta">'
-        +'<span>'+r.completed+' / '+r.assigned+' tasks</span>'
-        +'<span style="font-weight:700;color:'+(pct===100?'var(--green)':pct<50?'var(--crimson)':'var(--orange)')+'">'+pct+'%</span>'
-      +'</div>'
-      +(r.failed>0?'<div style="font-size:11px;color:var(--crimson);margin-top:5px">'+r.failed+' failed</div>':'');
-    grid.appendChild(card);
-  });
-}
-
-// ── SECTIONS ──────────────────────────────────────────────────
-function renderSections(sections){
-  var body=document.getElementById('sectionBody');
-  body.innerHTML='';
-  sections.forEach(function(s,i){
-    var allDone=s.score===100;
-    var hasFail=s.failed>0;
-    var cls='sec-acc'+(allDone?' all-done':hasFail?' has-fail':'');
-    var scoreColor=s.score>=80?'green':s.score>=50?'amber':'red';
-    var div=document.createElement('div');
-    div.className=cls;
-    div.id='sacc-'+i;
-    div.innerHTML=
-      '<div class="sec-acc-hdr" onclick="toggleSecAcc('+i+')">'
-        +'<div class="sec-acc-left">'
-          +'<div class="sec-acc-num">'+(i+1)+'</div>'
-          +'<div class="sec-acc-title">'+esc(s.section)+'</div>'
-        +'</div>'
-        +'<div class="sec-acc-right">'
-          +'<span class="sec-score '+scoreColor+'">'+s.score+'%</span>'
-          +'<span style="font-size:11px;color:var(--ink-60)">'+s.completed+'/'+s.total+'</span>'
-          +(hasFail?'<span style="font-size:10px;font-weight:700;color:var(--crimson);background:var(--crimson-l);padding:2px 7px;border-radius:5px">'+s.failed+' ❌</span>':'')
-          +'<span class="sec-chevron">&#9660;</span>'
-        +'</div>'
-      +'</div>'
-      +'<div class="sec-acc-body" id="sb-'+i+'"></div>';
-
-    var taskBody=div.querySelector('.sec-acc-body');
+// ── RECURRING FAILURES ────────────────────────────────────────
+function renderRecurring(sections){
+  // Count task failures across trend data — use sections failedTasks
+  var failCount={};
+  sections.forEach(function(s){
     (s.tasks||[]).forEach(function(t){
-      var icon=t.status==='PENDING'?'⏳':t.status==='FAIL'?'❌':'✅';
-      var statusCls=t.status==='PENDING'?'pending':t.status==='FAIL'?'fail':'ok';
-      var statusTxt=t.status==='PENDING'?'Pending':t.status==='FAIL'?'Failed':'Done';
-      var row=document.createElement('div');
-      row.className='task-row';
-      row.innerHTML=
-        '<div class="task-icon">'+icon+'</div>'
-        +'<div class="task-info">'
-          +'<div class="task-name">'+esc(t.taskName||'')+'</div>'
-          +(t.staffName?'<div class="task-meta">'+esc(t.staffName)+' · '+esc(t.role||'')+(t.remarks?' · "'+esc(t.remarks)+'"':'')+'</div>':'')
-        +'</div>'
-        +'<span class="task-status '+statusCls+'">'+statusTxt+'</span>';
-      taskBody.appendChild(row);
+      if(t.status==='FAIL'){
+        var key=t.taskName||t.taskId;
+        if(!failCount[key]) failCount[key]={name:key,role:t.role||'',count:0};
+        failCount[key].count++;
+      }
     });
-
-    body.appendChild(div);
   });
-}
-
-function toggleSecAcc(i){
-  var el=document.getElementById('sacc-'+i); if(!el) return;
-  el.classList.toggle('open');
+  var sorted=Object.values(failCount).sort(function(a,b){return b.count-a.count;}).slice(0,5);
+  var el=document.getElementById('recurSection');
+  if(!sorted.length){el.innerHTML='';return;}
+  var html='<div class="slbl">🔁 Top Failing Tasks</div><div class="recur-card">';
+  sorted.forEach(function(f){
+    html+='<div class="recur-row">'
+      +'<div class="recur-count">'+f.count+'</div>'
+      +'<div class="recur-name">'+esc(f.name)+'</div>'
+      +'<span class="recur-role">'+esc(f.role)+'</span>'
+    +'</div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
 }
 
 // ── OVERRIDE LOG ──────────────────────────────────────────────
 function renderOverrides(log){
-  var lbl=document.getElementById('overrideLbl');
-  var body=document.getElementById('overrideBody');
-  body.innerHTML='';
-  if(!log.length){ lbl.style.display='none'; return; }
-  lbl.style.display='flex';
-  lbl.innerHTML='&#9888;&#65039; Override Log <span style="font-size:12px;font-weight:600;background:var(--orange-l);color:var(--orange);padding:2px 10px;border-radius:8px;margin-left:8px">'+log.length+'</span>';
+  var el=document.getElementById('overrideSection');
+  if(!log.length){el.innerHTML='';return;}
+  var html='<div class="slbl">⚠️ Updated After Submission <span class="badge">'+log.length+'</span></div>';
   log.forEach(function(o){
-    var card=document.createElement('div');
-    card.className='override-card';
-    card.innerHTML=
-      '<div class="ov-section">'+esc(o.section||'')+'</div>'
+    html+='<div class="ov-card">'
+      +'<div style="font-size:10px;color:var(--ink-60);margin-bottom:4px">'+esc(o.section||'')+'  ·  '+esc(o.date||'')+'</div>'
       +'<div class="ov-task">'+esc(o.taskName||'')+'</div>'
-      +'<div class="ov-row">'
-        +'<div class="ov-col">'
-          +'<div class="ov-col-lbl first">First Entry</div>'
+      +'<div class="ov-cols">'
+        +'<div class="ov-col"><div class="ov-col-lbl first">First Entry</div>'
           +'<div class="ov-who">'+esc(o.firstBy||'')+'</div>'
           +'<div class="ov-resp">'+esc(o.firstResponse||'')+(o.firstRemarks?' — '+esc(o.firstRemarks):'')+'</div>'
         +'</div>'
-        +'<div class="ov-col">'
-          +'<div class="ov-col-lbl update">Updated To</div>'
+        +'<div class="ov-col"><div class="ov-col-lbl updated">Updated To</div>'
           +'<div class="ov-who">'+esc(o.latestBy||'')+'</div>'
           +'<div class="ov-resp">'+esc(o.latestResponse||'')+(o.latestRemarks?' — '+esc(o.latestRemarks):'')+'</div>'
-          +(o.latestPhoto?'<a href="'+o.latestPhoto+'" target="_blank" style="font-size:11px;color:var(--navy);font-weight:600;margin-top:4px;display:block">📷 View Photo</a>':'')
+          +(o.latestPhoto?'<a href="'+esc(o.latestPhoto)+'" target="_blank" style="font-size:10px;color:var(--navy);font-weight:600;margin-top:4px;display:block">📷 View Photo</a>':'')
         +'</div>'
       +'</div>'
-      +'<div style="font-size:10px;color:var(--ink-30);margin-top:8px">'+o.date+' · '+o.totalUpdates+' entr'+(o.totalUpdates===1?'y':'ies')+'</div>';
-    body.appendChild(card);
+    +'</div>';
   });
+  el.innerHTML=html;
 }
+
+// ── LIGHTBOX ──────────────────────────────────────────────────
+function openLB(url,task,who){
+  document.getElementById('lbImg').src=url;
+  document.getElementById('lightbox-meta').textContent=task+(who?' · '+who:'');
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLB(){document.getElementById('lightbox').classList.remove('open');}
+document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLB();});
 </script>
 </body>
 </html>
