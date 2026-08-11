@@ -6,48 +6,39 @@
 <title>BSC Store Checklist</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap" rel="stylesheet"/>
 <style>
-:root{--navy:#1E2D5A;--gold:#B8860B;--crimson:#C0392B;--ivory:#F9F7F0;--white:#fff;--border:#E8E4D8;--ink:#1A1A2E;--ink-60:rgba(26,26,46,.6);--r:12px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#1C2951;font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;align-items:center;justify-content:center;overflow:hidden}
+html,body{height:100%;background:#1C2951;font-family:"DM Sans",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden;-webkit-font-smoothing:antialiased}
 button{font-family:inherit;cursor:pointer;border:0;outline:0;-webkit-tap-highlight-color:transparent}
-
 .wrap{display:flex;flex-direction:column;align-items:center;width:100%;padding:20px}
-.logo-box{width:90px;height:90px;background:#fff;border-radius:20px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.logo-box{width:90px;height:90px;background:#fff;border-radius:20px;overflow:hidden;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,.35)}
 .logo-box img{width:100%;height:100%;object-fit:cover}
-.store-name{font-family:"DM Serif Display",serif;font-size:22px;color:#fff;margin-bottom:4px;text-align:center}
-.tagline{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px}
-
+.s-name{font-family:"DM Serif Display",serif;font-size:22px;color:#fff;margin-bottom:4px;text-align:center}
+.tagline{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px;text-align:center;width:100%}
 .pin-label{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;text-align:center;width:100%}
 .dots{display:flex;gap:16px;justify-content:center;margin-bottom:28px;width:100%}
 .dot{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.3);background:transparent;transition:all .18s}
 .dot.on{background:#fff;border-color:#fff;box-shadow:0 0 8px rgba(255,255,255,.4)}
-
 .pad{display:grid;grid-template-columns:repeat(3,72px);gap:10px}
 .k{width:72px;height:72px;border-radius:14px;background:rgba(255,255,255,.1);color:#fff;font-size:22px;font-weight:600;border:1px solid rgba(255,255,255,.08);transition:background .12s,transform .1s}
 .k:active{background:rgba(255,255,255,.22);transform:scale(.93)}
 .k-zero{grid-column:2}
 .k-del{background:rgba(192,57,43,.65);font-size:17px;color:#ffb3a8}
-.k-del:active{background:rgba(192,57,43,.9)}
-
 .msg{font-size:12px;min-height:20px;margin-top:14px;text-align:center;color:#ff8b7e}
 .msg.info{color:rgba(255,255,255,.5)}
-
-.loader{display:none;flex-direction:column;align-items:center;gap:14px;margin-top:14px}
+.loader{display:none;flex-direction:column;align-items:center;gap:12px;margin-top:14px}
 .loader.show{display:flex}
 .spinner{width:32px;height:32px;border-radius:50%;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-txt{font-size:12px;color:rgba(255,255,255,.5)}
-
+.load-txt{font-size:12px;color:rgba(255,255,255,.5)}
 .cb-mark{position:fixed;bottom:18px;display:flex;align-items:center;justify-content:center}
-.cb-mark img{height:20px;width:auto;opacity:.45}
+.cb-mark img{height:20px;opacity:.4}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="logo-box"><img id="bscLogo" alt="BSC"/></div>
-  <div class="store-name">BSC The Textile Mall</div>
+  <div class="logo-box"><img src="https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg" alt="BSC"/></div>
+  <div class="s-name">BSC The Textile Mall</div>
   <div class="tagline">Belagavi &middot; Since 1938</div>
-
   <div id="pinSection">
     <div class="pin-label">Enter your PIN</div>
     <div class="dots">
@@ -62,75 +53,35 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;-webkit-tap-highlig
     </div>
     <div class="msg" id="msg"></div>
   </div>
-
   <div class="loader" id="loader">
     <div class="spinner"></div>
-    <div class="loading-txt" id="loaderTxt">Verifying...</div>
+    <div class="load-txt" id="loadTxt">Verifying...</div>
   </div>
 </div>
-<div class="cb-mark"><img id="cbLogo" alt="C&B"/></div>
-
+<div class="cb-mark"><img src="https://bsctextilescandb-ui.github.io/retail-crm/cnb-logo.png" alt="C&B"/></div>
 <script>
-var API='https://script.google.com/macros/s/AKfycbzT-GnqHn6EfZnNMl2JdqwTfaOoKLklHe0PN4CSynq-c2nZWa1t43_8vNyvCrkpHqSyhQ/exec';
-var BSC='https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg';
-var CB ='https://bsctextilescandb-ui.github.io/retail-crm/cnb-logo.png';
+var API='https://bsc-checklist.bsctextiles-candb.workers.dev';
 var pin='';
-
-// logos
-document.getElementById('bscLogo').src=BSC;
-stripBlack(CB,40,function(c){ document.getElementById('cbLogo').src=c; });
-
-function stripBlack(src,thresh,cb){
-  var img=new Image(); img.crossOrigin='anonymous';
-  img.onload=function(){
-    var c=document.createElement('canvas'); c.width=img.width; c.height=img.height;
-    var ctx=c.getContext('2d'); ctx.drawImage(img,0,0);
-    var d=ctx.getImageData(0,0,c.width,c.height),px=d.data;
-    for(var i=0;i<px.length;i+=4){ if(px[i]<thresh&&px[i+1]<thresh&&px[i+2]<thresh) px[i+3]=0; }
-    ctx.putImageData(d,0,0); cb(c.toDataURL('image/png'));
-  };
-  img.onerror=function(){ cb(src); }; img.src=src;
-}
-
-function dots(){
-  for(var i=0;i<4;i++){
-    var el=document.getElementById('d'+i);
-    if(i<pin.length) el.classList.add('on'); else el.classList.remove('on');
-  }
-}
-function kp(n){ if(pin.length>=4) return; pin+=String(n); dots(); if(pin.length===4) setTimeout(validate,200); }
-function kd(){ if(!pin.length) return; pin=pin.slice(0,-1); dots(); setMsg('',''); }
-function setMsg(t,c){ var el=document.getElementById('msg'); el.textContent=t; el.className='msg'+(c?' '+c:''); }
-
+function dots(){for(var i=0;i<4;i++){var el=document.getElementById('d'+i);if(i<pin.length)el.classList.add('on');else el.classList.remove('on');}}
+function kp(n){if(pin.length>=4)return;pin+=String(n);dots();if(pin.length===4)setTimeout(validate,200);}
+function kd(){if(!pin.length)return;pin=pin.slice(0,-1);dots();setMsg('','');}
+function setMsg(t,c){var el=document.getElementById('msg');el.textContent=t;el.className='msg'+(c?' '+c:'');}
 function showLoader(txt){
   document.getElementById('pinSection').style.display='none';
-  var l=document.getElementById('loader'); l.classList.add('show');
-  document.getElementById('loaderTxt').textContent=txt||'Loading...';
+  var l=document.getElementById('loader');l.classList.add('show');
+  document.getElementById('loadTxt').textContent=txt||'Loading...';
 }
-
 function validate(){
   setMsg('Verifying...','info');
-  fetch(API+'?action=validatePin&pin='+encodeURIComponent(pin),{redirect:'follow'})
-    .then(function(r){return r.text();})
-    .then(function(txt){
-      var r;
-      try{ r=JSON.parse(txt); }catch(e){ setMsg('Server error. Try again.'); pin=''; dots(); return; }
-      if(!r.ok){ setMsg(r.error||'Invalid PIN'); pin=''; dots(); return; }
-
-      // save session
-      sessionStorage.setItem('bscAuth',JSON.stringify({name:r.name,role:r.role,isAdmin:r.isAdmin,pin:pin}));
-
-      // route by role
-      var role=String(r.role||'').trim().toLowerCase();
-      if(role==='owner'||role==='store manager'){
-        showLoader('Opening dashboard...');
-        location.href='dashboard.html';
-      } else {
-        showLoader('Loading checklist...');
-        location.href='checklist.html';
-      }
+  fetch(API+'/?action=validatePin&pin='+encodeURIComponent(pin),{redirect:'follow'})
+    .then(function(r){return r.json();})
+    .then(function(r){
+      if(!r.ok){setMsg(r.error||'Invalid PIN');pin='';dots();return;}
+      sessionStorage.setItem('bscAuth',JSON.stringify({name:r.name,role:r.role||'Staff',pin:pin}));
+      showLoader('Opening dashboard...');
+      location.href='dashboard.html';
     })
-    .catch(function(e){ setMsg('Network error. Check connection.'); pin=''; dots(); });
+    .catch(function(){setMsg('Network error. Try again.');pin='';dots();});
 }
 </script>
 </body>

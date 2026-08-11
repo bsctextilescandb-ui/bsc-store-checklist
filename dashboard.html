@@ -27,17 +27,17 @@ input,select{font-family:inherit;outline:0}
 .tb-store{font-family:"DM Serif Display",serif;color:#fff;font-size:15px;line-height:1.2}
 .tb-date{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
 .tb-right{display:flex;gap:6px;align-items:center}
-.tb-btn{padding:6px 12px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer}
+.tb-btn{padding:6px 12px;border-radius:7px;font-size:11px;font-weight:700}
 .tb-admin{background:var(--gold);color:#fff}
 .tb-cl{background:rgba(255,255,255,.15);color:#fff}
-.tb-logout{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);font-size:11px}
+.tb-logout{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)}
 
 /* DATE BAR */
 .date-bar{background:var(--white);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.date-inp{padding:7px 10px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:12px;color:var(--ink);background:var(--ivory);width:130px}
+.date-inp{padding:7px 10px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:12px;color:var(--ink);background:var(--ivory)}
 .date-go{padding:7px 14px;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-size:12px;font-weight:700}
-.quick-btns{display:flex;gap:5px;margin-left:auto}
-.qb{padding:5px 11px;border-radius:20px;font-size:11px;font-weight:600;background:var(--ink-10);color:var(--ink-60);border:1.5px solid transparent;transition:all .15s}
+.quick-btns{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap}
+.qb{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;background:var(--ink-10);color:var(--ink-60);border:1.5px solid transparent;transition:all .15s}
 .qb.on{background:var(--navy-l);color:var(--navy);border-color:var(--navy)}
 
 /* BODY */
@@ -48,141 +48,125 @@ input,select{font-family:inherit;outline:0}
 .impact.great{background:var(--green-l);border:1.5px solid rgba(30,122,30,.3)}
 .impact.ok{background:var(--gold-l);border:1.5px solid rgba(184,134,11,.3)}
 .impact.bad{background:var(--crimson-l);border:1.5px solid rgba(192,57,43,.3)}
-.impact-icon{font-size:32px;flex-shrink:0;line-height:1}
-.impact-text{}
-.impact-title{font-family:"DM Serif Display",serif;font-size:18px;line-height:1.2;margin-bottom:4px}
+.impact-icon{font-size:36px;line-height:1;flex-shrink:0}
+.impact-title{font-family:"DM Serif Display",serif;font-size:19px;line-height:1.2;margin-bottom:5px}
 .impact.great .impact-title{color:var(--green)}
 .impact.ok .impact-title{color:var(--gold)}
 .impact.bad .impact-title{color:var(--crimson)}
-.impact-sub{font-size:12px;color:var(--ink-60);line-height:1.5}
+.impact-sub{font-size:12px;color:var(--ink-60);line-height:1.6}
 
 /* STAT ROW */
 .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
-.stat-card{background:var(--white);border-radius:var(--r-sm);padding:12px 10px;border:1.5px solid var(--border);text-align:center}
-.stat-card .sn{font-family:"DM Serif Display",serif;font-size:26px;color:var(--navy);line-height:1}
-.stat-card .sl{font-size:10px;color:var(--ink-60);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
-.stat-card.green .sn{color:var(--green)}
-.stat-card.red .sn{color:var(--crimson)}
-.stat-card.amber .sn{color:var(--orange)}
+.stat-card{background:var(--white);border-radius:var(--r-sm);padding:12px 8px;border:1.5px solid var(--border);text-align:center}
+.stat-n{font-family:"DM Serif Display",serif;font-size:28px;line-height:1;color:var(--navy)}
+.stat-l{font-size:10px;color:var(--ink-60);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+.stat-card.g .stat-n{color:var(--green)}
+.stat-card.r .stat-n{color:var(--crimson)}
+.stat-card.a .stat-n{color:var(--orange)}
+
+/* INSIGHT CARD */
+.insight-card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:14px;margin-bottom:14px}
+.insight-title{font-size:12px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.insight-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--ink)}
+.insight-row:last-child{border-bottom:0;padding-bottom:0}
+.insight-icon{font-size:14px;flex-shrink:0;width:20px;text-align:center}
+.insight-text{flex:1}
+.insight-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;flex-shrink:0}
+.insight-badge.g{background:var(--green-l);color:var(--green)}
+.insight-badge.r{background:var(--crimson-l);color:var(--crimson)}
+.insight-badge.a{background:var(--orange-l);color:var(--orange)}
 
 /* SECTION LABEL */
 .slbl{font-family:"DM Serif Display",serif;font-size:16px;color:var(--navy);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
 .slbl::after{content:'';flex:1;height:1px;background:var(--border)}
-.slbl .badge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:8px;background:var(--crimson-l);color:var(--crimson);font-family:"DM Sans",sans-serif}
-.slbl .badge.green{background:var(--green-l);color:var(--green)}
+.slbl .cnt{font-size:11px;font-weight:700;padding:2px 9px;border-radius:8px;background:var(--crimson-l);color:var(--crimson);font-family:"DM Sans",sans-serif}
+.slbl .cnt.g{background:var(--green-l);color:var(--green)}
 
 /* FAILED TASKS */
-.fail-card{background:var(--white);border-radius:var(--r);border:1.5px solid rgba(192,57,43,.25);padding:13px;margin-bottom:8px}
-.fail-card-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px}
-.fail-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.fail-task{font-size:13px;font-weight:600;color:var(--ink);flex:1}
-.fail-sec{font-size:10px;font-weight:700;padding:1px 8px;border-radius:5px;background:var(--navy-l);color:var(--navy);flex-shrink:0}
-.fail-meta{font-size:11px;color:var(--ink-60);margin-bottom:4px}
+.fail-card{background:var(--white);border-radius:var(--r);border:1.5px solid rgba(192,57,43,.25);padding:12px;margin-bottom:8px}
+.fail-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:5px}
+.fail-task{font-size:13px;font-weight:600;color:var(--ink);flex:1;line-height:1.4}
+.fail-sec{font-size:10px;font-weight:700;padding:1px 8px;border-radius:5px;background:var(--navy-l);color:var(--navy);flex-shrink:0;white-space:nowrap}
+.fail-who{font-size:11px;color:var(--ink-60);margin-bottom:4px}
 .fail-remark{font-size:12px;color:var(--crimson);background:var(--crimson-l);padding:6px 10px;border-radius:6px;line-height:1.4}
 
-/* MISSED TASKS */
+/* MISSED TABLE */
 .miss-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border)}
 .miss-table th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:8px 12px;text-align:left}
 .miss-table td{padding:9px 12px;font-size:12px;color:var(--ink);border-bottom:1px solid var(--border)}
 .miss-table tr:last-child td{border-bottom:0}
 .miss-table tr:nth-child(even) td{background:var(--ivory)}
-.role-tag{display:inline-block;padding:1px 8px;border-radius:5px;font-size:10px;font-weight:600;background:var(--orange-l);color:var(--orange)}
-
-/* PHOTO GRID */
-.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
-.photo-item{position:relative;border-radius:var(--r-sm);overflow:hidden;border:1.5px solid var(--border);background:var(--ink-10);aspect-ratio:1}
-.photo-item img{width:100%;height:100%;object-fit:cover;cursor:pointer;display:block}
-.photo-item-label{position:absolute;bottom:0;left:0;right:0;padding:4px 6px;background:rgba(0,0,0,.65);color:#fff;font-size:9px;line-height:1.3}
-.photo-empty{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:24px;text-align:center;color:var(--ink-60);font-size:13px}
 
 /* SECTION TABLE */
-.sec-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border);margin-bottom:4px}
+.sec-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border)}
 .sec-table th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:9px 12px;text-align:left}
 .sec-table td{padding:10px 12px;font-size:12px;color:var(--ink);border-bottom:1px solid var(--border);vertical-align:middle}
 .sec-table tr:last-child td{border-bottom:0}
 .sec-table tr:nth-child(even) td{background:var(--ivory)}
-.score-bar-wrap{display:flex;align-items:center;gap:8px}
+.score-wrap{display:flex;align-items:center;gap:8px}
 .score-bar{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
-.score-bar-fill{height:100%;border-radius:3px;transition:width .4s}
-.score-bar-fill.green{background:var(--green)}
-.score-bar-fill.amber{background:var(--orange)}
-.score-bar-fill.red{background:var(--crimson)}
+.score-fill{height:100%;border-radius:3px}
+.score-fill.g{background:var(--green)}
+.score-fill.a{background:var(--orange)}
+.score-fill.r{background:var(--crimson)}
 .score-pct{font-size:11px;font-weight:700;width:32px;text-align:right;flex-shrink:0}
-.score-pct.green{color:var(--green)}
-.score-pct.amber{color:var(--orange)}
-.score-pct.red{color:var(--crimson)}
-
-/* ROLE CARDS */
-.role-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:4px}
-.role-card{background:var(--white);border-radius:var(--r-sm);padding:12px;border:1.5px solid var(--border)}
-.role-card.done{border-color:rgba(30,122,30,.3);background:var(--green-l)}
-.role-card.fail{border-color:rgba(192,57,43,.3)}
-.role-card.partial{border-color:rgba(217,119,6,.3)}
-.rc-name{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px}
-.rc-bar{height:5px;border-radius:3px;background:var(--border);margin-bottom:5px;overflow:hidden}
-.rc-fill{height:100%;border-radius:3px}
-.rc-fill.green{background:var(--green)}
-.rc-fill.amber{background:var(--orange)}
-.rc-fill.red{background:var(--crimson)}
-.rc-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-60)}
-
-/* OVERRIDE */
-.ov-card{background:var(--white);border-radius:var(--r);border:1.5px solid rgba(217,119,6,.3);padding:13px;margin-bottom:8px}
-.ov-task{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
-.ov-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ov-col{padding:8px 10px;border-radius:var(--r-sm);background:var(--ivory)}
-.ov-col-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.ov-col-lbl.first{color:var(--crimson)}
-.ov-col-lbl.updated{color:var(--green)}
-.ov-who{font-size:12px;font-weight:600;color:var(--ink)}
-.ov-resp{font-size:11px;color:var(--ink-60);margin-top:2px}
+.score-pct.g{color:var(--green)}
+.score-pct.a{color:var(--orange)}
+.score-pct.r{color:var(--crimson)}
 
 /* TREND */
-.trend-wrap{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:14px;margin-bottom:8px}
-.trend-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:12px}
-.bars{display:flex;align-items:flex-end;gap:5px;height:80px}
-.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
+.trend-card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:14px;margin-bottom:8px}
+.trend-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
+.bars{display:flex;align-items:flex-end;gap:4px;height:90px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;cursor:default}
 .bar-wrap{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
-.bar{width:100%;border-radius:3px 3px 0 0;min-height:2px}
+.bar{width:100%;border-radius:3px 3px 0 0;min-height:3px;transition:opacity .2s}
+.bar:hover{opacity:.8}
 .bar.great{background:var(--green)}
 .bar.ok{background:var(--gold)}
 .bar.bad{background:var(--crimson)}
-.bar.today{background:var(--navy)}
-.bar-lbl{font-size:8px;color:var(--ink-60);text-align:center;white-space:nowrap}
-.bar-pct{font-size:8px;font-weight:700;color:var(--ink-60);text-align:center}
+.bar.no-data{background:var(--border)}
+.bar-day{font-size:9px;font-weight:700;color:var(--ink-60);text-align:center}
+.bar-pct{font-size:9px;color:var(--ink-60);text-align:center}
+.trend-legend{display:flex;gap:12px;margin-top:10px;font-size:10px;color:var(--ink-60);flex-wrap:wrap}
+.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
 
-/* RECURRING FAILS */
-.recur-card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);overflow:hidden;margin-bottom:8px}
-.recur-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border)}
-.recur-row:last-child{border-bottom:0}
-.recur-count{width:32px;height:32px;border-radius:8px;background:var(--crimson-l);color:var(--crimson);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.recur-name{flex:1;font-size:12px;color:var(--ink);line-height:1.4}
-.recur-role{font-size:10px;font-weight:600;color:var(--ink-60);background:var(--ink-10);padding:1px 7px;border-radius:5px;flex-shrink:0}
+/* CONSISTENT FAIL */
+.cf-card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);overflow:hidden}
+.cf-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border)}
+.cf-row:last-child{border-bottom:0}
+.cf-count{width:28px;height:28px;border-radius:7px;background:var(--crimson-l);color:var(--crimson);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cf-count.a{background:var(--orange-l);color:var(--orange)}
+.cf-name{flex:1;font-size:12px;color:var(--ink);line-height:1.4}
+.cf-sec{font-size:10px;font-weight:600;color:var(--ink-60);background:var(--ink-10);padding:1px 7px;border-radius:5px;flex-shrink:0}
 
-/* LIGHTBOX */
-#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px;gap:12px}
-#lightbox.open{display:flex}
-#lightbox img{max-width:100%;max-height:75vh;object-fit:contain;border-radius:var(--r-sm)}
-#lightbox-meta{color:rgba(255,255,255,.7);font-size:12px;text-align:center}
-#lightbox-close{padding:10px 24px;border-radius:var(--r-sm);background:rgba(255,255,255,.15);color:#fff;font-size:13px;font-weight:600;cursor:pointer;border:0}
+/* OVERRIDE */
+.ov-card{background:var(--white);border-radius:var(--r);border:1.5px solid rgba(217,119,6,.3);padding:12px;margin-bottom:8px}
+.ov-task{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.ov-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ov-col{padding:8px 10px;border-radius:var(--r-sm);background:var(--ivory)}
+.ov-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.ov-lbl.first{color:var(--crimson)}
+.ov-lbl.updated{color:var(--green)}
+.ov-who{font-size:12px;font-weight:600;color:var(--ink)}
+.ov-resp{font-size:11px;color:var(--ink-60);margin-top:2px}
+
+/* EMPTY */
+.empty{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:20px;text-align:center;color:var(--ink-60);font-size:13px}
 
 /* LOAD OVERLAY */
 #loadOverlay{position:fixed;inset:0;background:var(--ivory);z-index:888;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
 #loadOverlay.hide{display:none}
 .spinner{width:32px;height:32px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--navy);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.load-txt{font-size:13px;color:var(--ink-60)}
 
 /* TOAST */
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:9px;font-size:12px;z-index:9999;transition:transform .3s,opacity .3s;white-space:nowrap;pointer-events:none;opacity:0}
 #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
-.empty{text-align:center;padding:24px;color:var(--ink-60);font-size:13px;background:var(--white);border-radius:var(--r);border:1.5px solid var(--border)}
-
 @media(max-width:400px){
   .stat-row{grid-template-columns:repeat(2,1fr)}
-  .photo-grid{grid-template-columns:repeat(2,1fr)}
-  .role-grid{grid-template-columns:1fr}
+  .ov-cols{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -190,13 +174,12 @@ input,select{font-family:inherit;outline:0}
 
 <div id="loadOverlay">
   <div class="spinner"></div>
-  <div class="load-txt">Loading dashboard...</div>
+  <div style="font-size:13px;color:var(--ink-60)">Loading dashboard...</div>
 </div>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="tb-left">
-    <img class="tb-logo" id="topLogo" alt="BSC"/>
+    <img class="tb-logo" src="https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg" alt="BSC"/>
     <div>
       <div class="tb-store">BSC Operations</div>
       <div class="tb-date" id="tbDate">—</div>
@@ -205,94 +188,56 @@ input,select{font-family:inherit;outline:0}
   <div class="tb-right" id="tbRight"></div>
 </div>
 
-<!-- DATE BAR -->
 <div class="date-bar">
   <input class="date-inp" type="date" id="dateFrom"/>
   <span style="font-size:12px;color:var(--ink-60)">to</span>
   <input class="date-inp" type="date" id="dateTo"/>
   <button class="date-go" onclick="loadDashboard()">Go</button>
   <div class="quick-btns">
-    <button class="qb" id="qb-yday" onclick="quickDate('yday')">Yesterday</button>
-    <button class="qb on" id="qb-today" onclick="quickDate('today')">Today</button>
+    <button class="qb on" id="qb-yday" onclick="quickDate('yday')">Yesterday</button>
+    <button class="qb" id="qb-today" onclick="quickDate('today')">Today</button>
     <button class="qb" id="qb-7" onclick="quickDate('7')">7 Days</button>
     <button class="qb" id="qb-30" onclick="quickDate('30')">30 Days</button>
   </div>
 </div>
 
-<!-- BODY -->
 <div class="body">
-  <!-- IMPACT BANNER -->
-  <div id="impactBanner"></div>
-
-  <!-- STAT ROW -->
+  <div id="impactWrap"></div>
   <div class="stat-row" id="statRow"></div>
-
-  <!-- FAILED TASKS -->
-  <div id="failSection"></div>
-
-  <!-- MISSED TASKS -->
-  <div id="missSection"></div>
-
-  <!-- PHOTOS -->
-  <div id="photoSection"></div>
-
-  <!-- ROLE BREAKDOWN -->
-  <div id="roleSection"></div>
-
-  <!-- SECTION TABLE -->
-  <div id="secTableSection"></div>
-
-  <!-- TREND -->
-  <div id="trendSection"></div>
-
-  <!-- RECURRING FAILURES -->
-  <div id="recurSection"></div>
-
-  <!-- OVERRIDE LOG -->
-  <div id="overrideSection"></div>
-</div>
-
-<!-- LIGHTBOX -->
-<div id="lightbox">
-  <img id="lbImg" alt=""/>
-  <div id="lightbox-meta"></div>
-  <button id="lightbox-close" onclick="closeLB()">Close</button>
+  <div id="insightWrap"></div>
+  <div id="failWrap"></div>
+  <div id="missWrap"></div>
+  <div id="secWrap"></div>
+  <div id="trendWrap"></div>
+  <div id="cfWrap"></div>
+  <div id="ovWrap"></div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-var API='https://script.google.com/macros/s/AKfycbzT-GnqHn6EfZnNMl2JdqwTfaOoKLklHe0PN4CSynq-c2nZWa1t43_8vNyvCrkpHqSyhQ/exec';
-var BSC='https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg';
+var API='https://bsc-checklist.bsctextiles-candb.workers.dev';
 var me=null;
 
-// ── SESSION CHECK ─────────────────────────────────────────────
 (function(){
   var raw=sessionStorage.getItem('bscAuth');
   if(!raw){location.href='index.html';return;}
   try{
-    var auth=JSON.parse(raw);
-    var role=String(auth.role||'').trim().toLowerCase();
-    if(role!=='owner'&&role!=='store manager'){location.href='index.html';return;}
-    me=auth;
+    me=JSON.parse(raw);
     initDashboard();
   }catch(e){location.href='index.html';}
 })();
 
 function initDashboard(){
-  document.getElementById('topLogo').src=BSC;
-  var isAdmin=String(me.role||'').toLowerCase()==='store manager';
+  var isAdmin=true; // both users get admin
   var tbR=document.getElementById('tbRight');
-  tbR.innerHTML=
-    (isAdmin?'<button class="tb-btn tb-admin" onclick="location.href=\'admin.html\'">&#9881; Admin</button>':'')
-    +'<button class="tb-btn tb-cl" onclick="goChecklist()">&#9776; Checklist</button>'
+  tbR.innerHTML='<button class="tb-btn tb-admin" onclick="location.href=\'admin.html\'">&#9881; Admin</button>'
+    +'<button class="tb-btn tb-cl" onclick="location.href=\'checklist.html\'">&#9776; Checklist</button>'
     +'<button class="tb-btn tb-logout" onclick="logout()">&#8617;</button>';
-  // Default: yesterday
   quickDate('yday');
 }
 
-function goChecklist(){ location.href='checklist.html?from=dashboard'; }
-function logout(){ sessionStorage.removeItem('bscAuth'); location.href='index.html'; }
+function logout(){sessionStorage.removeItem('bscAuth');location.href='index.html';}
 
 // ── DATE HELPERS ──────────────────────────────────────────────
 function istDate(){
@@ -301,72 +246,61 @@ function istDate(){
   return d.getUTCFullYear()+'-'+p(d.getUTCMonth()+1)+'-'+p(d.getUTCDate());
 }
 function addDays(s,n){
-  var d=new Date(s+'T00:00:00Z');
-  d=new Date(d.getTime()+n*86400000);
+  var d=new Date(s+'T00:00:00Z');d=new Date(d.getTime()+n*86400000);
   var p=function(x){return ('0'+x).slice(-2);};
   return d.getUTCFullYear()+'-'+p(d.getUTCMonth()+1)+'-'+p(d.getUTCDate());
 }
-function fmtDate(s){
+function fmtFull(s){
   var d=new Date(s+'T00:00:00Z');
-  var dy=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var dy=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return dy[d.getUTCDay()]+' '+d.getUTCDate()+' '+mo[d.getUTCMonth()]+' '+d.getUTCFullYear();
+  return dy[d.getUTCDay()]+', '+d.getUTCDate()+' '+mo[d.getUTCMonth()]+' '+d.getUTCFullYear();
 }
 function fmtShort(s){
   var d=new Date(s+'T00:00:00Z');
+  var dy=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return d.getUTCDate()+' '+mo[d.getUTCMonth()];
+  return dy[d.getUTCDay()]+' '+d.getUTCDate()+' '+mo[d.getUTCMonth()];
+}
+function fmtDay(s){
+  var d=new Date(s+'T00:00:00Z');
+  var dy=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  return dy[d.getUTCDay()];
 }
 
 function quickDate(key){
   var today=istDate();
   document.querySelectorAll('.qb').forEach(function(b){b.classList.remove('on');});
-  if(key==='today'){
-    setDates(today,today);
-    document.getElementById('qb-today').classList.add('on');
-  } else if(key==='yday'){
-    var y=addDays(today,-1);
-    setDates(y,y);
-    document.getElementById('qb-yday').classList.add('on');
-  } else if(key==='7'){
-    setDates(addDays(today,-6),today);
-    document.getElementById('qb-7').classList.add('on');
-  } else if(key==='30'){
-    setDates(addDays(today,-29),today);
-    document.getElementById('qb-30').classList.add('on');
-  }
+  if(key==='yday'){var y=addDays(today,-1);setDates(y,y);document.getElementById('qb-yday').classList.add('on');}
+  else if(key==='today'){setDates(today,today);document.getElementById('qb-today').classList.add('on');}
+  else if(key==='7'){setDates(addDays(today,-6),today);document.getElementById('qb-7').classList.add('on');}
+  else if(key==='30'){setDates(addDays(today,-29),today);document.getElementById('qb-30').classList.add('on');}
   loadDashboard();
 }
-function setDates(from,to){
-  document.getElementById('dateFrom').value=from;
-  document.getElementById('dateTo').value=to;
-}
+function setDates(f,t){document.getElementById('dateFrom').value=f;document.getElementById('dateTo').value=t;}
 
 // ── API ───────────────────────────────────────────────────────
 function apiGet(action,params,cb){
   var q='action='+encodeURIComponent(action);
-  if(params) Object.keys(params).forEach(function(k){q+='&'+encodeURIComponent(k)+'='+encodeURIComponent(String(params[k]));});
-  fetch(API+'?'+q,{redirect:'follow'})
-    .then(function(r){return r.text();})
-    .then(function(t){try{cb(JSON.parse(t));}catch(e){cb({ok:false,error:'Bad response'});}})
-    .catch(function(e){cb({ok:false,error:e.message});});
+  if(params)Object.keys(params).forEach(function(k){q+='&'+encodeURIComponent(k)+'='+encodeURIComponent(String(params[k]));});
+  fetch(API+'/?'+q,{redirect:'follow'})
+    .then(function(r){return r.json();})
+    .then(cb).catch(function(e){cb({ok:false,error:e.message});});
 }
 function toast(msg){
   var t=document.getElementById('toast');t.textContent=msg;t.className='show';
   clearTimeout(t._t);t._t=setTimeout(function(){t.className='';},3000);
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function scoreClass(s){return s>=80?'g':s>=50?'a':'r';}
 
-// ── LOAD DASHBOARD ────────────────────────────────────────────
+// ── LOAD ──────────────────────────────────────────────────────
 function loadDashboard(){
   var from=document.getElementById('dateFrom').value;
   var to=document.getElementById('dateTo').value;
-  if(!from||!to) return;
-
-  // Update topbar date
-  var dateLabel=from===to?fmtDate(from):fmtShort(from)+' — '+fmtShort(to);
-  document.getElementById('tbDate').textContent=dateLabel;
-
+  if(!from||!to)return;
+  var isSingle=from===to;
+  document.getElementById('tbDate').textContent=isSingle?fmtFull(from):fmtShort(from)+' — '+fmtShort(to);
   document.getElementById('loadOverlay').classList.remove('hide');
   apiGet('getDashboard',{dateFrom:from,dateTo:to},function(r){
     document.getElementById('loadOverlay').classList.add('hide');
@@ -378,68 +312,131 @@ function loadDashboard(){
 // ── RENDER ────────────────────────────────────────────────────
 function render(d,from,to){
   var score=d.overallScore||0;
-  var isSingleDay=from===to;
+  var isSingle=from===to;
+  var today=istDate();
+  var isToday=to===today;
+  var isYday=to===addDays(today,-1)&&from===to;
 
-  // ── IMPACT BANNER ──
-  var cls=score>=90?'great':score>=70?'ok':'bad';
-  var icon=score>=90?'🟢':score>=70?'🟡':'🔴';
-  var title=score>=90?'Store is operating well'
-    :score>=70?'Store needs attention'
-    :'Store has serious gaps';
+  // ── IMPACT BANNER ──────────────────────────────────────────
+  var cls=score>=80?'great':score>=50?'ok':'bad';
+  var icon=score>=80?'🟢':score>=50?'🟡':'🔴';
+
+  var dayLabel=isToday?'Today':isYday?'Yesterday':isSingle?fmtShort(from):'This period';
+  var title='';
+  if(score>=80) title=dayLabel+' went well — '+score+'% tasks completed';
+  else if(score>=50) title=dayLabel+' was partial — '+score+'% tasks completed';
+  else if(score===0) title='No data for '+dayLabel;
+  else title=dayLabel+' needs attention — only '+score+'% completed';
+
   var lines=[];
-  lines.push((d.totalCompleted||0)+' of '+(d.totalTasks||0)+' tasks completed ('+score+'%)');
-  if(d.totalFailed>0) lines.push(d.totalFailed+' task'+(d.totalFailed>1?'s':'')+' failed — action needed');
-  if(d.totalPending>0) lines.push(d.totalPending+' task'+(d.totalPending>1?'s':'')+' not yet submitted');
-  if(d.totalOverridden>0) lines.push(d.totalOverridden+' task'+(d.totalOverridden>1?'s':'')+' updated after first submission');
-  if(score>=90&&d.totalFailed===0) lines.push('No failures — great work today');
-  document.getElementById('impactBanner').innerHTML=
+  if(d.totalCompleted>0) lines.push(d.totalCompleted+' of '+d.totalTasks+' tasks completed');
+  if(d.totalFailed>0) lines.push(d.totalFailed+' task'+(d.totalFailed>1?'s':'')+' marked as failed');
+  if(d.totalPending>0) lines.push(d.totalPending+' task'+(d.totalPending>1?'s':'')+' not submitted');
+  if(d.totalOverridden>0) lines.push(d.totalOverridden+' task'+(d.totalOverridden>1?'s':'')+' updated after first entry');
+  if(score>=80&&d.totalFailed===0&&d.totalPending===0) lines.push('All tasks done with no failures ✓');
+
+  document.getElementById('impactWrap').innerHTML=
     '<div class="impact '+cls+'">'
       +'<div class="impact-icon">'+icon+'</div>'
-      +'<div class="impact-text">'
-        +'<div class="impact-title">'+title+'</div>'
+      +'<div>'
+        +'<div class="impact-title">'+esc(title)+'</div>'
         +'<div class="impact-sub">'+lines.map(function(l){return '· '+l;}).join('<br/>')+'</div>'
       +'</div>'
     +'</div>';
 
-  // ── STAT ROW ──
+  // ── STAT CARDS ─────────────────────────────────────────────
   document.getElementById('statRow').innerHTML=
-    statCard(d.totalTasks||0,'Total','')
-    +statCard(d.totalCompleted||0,'Done','green')
-    +statCard(d.totalFailed||0,'Failed','red')
-    +statCard(d.totalPending||0,'Pending','amber');
+    sc(d.totalTasks,'Total','')
+    +sc(d.totalCompleted,'Done','g')
+    +sc(d.totalFailed,'Failed','r')
+    +sc(d.totalPending,'Pending','a');
 
-  // ── FAILED TASKS ──
+  // ── INSIGHTS (for multi-day only) ──────────────────────────
+  renderInsights(d,from,to,isSingle);
+
+  // ── FAILED TASKS ───────────────────────────────────────────
   renderFailed(d.sections||[]);
 
-  // ── MISSED TASKS ──
+  // ── MISSED TASKS ───────────────────────────────────────────
   renderMissed(d.sections||[]);
 
-  // ── PHOTOS ──
-  renderPhotos(d.sections||[]);
-
-  // ── ROLE BREAKDOWN ──
-  renderRoles(d.roles||[]);
-
-  // ── SECTION TABLE ──
+  // ── SECTION TABLE ──────────────────────────────────────────
   renderSections(d.sections||[]);
 
-  // ── TREND ──
+  // ── TREND ──────────────────────────────────────────────────
   if(d.trend&&d.trend.length>1) renderTrend(d.trend);
-  else document.getElementById('trendSection').innerHTML='';
+  else document.getElementById('trendWrap').innerHTML='';
 
-  // ── RECURRING FAILURES (only for multi-day) ──
-  if(!isSingleDay&&d.overrideLog) renderRecurring(d.sections||[],d.trend||[]);
-  else document.getElementById('recurSection').innerHTML='';
+  // ── CONSISTENT FAILURES (7+ days only) ────────────────────
+  if(!isSingle&&d.trend&&d.trend.length>=7) renderConsistentFails(d.sections||[],d.trend||[]);
+  else document.getElementById('cfWrap').innerHTML='';
 
-  // ── OVERRIDE LOG ──
+  // ── OVERRIDE LOG ───────────────────────────────────────────
   renderOverrides(d.overrideLog||[]);
 }
 
-function statCard(n,label,cls){
-  return '<div class="stat-card '+cls+'">'
-    +'<div class="sn">'+n+'</div>'
-    +'<div class="sl">'+label+'</div>'
+function sc(n,l,cls){
+  return '<div class="stat-card '+cls+'"><div class="stat-n">'+n+'</div><div class="stat-l">'+l+'</div></div>';
+}
+
+// ── INSIGHTS ──────────────────────────────────────────────────
+function renderInsights(d,from,to,isSingle){
+  var el=document.getElementById('insightWrap');
+  if(isSingle){el.innerHTML='';return;}
+
+  var trend=d.trend||[];
+  if(trend.length<2){el.innerHTML='';return;}
+
+  var rows=[];
+  var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  // Find best and worst days
+  var withData=trend.filter(function(t){return t.completed>0;});
+  if(withData.length>=2){
+    var best=withData.reduce(function(a,b){return a.score>b.score?a:b;});
+    var worst=withData.reduce(function(a,b){return a.score<b.score?a:b;});
+    if(best.date!==worst.date){
+      rows.push({icon:'🏆',text:fmtShort(best.date)+' was the best day — '+best.score+'% completed',cls:'g'});
+      rows.push({icon:'⚠️',text:fmtShort(worst.date)+' was the worst day — '+worst.score+'% completed',cls:'r'});
+    }
+  }
+
+  // Days with low score
+  var lowDays=trend.filter(function(t){return t.score>0&&t.score<60;});
+  if(lowDays.length>0){
+    var dayNames=lowDays.map(function(t){return fmtDay(t.date);});
+    rows.push({icon:'📉',text:dayNames.join(', ')+' had low completion (below 60%)',cls:'r'});
+  }
+
+  // Consistently good days
+  var goodDays=trend.filter(function(t){return t.score>=80;});
+  if(goodDays.length>0&&goodDays.length===trend.length){
+    rows.push({icon:'⭐',text:'All '+trend.length+' days had 80%+ completion — excellent consistency',cls:'g'});
+  } else if(goodDays.length>=Math.ceil(trend.length*0.7)){
+    rows.push({icon:'👍',text:goodDays.length+' of '+trend.length+' days had 80%+ completion',cls:'g'});
+  }
+
+  // Section with most failures across period
+  var secFails={};
+  (d.sections||[]).forEach(function(s){
+    if(s.failed>0) secFails[s.section]=(secFails[s.section]||0)+s.failed;
+  });
+  var topFail=Object.entries(secFails).sort(function(a,b){return b[1]-a[1];})[0];
+  if(topFail&&topFail[1]>1){
+    rows.push({icon:'🔴',text:'"'+topFail[0]+'" had the most failures ('+topFail[1]+')',cls:'r'});
+  }
+
+  if(!rows.length){el.innerHTML='';return;}
+
+  var html='<div class="insight-card"><div class="insight-title">💡 Period Insights</div>';
+  rows.forEach(function(r){
+    html+='<div class="insight-row"><div class="insight-icon">'+r.icon+'</div>'
+      +'<div class="insight-text">'+esc(r.text)+'</div>'
+      +'<span class="insight-badge '+r.cls+'">'+(r.cls==='g'?'Good':r.cls==='r'?'Alert':'Note')+'</span>'
     +'</div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
 }
 
 // ── FAILED TASKS ──────────────────────────────────────────────
@@ -447,21 +444,17 @@ function renderFailed(sections){
   var failed=[];
   sections.forEach(function(s){
     (s.tasks||[]).forEach(function(t){
-      if(t.status==='FAIL') failed.push({sec:s.section,task:t});
+      if(t.status==='FAIL')failed.push({sec:s.section,task:t});
     });
   });
-  var el=document.getElementById('failSection');
+  var el=document.getElementById('failWrap');
   if(!failed.length){el.innerHTML='';return;}
-  var html='<div class="slbl">❌ Failed Tasks <span class="badge">'+failed.length+'</span></div>';
+  var html='<div class="slbl">❌ Failed Tasks <span class="cnt">'+failed.length+'</span></div>';
   failed.forEach(function(f){
     var t=f.task;
     html+='<div class="fail-card">'
-      +'<div class="fail-card-top">'
-        +'<div class="fail-icon">❌</div>'
-        +'<div class="fail-task">'+esc(t.taskName||'')+'</div>'
-        +'<span class="fail-sec">'+esc(f.sec)+'</span>'
-      +'</div>'
-      +'<div class="fail-meta">'+esc(t.staffName||'—')+' · '+esc(t.role||'')+'</div>'
+      +'<div class="fail-top"><div class="fail-task">'+esc(t.taskName||'')+'</div><span class="fail-sec">'+esc(f.sec)+'</span></div>'
+      +(t.staffName?'<div class="fail-who">'+esc(t.staffName)+'</div>':'')
       +(t.remarks?'<div class="fail-remark">"'+esc(t.remarks)+'"</div>':'')
     +'</div>';
   });
@@ -473,82 +466,33 @@ function renderMissed(sections){
   var missed=[];
   sections.forEach(function(s){
     (s.tasks||[]).forEach(function(t){
-      if(t.status==='PENDING') missed.push({sec:s.section,task:t});
+      if(t.status==='PENDING')missed.push({sec:s.section,task:t});
     });
   });
-  var el=document.getElementById('missSection');
+  var el=document.getElementById('missWrap');
   if(!missed.length){el.innerHTML='';return;}
-  var html='<div class="slbl">⏳ Not Submitted <span class="badge">'+missed.length+'</span></div>'
-    +'<table class="miss-table"><thead><tr><th>Task</th><th>Section</th><th>Role</th></tr></thead><tbody>';
+  var html='<div class="slbl">⏳ Not Submitted <span class="cnt">'+missed.length+'</span></div>'
+    +'<table class="miss-table"><thead><tr><th>Task</th><th>Section</th></tr></thead><tbody>';
   missed.forEach(function(m){
-    html+='<tr>'
-      +'<td>'+esc(m.task.taskName||'')+'</td>'
-      +'<td>'+esc(m.sec)+'</td>'
-      +'<td><span class="role-tag">'+esc(m.task.role1||'—')+'</span></td>'
-      +'</tr>';
+    html+='<tr><td>'+esc(m.task.taskName||'')+'</td><td>'+esc(m.sec)+'</td></tr>';
   });
   html+='</tbody></table>';
   el.innerHTML=html;
 }
 
-// ── PHOTO GRID ────────────────────────────────────────────────
-function renderPhotos(sections){
-  var photos=[];
-  sections.forEach(function(s){
-    (s.tasks||[]).forEach(function(t){
-      if(t.photoUrl&&String(t.photoUrl).startsWith('http')){
-        photos.push({url:t.photoUrl,task:t.taskName||'',who:t.staffName||'',sec:s.section});
-      }
-    });
-  });
-  var el=document.getElementById('photoSection');
-  if(!photos.length){el.innerHTML='';return;}
-  var html='<div class="slbl">📷 Photo Evidence <span class="badge green">'+photos.length+'</span></div>'
-    +'<div class="photo-grid">';
-  photos.forEach(function(p,i){
-    html+='<div class="photo-item" onclick="openLB(\''+esc(p.url)+'\',\''+esc(p.task)+'\',\''+esc(p.who)+'\')">'
-      +'<img src="'+esc(p.url)+'" alt="'+esc(p.task)+'" loading="lazy" onerror="this.parentElement.style.display=\'none\'"/>'
-      +'<div class="photo-item-label">'+esc(p.task.slice(0,30))+'<br/>'+esc(p.who)+'</div>'
-    +'</div>';
-  });
-  html+='</div>';
-  el.innerHTML=html;
-}
-
-// ── ROLE BREAKDOWN ────────────────────────────────────────────
-function renderRoles(roles){
-  var el=document.getElementById('roleSection');
-  if(!roles.length){el.innerHTML='';return;}
-  var html='<div class="slbl">👥 Role Breakdown</div><div class="role-grid">';
-  roles.forEach(function(r){
-    var pct=r.assigned>0?Math.min(100,Math.round((r.completed/r.assigned)*100)):0;
-    var fillCls=pct>=90?'green':pct>=60?'amber':'red';
-    var cardCls=pct===100?'done':r.failed>0?'fail':'partial';
-    html+='<div class="role-card '+cardCls+'">'
-      +'<div class="rc-name">'+esc(r.role)+'</div>'
-      +'<div class="rc-bar"><div class="rc-fill '+fillCls+'" style="width:'+pct+'%"></div></div>'
-      +'<div class="rc-meta"><span>'+r.completed+' / '+r.assigned+'</span>'
-        +'<span style="font-weight:700;color:'+(pct>=90?'var(--green)':pct>=60?'var(--orange)':'var(--crimson)')+'">'+pct+'%</span></div>'
-      +(r.failed>0?'<div style="font-size:10px;color:var(--crimson);margin-top:4px">'+r.failed+' failed</div>':'')
-    +'</div>';
-  });
-  html+='</div>';
-  el.innerHTML=html;
-}
-
 // ── SECTION TABLE ─────────────────────────────────────────────
 function renderSections(sections){
-  var el=document.getElementById('secTableSection');
+  var el=document.getElementById('secWrap');
   if(!sections.length){el.innerHTML='';return;}
   var html='<div class="slbl">📋 Section Breakdown</div>'
     +'<table class="sec-table"><thead><tr><th>#</th><th>Section</th><th>Score</th><th>Done</th><th>Failed</th></tr></thead><tbody>';
   sections.forEach(function(s,i){
-    var cls=s.score>=90?'green':s.score>=60?'amber':'red';
+    var cls=scoreClass(s.score);
     html+='<tr>'
       +'<td style="color:var(--ink-60);font-size:11px">'+(i+1)+'</td>'
-      +'<td style="font-weight:600">'+esc(s.section)+'</td>'
-      +'<td><div class="score-bar-wrap">'
-        +'<div class="score-bar"><div class="score-bar-fill '+cls+'" style="width:'+s.score+'%"></div></div>'
+      +'<td style="font-weight:600;font-size:12px">'+esc(s.section)+'</td>'
+      +'<td><div class="score-wrap">'
+        +'<div class="score-bar"><div class="score-fill '+cls+'" style="width:'+s.score+'%"></div></div>'
         +'<span class="score-pct '+cls+'">'+s.score+'%</span>'
       +'</div></td>'
       +'<td style="color:var(--green);font-weight:600">'+s.completed+'</td>'
@@ -562,45 +506,55 @@ function renderSections(sections){
 // ── TREND CHART ───────────────────────────────────────────────
 function renderTrend(trend){
   var today=istDate();
-  var html='<div class="trend-wrap">'
-    +'<div class="trend-title">📈 Completion Trend</div>'
+  var html='<div class="trend-card">'
+    +'<div class="trend-title">📈 Daily Completion Trend</div>'
     +'<div class="bars">';
   trend.forEach(function(t){
     var isToday=t.date===today;
-    var cls=isToday?'today':t.score>=90?'great':t.score>=60?'ok':'bad';
-    var h=Math.max(4,Math.round((t.score/100)*72));
-    html+='<div class="bar-col">'
-      +'<div class="bar-pct">'+t.score+'%</div>'
-      +'<div class="bar-wrap"><div class="bar '+cls+'" style="height:'+h+'px"></div></div>'
-      +'<div class="bar-lbl">'+fmtShort(t.date).replace(' ','<br/>')+'</div>'
+    var cls=t.completed===0?'no-data':t.score>=80?'great':t.score>=50?'ok':'bad';
+    var h=Math.max(4,Math.round((t.score/100)*78));
+    var tip=fmtShort(t.date)+': '+t.score+'%'+(t.failed>0?' ('+t.failed+' failed)':'');
+    html+='<div class="bar-col" title="'+esc(tip)+'">'
+      +'<div class="bar-pct">'+(t.score>0?t.score+'%':'—')+'</div>'
+      +'<div class="bar-wrap"><div class="bar '+cls+(isToday?' today':'')+'" style="height:'+h+'px;'+(isToday?'outline:2px solid var(--navy);outline-offset:1px':'')+'"></div></div>'
+      +'<div class="bar-day">'+fmtDay(t.date)+'<br/><span style="font-size:8px;color:var(--ink-30)">'+new Date(t.date+'T00:00:00Z').getUTCDate()+'</span></div>'
     +'</div>';
   });
-  html+='</div></div>';
-  document.getElementById('trendSection').innerHTML=html;
+  html+='</div>'
+    +'<div class="trend-legend">'
+      +'<span><span class="legend-dot" style="background:var(--green)"></span>80%+ Good</span>'
+      +'<span><span class="legend-dot" style="background:var(--gold)"></span>50–79% Partial</span>'
+      +'<span><span class="legend-dot" style="background:var(--crimson)"></span>Below 50%</span>'
+      +'<span><span class="legend-dot" style="background:var(--border)"></span>No data</span>'
+    +'</div>'
+  +'</div>';
+  document.getElementById('trendWrap').innerHTML=html;
 }
 
-// ── RECURRING FAILURES ────────────────────────────────────────
-function renderRecurring(sections){
-  // Count task failures across trend data — use sections failedTasks
-  var failCount={};
+// ── CONSISTENT FAILURES ───────────────────────────────────────
+function renderConsistentFails(sections){
+  var taskFails={};
   sections.forEach(function(s){
     (s.tasks||[]).forEach(function(t){
       if(t.status==='FAIL'){
-        var key=t.taskName||t.taskId;
-        if(!failCount[key]) failCount[key]={name:key,role:t.role||'',count:0};
-        failCount[key].count++;
+        var key=t.taskId||t.taskName;
+        if(!taskFails[key])taskFails[key]={name:t.taskName||'',sec:'',count:0};
+        taskFails[key].count++;
+        taskFails[key].sec=s.section;
       }
     });
   });
-  var sorted=Object.values(failCount).sort(function(a,b){return b.count-a.count;}).slice(0,5);
-  var el=document.getElementById('recurSection');
+  var sorted=Object.values(taskFails).filter(function(f){return f.count>1;})
+    .sort(function(a,b){return b.count-a.count;}).slice(0,5);
+  var el=document.getElementById('cfWrap');
   if(!sorted.length){el.innerHTML='';return;}
-  var html='<div class="slbl">🔁 Top Failing Tasks</div><div class="recur-card">';
+  var html='<div class="slbl">🔁 Recurring Failures</div><div class="cf-card">';
   sorted.forEach(function(f){
-    html+='<div class="recur-row">'
-      +'<div class="recur-count">'+f.count+'</div>'
-      +'<div class="recur-name">'+esc(f.name)+'</div>'
-      +'<span class="recur-role">'+esc(f.role)+'</span>'
+    var cls=f.count>=3?'':'a';
+    html+='<div class="cf-row">'
+      +'<div class="cf-count '+cls+'">'+f.count+'x</div>'
+      +'<div class="cf-name">'+esc(f.name)+'</div>'
+      +'<span class="cf-sec">'+esc(f.sec)+'</span>'
     +'</div>';
   });
   html+='</div>';
@@ -609,37 +563,27 @@ function renderRecurring(sections){
 
 // ── OVERRIDE LOG ──────────────────────────────────────────────
 function renderOverrides(log){
-  var el=document.getElementById('overrideSection');
+  var el=document.getElementById('ovWrap');
   if(!log.length){el.innerHTML='';return;}
-  var html='<div class="slbl">⚠️ Updated After Submission <span class="badge">'+log.length+'</span></div>';
+  var html='<div class="slbl">⚠️ Updated After Submission <span class="cnt a">'+log.length+'</span></div>';
   log.forEach(function(o){
     html+='<div class="ov-card">'
       +'<div style="font-size:10px;color:var(--ink-60);margin-bottom:4px">'+esc(o.section||'')+'  ·  '+esc(o.date||'')+'</div>'
       +'<div class="ov-task">'+esc(o.taskName||'')+'</div>'
       +'<div class="ov-cols">'
-        +'<div class="ov-col"><div class="ov-col-lbl first">First Entry</div>'
+        +'<div class="ov-col"><div class="ov-lbl first">First Entry</div>'
           +'<div class="ov-who">'+esc(o.firstBy||'')+'</div>'
           +'<div class="ov-resp">'+esc(o.firstResponse||'')+(o.firstRemarks?' — '+esc(o.firstRemarks):'')+'</div>'
         +'</div>'
-        +'<div class="ov-col"><div class="ov-col-lbl updated">Updated To</div>'
+        +'<div class="ov-col"><div class="ov-lbl updated">Updated To</div>'
           +'<div class="ov-who">'+esc(o.latestBy||'')+'</div>'
           +'<div class="ov-resp">'+esc(o.latestResponse||'')+(o.latestRemarks?' — '+esc(o.latestRemarks):'')+'</div>'
-          +(o.latestPhoto?'<a href="'+esc(o.latestPhoto)+'" target="_blank" style="font-size:10px;color:var(--navy);font-weight:600;margin-top:4px;display:block">📷 View Photo</a>':'')
         +'</div>'
       +'</div>'
     +'</div>';
   });
   el.innerHTML=html;
 }
-
-// ── LIGHTBOX ──────────────────────────────────────────────────
-function openLB(url,task,who){
-  document.getElementById('lbImg').src=url;
-  document.getElementById('lightbox-meta').textContent=task+(who?' · '+who:'');
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLB(){document.getElementById('lightbox').classList.remove('open');}
-document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLB();});
 </script>
 </body>
 </html>

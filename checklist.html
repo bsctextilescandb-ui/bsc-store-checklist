@@ -6,29 +6,17 @@
 <title>Store Checklist — BSC</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --navy:#1E2D5A;--navy-l:#EEF1FB;--gold:#B8860B;--gold-l:#FFF8E7;
-  --crimson:#C0392B;--crimson-l:#FFECEC;
-  --green:#1E7A1E;--green-l:#D1FAE5;
-  --orange:#D97706;--orange-l:#FEF3C7;
-  --ink:#1A1A2E;--ink-60:rgba(26,26,46,.6);--ink-30:rgba(26,26,46,.3);--ink-10:rgba(26,26,46,.06);
-  --ivory:#F9F7F0;--white:#fff;--border:#E8E4D8;
-  --r:12px;--r-sm:8px;
-}
+:root{--navy:#1E2D5A;--navy-l:#EEF1FB;--gold:#B8860B;--gold-l:#FFF8E7;--crimson:#C0392B;--crimson-l:#FFECEC;--green:#1E7A1E;--green-l:#D1FAE5;--orange:#D97706;--orange-l:#FEF3C7;--ink:#1A1A2E;--ink-60:rgba(26,26,46,.6);--ink-30:rgba(26,26,46,.3);--ink-10:rgba(26,26,46,.06);--ivory:#F9F7F0;--white:#fff;--border:#E8E4D8;--r:12px;--r-sm:8px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--ivory);font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 button{font-family:inherit;cursor:pointer;border:0;outline:0;-webkit-tap-highlight-color:transparent}
 input,textarea{font-family:inherit;outline:0}
 .page{position:fixed;top:0;left:0;right:0;bottom:0;display:none;overflow-y:auto}
 .page.active{display:block}
-
-/* LOADING */
 #pg-load{background:var(--ivory);flex-direction:column;align-items:center;justify-content:center;gap:14px}
 #pg-load.active{display:flex}
 .spinner{width:36px;height:36px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--navy);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* TOPBAR */
 #pg-list{background:var(--ivory)}
 .topbar{background:var(--navy);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .tb-left{display:flex;align-items:center;gap:10px}
@@ -36,10 +24,7 @@ input,textarea{font-family:inherit;outline:0}
 .tb-title{font-family:"DM Serif Display",serif;color:#fff;font-size:15px;line-height:1.2}
 .tb-sub{font-size:10px;color:rgba(255,255,255,.55);margin-top:2px}
 .tb-right{display:flex;align-items:center;gap:8px}
-.rbadge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;text-transform:uppercase}
 .back{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
-
-/* PROGRESS */
 .prog-bar-wrap{background:var(--white);padding:10px 18px 12px;border-bottom:1px solid var(--border);position:sticky;top:62px;z-index:90}
 .prog-row{display:flex;justify-content:space-between;margin-bottom:6px}
 .prog-lbl{font-size:12px;font-weight:600;color:var(--ink)}
@@ -47,20 +32,14 @@ input,textarea{font-family:inherit;outline:0}
 .pbar{height:5px;border-radius:3px;background:var(--border);overflow:hidden}
 .pfill{height:100%;border-radius:3px;background:var(--gold);transition:width .35s}
 .pfill.c{background:var(--green)}
-
-/* MAIN TABS */
 .main-tabs{background:var(--white);border-bottom:2px solid var(--border);display:flex;position:sticky;top:106px;z-index:89}
 .mtab{flex:1;padding:12px 8px;font-size:13px;font-weight:600;color:var(--ink-60);border-bottom:2px solid transparent;margin-bottom:-2px;background:transparent;border-top:0;border-left:0;border-right:0;border-radius:0;display:flex;align-items:center;justify-content:center;gap:7px;transition:color .15s,border-color .15s}
 .mtab.active{color:var(--navy);border-bottom-color:var(--gold)}
 .mtab-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;border-radius:10px;font-size:10px;font-weight:700;padding:0 5px;background:var(--ink-10);color:var(--ink-60)}
 .mtab.active .mtab-count{background:var(--navy-l);color:var(--navy)}
 .mtab-count.has{background:#FEF3C7;color:#D97706}
-
-/* TAB PANELS */
 .tab-panel{display:none;padding:12px 14px 100px;max-width:640px;margin:0 auto}
 .tab-panel.active{display:block}
-
-/* SECTION ACCORDION */
 .sec-accordion{margin-bottom:8px;background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);overflow:hidden}
 .sec-accordion.all-done{border-color:rgba(30,122,30,.3)}
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -75,8 +54,6 @@ input,textarea{font-family:inherit;outline:0}
 .sec-accordion.open .sec-chevron{transform:rotate(180deg)}
 .sec-body{display:none;padding:0 12px 12px}
 .sec-accordion.open .sec-body{display:block}
-
-/* TASK CARDS */
 .tc{background:var(--ivory);border-radius:var(--r-sm);padding:12px;margin-top:8px;border:1.5px solid var(--border);transition:border-color .2s}
 .tc.ok{border-color:var(--gold)}
 .tc.fail{border-color:var(--crimson);background:#fffcfc}
@@ -87,15 +64,12 @@ input,textarea{font-family:inherit;outline:0}
 .tc-done-info{flex:1;min-width:0}
 .tc-done-name{font-size:13px;color:var(--ink);line-height:1.4}
 .tc-done-meta{font-size:11px;color:var(--ink-60);margin-top:3px}
-.tc-done-expand{font-size:11px;font-weight:600;color:var(--navy);margin-top:8px;display:flex;align-items:center;gap:4px;cursor:pointer}
+.tc-done-expand{font-size:11px;font-weight:600;color:var(--navy);margin-top:8px;cursor:pointer}
 .tc-edit-body{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
 .tc.edit-open .tc-edit-body{display:block}
 .tc-lbl{font-size:13px;color:var(--ink);line-height:1.4;margin-bottom:2px;display:flex;flex-wrap:wrap;gap:5px;align-items:flex-start}
 .mb{padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600;background:var(--navy-l);color:var(--navy)}
 .pb{padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600;background:var(--orange-l);color:var(--orange)}
-.updated-badge{padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600;background:#FEF3C7;color:#D97706}
-
-/* CONTROLS */
 .yno{display:flex;gap:8px;margin-top:10px}
 .yb{flex:1;padding:11px 8px;border-radius:var(--r-sm);font-size:13px;font-weight:600;border:1.5px solid var(--border);background:var(--white);color:var(--ink-60);transition:all .15s}
 .yb.y.on{background:var(--green-l);border-color:var(--green);color:var(--green)}
@@ -103,29 +77,20 @@ input,textarea{font-family:inherit;outline:0}
 .stars{display:flex;gap:6px;margin-top:10px}
 .star{font-size:28px;cursor:pointer;color:var(--border);line-height:1}
 .star.on{color:#F59E0B}
-
-/* PHOTO CONTROLS — camera + gallery */
 .photo-opts{display:flex;gap:8px;margin-top:10px}
 .photo-opt-btn{flex:1;padding:10px 8px;border-radius:var(--r-sm);font-size:12px;font-weight:600;border:1.5px solid var(--navy);background:var(--navy-l);color:var(--navy);display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer}
-.photo-opt-btn:active{opacity:.75}
 .ph-prev{display:none;flex-direction:column;gap:8px;margin-top:10px}
 .ph-prev img{width:100%;max-height:180px;object-fit:cover;border-radius:var(--r-sm);border:1.5px solid var(--border)}
 .retake{font-size:12px;font-weight:600;color:var(--navy);background:var(--navy-l);border:1.5px solid var(--navy);padding:5px 14px;border-radius:6px}
 .rm,.ti{width:100%;margin-top:8px;padding:9px 12px;border-radius:var(--r-sm);border:1.5px solid var(--border);font-size:12px;color:var(--ink);background:var(--white);resize:none;height:50px;line-height:1.4}
-
-/* UPDATE REASON */
 .urw{margin-top:10px;padding:10px;background:var(--orange-l);border-radius:var(--r-sm);border:1px solid var(--orange);display:none}
 .urw.show{display:block}
 .urw label{font-size:11px;font-weight:600;color:var(--orange);display:block;margin-bottom:6px}
 .urw textarea{width:100%;padding:8px 10px;border-radius:6px;border:1.5px solid var(--orange);font-size:12px;color:var(--ink);background:var(--white);resize:none;height:50px;line-height:1.4;font-family:inherit}
 .save-edit-btn{margin-top:10px;width:100%;padding:11px;border-radius:8px;background:var(--navy);color:#fff;font-size:13px;font-weight:700;border:0;cursor:pointer}
-
-/* EMPTY */
 .empty-state{text-align:center;padding:40px 20px;color:var(--ink-60)}
 .empty-state .e-icon{font-size:40px;margin-bottom:12px}
 .empty-state p{font-size:14px}
-
-/* SUBMIT BAR */
 .sub-wrap{position:fixed;bottom:0;left:0;right:0;padding:10px 16px 14px;background:var(--ivory);border-top:1px solid var(--border);z-index:80}
 .vmsg{font-size:11px;color:var(--orange);margin-bottom:6px;padding:6px 10px;background:var(--orange-l);border-radius:6px;display:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sub-wrap-btns{display:flex;gap:8px}
@@ -133,40 +98,33 @@ input,textarea{font-family:inherit;outline:0}
 .draft-btn.saved{background:var(--green-l);color:var(--green);border-color:var(--green)}
 .sub-btn{flex:1;padding:15px;border-radius:var(--r);background:var(--navy);color:#fff;font-size:15px;font-weight:700;transition:opacity .2s}
 .sub-btn:disabled{opacity:.4;cursor:not-allowed}
-
-/* SUCCESS */
 #pg-done{background:var(--ivory);flex-direction:column;align-items:center;justify-content:center}
 #pg-done.active{display:flex}
 .done-body{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px;gap:12px}
 .done-body h2{font-family:"DM Serif Display",serif;font-size:28px;color:var(--navy)}
 .done-body p{font-size:14px;color:var(--ink-60)}
 .ok-btn{padding:14px 32px;border-radius:var(--r);background:var(--navy);color:#fff;font-size:15px;font-weight:700;margin-top:12px}
-
-/* TOAST */
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;z-index:999;transition:transform .3s,opacity .3s;white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center;opacity:0}
 #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 #toast.err{background:var(--crimson)}
 </style>
 </head>
 <body>
-
 <div id="pg-load" class="page active">
   <div class="spinner"></div>
   <div style="font-size:13px;color:var(--ink-60)">Loading your tasks...</div>
 </div>
-
 <div id="pg-list" class="page">
   <div class="topbar">
     <div class="tb-left">
-      <img class="tb-logo" id="topbarLogo" alt="BSC"/>
+      <img class="tb-logo" src="https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg" alt="BSC"/>
       <div>
         <div class="tb-title">Store Checklist</div>
         <div class="tb-sub" id="cl-sub">-</div>
       </div>
     </div>
     <div class="tb-right">
-      <div class="rbadge" id="cl-role">-</div>
-      <button class="back" onclick="goHome()" title="Logout">&#8617;</button>
+      <button class="back" onclick="goHome()" title="Back">&#8617;</button>
     </div>
   </div>
   <div class="prog-bar-wrap">
@@ -174,12 +132,8 @@ input,textarea{font-family:inherit;outline:0}
     <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
   </div>
   <div class="main-tabs">
-    <button class="mtab active" id="mtab-pending" onclick="switchTab('pending')">
-      &#9201; Pending <span class="mtab-count has" id="mc-pending">0</span>
-    </button>
-    <button class="mtab" id="mtab-completed" onclick="switchTab('completed')">
-      &#10003; Completed <span class="mtab-count" id="mc-completed">0</span>
-    </button>
+    <button class="mtab active" id="mtab-pending" onclick="switchTab('pending')">&#9201; Pending <span class="mtab-count has" id="mc-pending">0</span></button>
+    <button class="mtab" id="mtab-completed" onclick="switchTab('completed')">&#10003; Completed <span class="mtab-count" id="mc-completed">0</span></button>
   </div>
   <div class="tab-panel active" id="panel-pending"><div id="pending-body"></div></div>
   <div class="tab-panel" id="panel-completed"><div id="completed-body"></div></div>
@@ -191,60 +145,44 @@ input,textarea{font-family:inherit;outline:0}
     </div>
   </div>
 </div>
-
 <div id="pg-done" class="page">
   <div class="done-body">
     <div style="font-size:56px">&#9989;</div>
     <h2>Submitted!</h2>
     <p id="done-msg">Checklist submitted.</p>
     <p id="done-time" style="font-size:12px;color:var(--ink-30)"></p>
-    <button class="ok-btn" onclick="goHome()">&#8592; Back to Home</button>
+    <button class="ok-btn" onclick="location.href='dashboard.html'">&#8592; Back to Dashboard</button>
   </div>
 </div>
-
 <div id="toast"></div>
-
 <script>
-var API='https://script.google.com/macros/s/AKfycbzT-GnqHn6EfZnNMl2JdqwTfaOoKLklHe0PN4CSynq-c2nZWa1t43_8vNyvCrkpHqSyhQ/exec';
-var BSC='https://bsctextilescandb-ui.github.io/retail-crm/logo.jpg';
-var me=null, secs=[], ans={}, must=[], pics=[], tot=0;
+var API='https://bsc-checklist.bsctextiles-candb.workers.dev';
+var me=null,secs=[],ans={},must=[],pics=[],tot=0;
 var openSecs={pending:{},completed:{}};
 
-document.getElementById('topbarLogo').src=BSC;
-
-// ── SESSION CHECK ─────────────────────────────────────────────
 (function(){
   var raw=sessionStorage.getItem('bscAuth');
   if(!raw){location.href='index.html';return;}
   try{
-    var auth=JSON.parse(raw);
-    var role=String(auth.role||'').trim().toLowerCase();
-    var fromDash=new URLSearchParams(window.location.search).get('from')==='dashboard';
-    // Only redirect to dashboard if NOT coming from dashboard
-    if(!fromDash&&(role==='owner'||role==='store manager')){location.href='dashboard.html';return;}
-    // Owner should never access checklist even from dashboard
-    if(role==='owner'){location.href='dashboard.html';return;}
-    me={name:auth.name,role:auth.role,isAdmin:auth.isAdmin||false};
-    loadChecklist(auth.role);
+    me=JSON.parse(raw);
+    loadChecklist();
   }catch(e){location.href='index.html';}
 })();
 
-// ── API ───────────────────────────────────────────────────────
 function apiGet(action,params,cb){
-  var q='action='+encodeURIComponent(action);
-  if(params) Object.keys(params).forEach(function(k){q+='&'+encodeURIComponent(k)+'='+encodeURIComponent(String(params[k]));});
-  fetch(API+'?'+q,{redirect:'follow'})
-    .then(function(r){return r.text();})
-    .then(function(t){try{cb(JSON.parse(t));}catch(e){cb({ok:false,error:'Bad response'});}})
-    .catch(function(e){cb({ok:false,error:'Network error: '+e.message});});
+  var q='?action='+encodeURIComponent(action);
+  if(params)Object.keys(params).forEach(function(k){q+='&'+encodeURIComponent(k)+'='+encodeURIComponent(String(params[k]));});
+  fetch(API+'/'+q,{redirect:'follow'})
+    .then(function(r){return r.json();})
+    .then(cb).catch(function(e){cb({ok:false,error:e.message});});
 }
+
 function apiPost(data,cb){
-  fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data),redirect:'follow'})
-    .then(function(r){return r.text();})
-    .then(function(t){try{cb(JSON.parse(t));}catch(e){cb({ok:false,error:'Server error'});}})
-    .catch(function(){
-      // GET fallback — no photos
-      var fd={action:data.action,staffName:data.staffName||'',role:data.role||''};
+  fetch(API+'/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),redirect:'follow'})
+    .then(function(r){return r.json();})
+    .then(cb).catch(function(){
+      // GET fallback without photos
+      var fd={action:data.action,staffName:data.staffName||'',role:''};
       var ents=(data.entries||[]).map(function(e){
         return {section:e.section,taskId:e.taskId,taskName:e.taskName,type:e.type,
                 response:e.response||'',photoUrl:'',status:e.status||'OK',
@@ -252,14 +190,11 @@ function apiPost(data,cb){
       });
       fd.entries=JSON.stringify(ents);
       var q=Object.keys(fd).map(function(k){return k+'='+encodeURIComponent(String(fd[k]));}).join('&');
-      fetch(API+'?'+q,{redirect:'follow'})
-        .then(function(r){return r.text();})
-        .then(function(t){try{cb(JSON.parse(t));}catch(e){cb({ok:false,error:'Submit failed'});}})
+      fetch(API+'/?'+q,{redirect:'follow'}).then(function(r){return r.json();}).then(cb)
         .catch(function(){cb({ok:false,error:'No connection'});});
     });
 }
 
-// ── COMPRESS PHOTO — smaller for speed ────────────────────────
 function compress(file,cb){
   var rd=new FileReader();
   rd.onload=function(e){
@@ -267,8 +202,7 @@ function compress(file,cb){
     img.onload=function(){
       var c=document.createElement('canvas'),w=img.width,h=img.height,m=400;
       if(w>m){h=Math.round(h*m/w);w=m;}
-      c.width=w;c.height=h;
-      c.getContext('2d').drawImage(img,0,0,w,h);
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
       cb(c.toDataURL('image/jpeg',0.5));
     };
     img.src=e.target.result;
@@ -285,6 +219,7 @@ function ist(){
           t:p(d.getUTCHours())+':'+p(d.getUTCMinutes()),
           str:d.getUTCFullYear()+'-'+p(d.getUTCMonth()+1)+'-'+p(d.getUTCDate())};
 }
+
 function toast(msg,type){
   var t=document.getElementById('toast');t.textContent=msg;
   t.className=(type==='err')?'err show':'show';
@@ -292,7 +227,6 @@ function toast(msg,type){
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// ── PAGES ─────────────────────────────────────────────────────
 function goPage(id){
   ['pg-load','pg-list','pg-done'].forEach(function(p){
     var el=document.getElementById(p);if(!el)return;
@@ -301,54 +235,41 @@ function goPage(id){
   });
   window.scrollTo(0,0);
 }
+
 function goHome(){
   clearDraft();
-  sessionStorage.removeItem('bscAuth');
-  location.href='index.html';
+  location.href='dashboard.html';
 }
 
-// ── LOAD CHECKLIST ────────────────────────────────────────────
-function loadChecklist(role){
-  var tmr=setTimeout(function(){toast('Taking too long — check connection','err');location.href='index.html';},15000);
-  apiGet('getChecklist',{role:role},function(r){
+function loadChecklist(){
+  var tmr=setTimeout(function(){toast('Taking too long','err');location.href='dashboard.html';},15000);
+  apiGet('getChecklist',{},function(r){
     clearTimeout(tmr);
-    if(!r.ok||!r.sections){toast(r.error||'Could not load checklist.','err');location.href='index.html';return;}
+    if(!r.ok||!r.sections){toast(r.error||'Could not load','err');location.href='dashboard.html';return;}
     try{
       secs=r.sections;ans={};must=[];pics=[];tot=0;
       secs.forEach(function(s){
         s.tasks.forEach(function(t){
           tot++;
-          if(t.mandatory) must.push(t.taskId);
-          if(t.photoRequired) pics.push(t.taskId);
+          if(t.mandatory)must.push(t.taskId);
+          if(t.photoRequired)pics.push(t.taskId);
           if(t.submitted&&t.submittedStatus){
             var ss=t.submittedStatus;
-            ans[t.taskId]={v:ss.response,s:ss.status,r:ss.remarks,p:ss.photoUrl,
-                           _done:true,_who:ss.staffName,_ts:ss.timestamp};
+            ans[t.taskId]={v:ss.response,s:ss.status,r:ss.remarks,p:ss.photoUrl,_done:true,_who:ss.staffName,_ts:ss.timestamp};
           }
         });
       });
-      // restore draft for non-done tasks only
       var draft=loadDraft();
-      if(draft){
-        Object.keys(draft.answers||{}).forEach(function(tid){
-          if(!ans[tid]||!ans[tid]._done) ans[tid]=draft.answers[tid];
-        });
-      }
+      if(draft){Object.keys(draft.answers||{}).forEach(function(tid){if(!ans[tid]||!ans[tid]._done)ans[tid]=draft.answers[tid];});}
       var dt=ist();
       document.getElementById('cl-sub').textContent=dt.lbl+' · '+me.name;
-      document.getElementById('cl-role').textContent=me.role;
       buildChecklist();
       goPage('pg-list');
-    }catch(err){toast('Error: '+err.message,'err');location.href='index.html';}
+    }catch(err){toast('Error: '+err.message,'err');location.href='dashboard.html';}
   });
 }
 
-// ── BUILD CHECKLIST ───────────────────────────────────────────
-function buildChecklist(){
-  renderPending();
-  renderCompleted();
-  updateProg();
-}
+function buildChecklist(){renderPending();renderCompleted();updateProg();}
 
 function renderPending(){
   var body=document.getElementById('pending-body');body.innerHTML='';
@@ -356,10 +277,9 @@ function renderPending(){
   secs.forEach(function(s,si){
     var tasks=s.tasks.filter(function(t){var a=ans[t.taskId];return !(a&&(a.v||a._done));});
     if(!tasks.length)return;
-    any=true;
-    body.appendChild(buildAccordion(s,si,tasks,'pending'));
+    any=true;body.appendChild(buildAccordion(s,si,tasks,'pending'));
   });
-  if(!any) body.innerHTML='<div class="empty-state"><div class="e-icon">&#9989;</div><p>All tasks completed!</p></div>';
+  if(!any)body.innerHTML='<div class="empty-state"><div class="e-icon">&#9989;</div><p>All tasks completed!</p></div>';
 }
 
 function renderCompleted(){
@@ -368,10 +288,9 @@ function renderCompleted(){
   secs.forEach(function(s,si){
     var tasks=s.tasks.filter(function(t){var a=ans[t.taskId];return a&&(a.v||a._done);});
     if(!tasks.length)return;
-    any=true;
-    body.appendChild(buildAccordion(s,si,tasks,'completed'));
+    any=true;body.appendChild(buildAccordion(s,si,tasks,'completed'));
   });
-  if(!any) body.innerHTML='<div class="empty-state"><div class="e-icon">&#128203;</div><p>No completed tasks yet.</p></div>';
+  if(!any)body.innerHTML='<div class="empty-state"><div class="e-icon">&#128203;</div><p>No completed tasks yet.</p></div>';
 }
 
 function buildAccordion(s,si,tasks,tab){
@@ -382,13 +301,11 @@ function buildAccordion(s,si,tasks,tab){
   div.id='acc-'+tab+'-'+si;
   var badgeTxt=allDone?'&#10003; Done':tasks.length+' task'+(tasks.length>1?'s':'');
   var badgeCls=allDone?'sec-badge done':'sec-badge';
-  div.innerHTML=
-    '<div class="sec-hdr" onclick="toggleAcc(\''+tab+'\','+si+')">'
-      +'<div class="sec-hdr-left"><div class="sec-num">'+(si+1)+'</div>'
-      +'<div class="sec-title">'+esc(s.section)+'</div></div>'
-      +'<div class="sec-hdr-right"><span class="'+badgeCls+'">'+badgeTxt+'</span>'
-      +'<span class="sec-chevron">&#9660;</span></div>'
-    +'</div>'
+  div.innerHTML='<div class="sec-hdr" onclick="toggleAcc(\''+tab+'\','+si+')">'
+    +'<div class="sec-hdr-left"><div class="sec-num">'+(si+1)+'</div>'
+    +'<div class="sec-title">'+esc(s.section)+'</div></div>'
+    +'<div class="sec-hdr-right"><span class="'+badgeCls+'">'+badgeTxt+'</span>'
+    +'<span class="sec-chevron">&#9660;</span></div></div>'
     +'<div class="sec-body" id="sb-'+tab+'-'+si+'"></div>';
   var body=div.querySelector('.sec-body');
   tasks.forEach(function(t){body.appendChild(buildCard(t,s.section,tab));});
@@ -397,275 +314,209 @@ function buildAccordion(s,si,tasks,tab){
 
 function toggleAcc(tab,si){
   var acc=document.getElementById('acc-'+tab+'-'+si);if(!acc)return;
-  acc.classList.toggle('open');
-  openSecs[tab][si]=acc.classList.contains('open');
+  acc.classList.toggle('open');openSecs[tab][si]=acc.classList.contains('open');
 }
 
-// ── CARD BUILDER ──────────────────────────────────────────────
 function buildCard(t,section,tab){
-  var id=t.taskId;
-  var a=ans[id]||{};
-  var div=document.createElement('div');
-  div.id='tc_'+id+'_'+tab;
-
+  var id=t.taskId;var a=ans[id]||{};
+  var div=document.createElement('div');div.id='tc_'+id+'_'+tab;
   if(tab==='completed'){
     var icon=a.s==='FAIL'?'❌':'✅';
     var who=a._who||me.name;
-    var ts=a._ts||'';
-    var timeStr=ts.length>=16?ts.slice(11,16):ist().t;
-    var cardCls='tc '+(a.s==='FAIL'?'done-fail':'done-yes');
-    div.className=cardCls;
-    div.innerHTML=
-      '<div class="tc-done-row">'
-        +'<div class="tc-done-icon">'+icon+'</div>'
-        +'<div class="tc-done-info">'
-          +'<div class="tc-done-name">'+esc(t.taskName)
-            +(t.mandatory?'<span class="mb" style="margin-left:5px">Mandatory</span>':'')
-          +'</div>'
-          +'<div class="tc-done-meta">'+esc(who)+' · '+esc(timeStr)+'</div>'
-        +'</div>'
-      +'</div>'
+    var ts=a._ts||'';var timeStr=ts.length>=16?ts.slice(11,16):ist().t;
+    div.className='tc '+(a.s==='FAIL'?'done-fail':'done-yes');
+    div.innerHTML='<div class="tc-done-row"><div class="tc-done-icon">'+icon+'</div>'
+      +'<div class="tc-done-info"><div class="tc-done-name">'+esc(t.taskName)
+      +(t.mandatory?'<span class="mb" style="margin-left:5px">Mandatory</span>':'')+'</div>'
+      +'<div class="tc-done-meta">'+esc(who)+' · '+esc(timeStr)+'</div></div></div>'
       +'<div class="tc-done-expand" onclick="toggleEdit(\''+id+'\')">&#9998; Edit / Update &#8964;</div>'
       +'<div class="tc-edit-body" id="teb_'+id+'">'
-        +'<div style="font-size:12px;color:var(--ink-60);margin-bottom:8px">Current: <strong>'+esc(a.v||'—')+'</strong>'+(a.r?' — '+esc(a.r):'')+'</div>'
-        +buildEditControls(t,section)
-      +'</div>';
+      +'<div style="font-size:12px;color:var(--ink-60);margin-bottom:8px">Current: <strong>'+esc(a.v||'—')+'</strong>'+(a.r?' — '+esc(a.r):'')+'</div>'
+      +buildEditControls(t,section)+'</div>';
   } else {
     var cls='tc'+(a.v?(a.s==='FAIL'?' fail':' ok'):'');
     div.className=cls;
     var mb=t.mandatory?'<span class="mb">Mandatory</span>':'';
     var pb=t.photoRequired?'<span class="pb">Photo</span>':'';
     div.innerHTML='<div class="tc-lbl">'+esc(t.taskName)+' '+mb+pb+'</div>'+buildPendingControls(t,section);
-    if(a.v) restoreCardUI(div,t,a);
+    if(a.v)restoreCardUI(div,t,a);
   }
   return div;
 }
 
-// ── PENDING CONTROLS ──────────────────────────────────────────
 function buildPendingControls(t,section){
-  var id=t.taskId;
-  var html='';
+  var id=t.taskId;var html='';
   if(t.type==='yesno'){
     html='<div class="yno">'
       +'<button class="yb y" id="y_'+id+'" data-id="'+id+'" data-sec="'+esc(section)+'" onclick="ynBtn(this)">&#10003; Yes</button>'
       +'<button class="yb n" id="n_'+id+'" data-id="'+id+'" data-sec="'+esc(section)+'" onclick="ynBtn(this)">&#10007; No</button>'
-      +'</div>'
-      +'<div id="rd_'+id+'" style="display:none"><textarea class="rm" data-id="'+id+'" placeholder="Describe issue..." oninput="remTA(this)"></textarea></div>';
-    if(t.photoRequired) html+=photoOpts(id,'');
+      +'</div><div id="rd_'+id+'" style="display:none"><textarea class="rm" data-id="'+id+'" placeholder="Describe issue..." oninput="remTA(this)"></textarea></div>';
+    if(t.photoRequired)html+=photoOpts(id,'');
   } else if(t.type==='rating'){
     html='<div class="stars" id="st_'+id+'">'
       +[1,2,3,4,5].map(function(n){return '<span class="star" data-id="'+id+'" data-n="'+n+'" data-sec="'+esc(section)+'" onclick="starBtn(this)">&#9733;</span>';}).join('')
-      +'</div>'
-      +'<div id="rd_'+id+'" style="display:none"><textarea class="rm" data-id="'+id+'" placeholder="Remarks..." oninput="remTA(this)"></textarea></div>';
-    if(t.photoRequired) html+=photoOpts(id,'');
+      +'</div><div id="rd_'+id+'" style="display:none"><textarea class="rm" data-id="'+id+'" placeholder="Remarks..." oninput="remTA(this)"></textarea></div>';
+    if(t.photoRequired)html+=photoOpts(id,'');
   } else if(t.type==='photo'){
-    html='<div style="margin-top:8px">'
-      +photoOpts(id,'','Photo required')
-      +'<textarea class="rm" data-id="'+id+'" placeholder="Photo remarks..." oninput="remTA(this)"></textarea>'
-      +'</div>';
+    html='<div style="margin-top:8px">'+photoOpts(id,'','Photo required')
+      +'<textarea class="rm" data-id="'+id+'" placeholder="Photo remarks..." oninput="remTA(this)"></textarea></div>';
   } else {
     html='<textarea class="ti" id="tx_'+id+'" data-id="'+id+'" data-sec="'+esc(section)+'" style="margin-top:8px" placeholder="Enter response..." oninput="txtTA(this)"></textarea>';
-    if(t.photoRequired) html+=photoOpts(id,'');
+    if(t.photoRequired)html+=photoOpts(id,'');
   }
   return html;
 }
 
-// ── PHOTO OPTIONS — camera + gallery ─────────────────────────
 function photoOpts(id,pfx,label){
   var xid=pfx+id;
   var lbl=label?'<div style="font-size:11px;font-weight:600;color:var(--orange);margin-bottom:5px">&#128247; '+label+'</div>':'';
-  return '<div style="margin-top:8px">'
-    +lbl
-    // hidden inputs — one for camera, one for gallery
-    +'<input type="file" accept="image/*" capture="environment" id="cam_'+xid+'" style="display:none" data-id="'+id+'" data-extra="'+(pfx?'1':'0')+'" onchange="phFile(this)"/>'
-    +'<input type="file" accept="image/*" id="gal_'+xid+'" style="display:none" data-id="'+id+'" data-extra="'+(pfx?'1':'0')+'" onchange="phFile(this)"/>'
+  return '<div style="margin-top:8px">'+lbl
+    +'<input type="file" accept="image/*" capture="environment" id="cam_'+xid+'" style="display:none" data-id="'+id+'" onchange="phFile(this)"/>'
+    +'<input type="file" accept="image/*" id="gal_'+xid+'" style="display:none" data-id="'+id+'" onchange="phFile(this)"/>'
     +'<div class="photo-opts">'
       +'<button class="photo-opt-btn" onclick="document.getElementById(\'cam_'+xid+'\').click()">📷 Camera</button>'
       +'<button class="photo-opt-btn" onclick="document.getElementById(\'gal_'+xid+'\').click()">🖼️ Gallery</button>'
     +'</div>'
     +'<div class="ph-prev" id="pp_'+xid+'"><img id="pi_'+xid+'" alt=""/>'
-      +'<button class="retake" onclick="clearPhoto(\''+xid+'\',\''+id+'\',\''+(pfx?'1':'0')+'\')">Retake</button>'
-    +'</div>'
-    +'</div>';
+      +'<button class="retake" onclick="clearPhoto(\''+xid+'\',\''+id+'\')">Retake</button>'
+    +'</div></div>';
 }
 
-// ── EDIT CONTROLS ─────────────────────────────────────────────
 function buildEditControls(t,section){
-  var id=t.taskId;
-  var html='';
+  var id=t.taskId;var html='';
   if(t.type==='yesno'){
     html='<div class="yno">'
       +'<button class="yb y" id="ey_'+id+'" data-id="'+id+'" data-edit="1" onclick="ynBtn(this)">&#10003; Yes</button>'
       +'<button class="yb n" id="en_'+id+'" data-id="'+id+'" data-edit="1" onclick="ynBtn(this)">&#10007; No</button>'
-      +'</div>'
-      +'<div id="erd_'+id+'" style="display:none"><textarea class="rm" data-id="'+id+'" placeholder="Describe issue..." oninput="remTA(this)"></textarea></div>';
+      +'</div><div id="erd_'+id+'" style="display:none"><textarea class="rm" data-id="'+id+'" placeholder="Describe issue..." oninput="remTA(this)"></textarea></div>';
   } else if(t.type==='rating'){
     html='<div class="stars" id="est_'+id+'">'
-      +[1,2,3,4,5].map(function(n){return '<span class="star" data-id="'+id+'" data-n="'+n+'" data-edit="1" onclick="starBtn(this)">&#9733;</span>';}).join('')
-      +'</div>';
+      +[1,2,3,4,5].map(function(n){return '<span class="star" data-id="'+id+'" data-n="'+n+'" data-edit="1" onclick="starBtn(this)">&#9733;</span>';}).join('')+'</div>';
   } else if(t.type==='photo'){
     html=photoOpts(id,'e','Upload new photo');
   } else {
     html='<textarea class="ti" id="etx_'+id+'" data-id="'+id+'" data-edit="1" style="margin-top:6px" placeholder="Update response..." oninput="txtTA(this)"></textarea>';
   }
-  html+='<div class="urw" id="urw_'+id+'">'
-    +'<label>Reason for update (required)</label>'
-    +'<textarea id="ur_'+id+'" placeholder="Why are you updating this?" style="font-family:inherit"></textarea>'
-    +'</div>'
+  html+='<div class="urw" id="urw_'+id+'"><label>Reason for update (required)</label>'
+    +'<textarea id="ur_'+id+'" placeholder="Why are you updating this?" style="font-family:inherit"></textarea></div>'
     +'<button class="save-edit-btn" onclick="saveEdit(\''+id+'\',\''+esc(section)+'\')">Save Update</button>';
   return html;
 }
 
-// ── RESTORE CARD UI ───────────────────────────────────────────
 function restoreCardUI(div,t,a){
   var id=t.taskId;
   if(t.type==='yesno'&&a.v){
     var yEl=div.querySelector('#y_'+id);var nEl=div.querySelector('#n_'+id);
-    if(yEl) yEl.className='yb y'+(a.v==='yes'?' on':'');
-    if(nEl) nEl.className='yb n'+(a.v==='no'?' on':'');
-    var rd=div.querySelector('#rd_'+id);if(rd) rd.style.display=(a.v==='no')?'block':'none';
-    if(a.r){var rm=div.querySelector('.rm[data-id="'+id+'"]');if(rm) rm.value=a.r;}
+    if(yEl)yEl.className='yb y'+(a.v==='yes'?' on':'');
+    if(nEl)nEl.className='yb n'+(a.v==='no'?' on':'');
+    var rd=div.querySelector('#rd_'+id);if(rd)rd.style.display=(a.v==='no')?'block':'none';
+    if(a.r){var rm=div.querySelector('.rm[data-id="'+id+'"]');if(rm)rm.value=a.r;}
     div.className='tc '+(a.v==='no'?'fail':'ok');
   } else if(t.type==='rating'&&a.v){
     var n=parseInt(a.v,10);
     var stEl=div.querySelector('#st_'+id);
-    if(stEl) stEl.querySelectorAll('.star').forEach(function(s,k){s.className='star'+(k<n?' on':'');});
+    if(stEl)stEl.querySelectorAll('.star').forEach(function(s,k){s.className='star'+(k<n?' on':'');});
     div.className='tc '+(n<3?'fail':'ok');
   } else if(t.type==='text'&&a.v){
-    var txEl=div.querySelector('#tx_'+id);if(txEl) txEl.value=a.v;
-    div.className='tc ok';
+    var txEl=div.querySelector('#tx_'+id);if(txEl)txEl.value=a.v;div.className='tc ok';
   } else if(t.type==='photo'&&a.p){
     var ppEl=div.querySelector('#pp_'+id);var piEl=div.querySelector('#pi_'+id);
-    if(piEl&&a.p){piEl.src=a.p;if(ppEl)ppEl.style.display='flex';}
-    div.className='tc ok';
+    if(piEl&&a.p){piEl.src=a.p;if(ppEl)ppEl.style.display='flex';}div.className='tc ok';
   }
 }
 
-// ── INTERACTIONS ──────────────────────────────────────────────
 function toggleEdit(id){
   var expand=document.querySelector('.tc-done-expand[onclick*="\''+id+'\'"]');
-  var card=expand?expand.closest('.tc'):null;
-  if(!card)return;
+  var card=expand?expand.closest('.tc'):null;if(!card)return;
   card.classList.toggle('edit-open');
-  if(expand) expand.innerHTML=card.classList.contains('edit-open')
-    ?'&#10006; Close &#8963;':'&#9998; Edit / Update &#8964;';
+  if(expand)expand.innerHTML=card.classList.contains('edit-open')?'&#10006; Close &#8963;':'&#9998; Edit / Update &#8964;';
 }
 
 function ynBtn(btn){
-  var id=btn.getAttribute('data-id');
-  var isEdit=btn.getAttribute('data-edit')==='1';
-  var isY=btn.id==='y_'+id||btn.id==='ey_'+id;
-  var v=isY?'yes':'no';
-  var pfx=isEdit?'e':'';
-  if(!ans[id])ans[id]={};
-  ans[id].v=v;ans[id].s=(v==='yes')?'OK':'FAIL';
+  var id=btn.getAttribute('data-id');var isEdit=btn.getAttribute('data-edit')==='1';
+  var isY=btn.id==='y_'+id||btn.id==='ey_'+id;var v=isY?'yes':'no';var pfx=isEdit?'e':'';
+  if(!ans[id])ans[id]={};ans[id].v=v;ans[id].s=(v==='yes')?'OK':'FAIL';
   var yEl=document.getElementById(pfx+'y_'+id);var nEl=document.getElementById(pfx+'n_'+id);
   if(yEl)yEl.className='yb y'+(v==='yes'?' on':'');
   if(nEl)nEl.className='yb n'+(v==='no'?' on':'');
   var rd=document.getElementById(pfx+'rd_'+id);if(rd)rd.style.display=(v==='no')?'block':'none';
-  if(!isEdit){
-    var card=document.getElementById('tc_'+id+'_pending');
-    if(card)card.className='tc '+(v==='no'?'fail':'ok');
-    ans[id].sec=btn.getAttribute('data-sec')||'';
-  } else {
-    var urw=document.getElementById('urw_'+id);if(urw)urw.classList.add('show');
-  }
+  if(!isEdit){var card=document.getElementById('tc_'+id+'_pending');if(card)card.className='tc '+(v==='no'?'fail':'ok');ans[id].sec=btn.getAttribute('data-sec')||'';}
+  else{var urw=document.getElementById('urw_'+id);if(urw)urw.classList.add('show');}
   autoDraft();updateProg();
 }
 
 function starBtn(btn){
-  var id=btn.getAttribute('data-id');
-  var n=parseInt(btn.getAttribute('data-n'),10);
-  var isEdit=btn.getAttribute('data-edit')==='1';
-  var pfx=isEdit?'e':'';
-  if(!ans[id])ans[id]={};
-  ans[id].v=String(n);ans[id].s=(n>=3)?'OK':'FAIL';
+  var id=btn.getAttribute('data-id');var n=parseInt(btn.getAttribute('data-n'),10);var isEdit=btn.getAttribute('data-edit')==='1';var pfx=isEdit?'e':'';
+  if(!ans[id])ans[id]={};ans[id].v=String(n);ans[id].s=(n>=3)?'OK':'FAIL';
   var stEl=document.getElementById(pfx+'st_'+id);
   if(stEl)stEl.querySelectorAll('.star').forEach(function(s,k){s.className='star'+(k<n?' on':'');});
-  if(!isEdit){
-    var card=document.getElementById('tc_'+id+'_pending');
-    if(card)card.className='tc '+(n<3?'fail':'ok');
-    var rd=document.getElementById('rd_'+id);if(rd)rd.style.display='block';
-    ans[id].sec=btn.getAttribute('data-sec')||'';
-  } else {
-    var urw=document.getElementById('urw_'+id);if(urw)urw.classList.add('show');
-  }
+  if(!isEdit){var card=document.getElementById('tc_'+id+'_pending');if(card)card.className='tc '+(n<3?'fail':'ok');var rd=document.getElementById('rd_'+id);if(rd)rd.style.display='block';ans[id].sec=btn.getAttribute('data-sec')||'';}
+  else{var urw=document.getElementById('urw_'+id);if(urw)urw.classList.add('show');}
   autoDraft();updateProg();
 }
 
 function remTA(ta){var id=ta.getAttribute('data-id');if(!ans[id])ans[id]={};ans[id].r=ta.value;autoDraft();}
 function txtTA(ta){
   var id=ta.getAttribute('data-id');var isEdit=ta.getAttribute('data-edit')==='1';
-  if(!ans[id])ans[id]={};
-  ans[id].v=ta.value.trim();ans[id].s=ta.value.trim()?'OK':'FAIL';
-  if(!isEdit){
-    var card=document.getElementById('tc_'+id+'_pending');
-    if(card)card.className='tc'+(ta.value.trim()?' ok':'');
-    ans[id].sec=ta.getAttribute('data-sec')||'';
-  } else {var urw=document.getElementById('urw_'+id);if(urw)urw.classList.add('show');}
+  if(!ans[id])ans[id]={};ans[id].v=ta.value.trim();ans[id].s=ta.value.trim()?'OK':'FAIL';
+  if(!isEdit){var card=document.getElementById('tc_'+id+'_pending');if(card)card.className='tc'+(ta.value.trim()?' ok':'');ans[id].sec=ta.getAttribute('data-sec')||'';}
+  else{var urw=document.getElementById('urw_'+id);if(urw)urw.classList.add('show');}
   autoDraft();updateProg();
 }
 
 function phFile(inp){
-  var id=inp.getAttribute('data-id');
-  var isExtra=inp.getAttribute('data-extra')==='1';
-  var isEdit=inp.id.startsWith('cam_e')||inp.id.startsWith('gal_e');
+  var id=inp.getAttribute('data-id');var isEdit=inp.id.startsWith('cam_e')||inp.id.startsWith('gal_e');
   if(!inp.files||!inp.files[0])return;
-  var xid=(isEdit?'e':'')+id;
+  var xid=isEdit?'e'+id:id;
   compress(inp.files[0],function(b){
-    if(!ans[id])ans[id]={};
-    ans[id].p=b;
-    if(!isExtra){ans[id].v='Photo';ans[id].s='OK';}
-    var ppEl=document.getElementById('pp_'+xid);
-    var piEl=document.getElementById('pi_'+xid);
-    if(piEl)piEl.src=b;
-    if(ppEl)ppEl.style.display='flex';
-    if(!isEdit){
-      var card=document.getElementById('tc_'+id+'_pending');
-      if(card)card.className='tc ok';
-    } else {var urw=document.getElementById('urw_'+id);if(urw)urw.classList.add('show');}
+    if(!ans[id])ans[id]={};ans[id].p=b;ans[id].v='Photo';ans[id].s='OK';
+    var ppEl=document.getElementById('pp_'+xid);var piEl=document.getElementById('pi_'+xid);
+    if(piEl)piEl.src=b;if(ppEl)ppEl.style.display='flex';
+    if(!isEdit){var card=document.getElementById('tc_'+id+'_pending');if(card)card.className='tc ok';}
+    else{var urw=document.getElementById('urw_'+id);if(urw)urw.classList.add('show');}
     autoDraft();updateProg();
   });
 }
 
-function clearPhoto(xid,id,isExtra){
-  if(ans[id]){delete ans[id].p;if(isExtra!=='1'){delete ans[id].v;}}
+function clearPhoto(xid,id){
+  if(ans[id]){delete ans[id].p;delete ans[id].v;}
   var pp=document.getElementById('pp_'+xid);if(pp)pp.style.display='none';
   var pi=document.getElementById('pi_'+xid);if(pi)pi.src='';
   var cam=document.getElementById('cam_'+xid);if(cam)cam.value='';
   var gal=document.getElementById('gal_'+xid);if(gal)gal.value='';
-  var card=document.getElementById('tc_'+id+'_pending');
-  if(card&&isExtra!=='1')card.className='tc';
+  var card=document.getElementById('tc_'+id+'_pending');if(card)card.className='tc';
   autoDraft();updateProg();
 }
 
 function saveEdit(id,section){
-  var urEl=document.getElementById('ur_'+id);
-  var reason=urEl?urEl.value.trim():'';
+  var urEl=document.getElementById('ur_'+id);var reason=urEl?urEl.value.trim():'';
   if(!reason){toast('Please enter reason for update','err');return;}
-  var a=ans[id]||{};
-  if(!a.v){toast('Please fill in a response first','err');return;}
+  var a=ans[id]||{};if(!a.v){toast('Please fill in a response first','err');return;}
   var task=null,sec=section;
   secs.forEach(function(s){s.tasks.forEach(function(t){if(t.taskId===id){task=t;if(!sec)sec=s.section;}});});
   if(!task)return;
   var btn=document.querySelector('[onclick*="saveEdit(\''+id+'\'"]');
   if(btn){btn.disabled=true;btn.textContent='Saving...';}
-  var entry={section:sec,taskId:id,taskName:task.taskName,type:task.type,
-             response:a.v,photoBase64:a.p||'',photoUrl:'',
-             status:a.s||'OK',remarks:a.r||'',sequence:'Update',updateReason:reason};
-  apiPost({action:'submitChecklist',staffName:me.name,role:me.role,entries:[entry]},function(r){
-    if(r.ok){
-      toast('Updated ✓');
-      ans[id]._who=me.name;ans[id]._ts=ist().str+' '+ist().t+':00';
-      clearDraft();buildChecklist();
-    } else {
-      toast(r.error||'Update failed','err');
-      if(btn){btn.disabled=false;btn.textContent='Save Update';}
-    }
-  });
+  var doSave=function(photoUrl){
+    var entry={section:sec,taskId:id,taskName:task.taskName,type:task.type,
+               response:a.v,photoBase64:'',photoUrl:photoUrl||'',
+               status:a.s||'OK',remarks:a.r||'',sequence:'Update',updateReason:reason};
+    apiPost({action:'submitChecklist',staffName:me.name,entries:[entry]},function(r){
+      if(r.ok){toast('Updated ✓');ans[id]._who=me.name;ans[id]._ts=ist().str+' '+ist().t+':00';clearDraft();buildChecklist();}
+      else{toast(r.error||'Update failed','err');if(btn){btn.disabled=false;btn.textContent='Save Update';}}
+    });
+  };
+  // Upload photo first if present
+  if(a.p&&a.p.startsWith('data:')){
+    if(btn)btn.textContent='Uploading photo...';
+    apiPost({action:'uploadPhoto',staffName:me.name,taskId:id,photoBase64:a.p},function(r){
+      doSave(r.ok?r.photoUrl:'');
+    });
+  } else {
+    doSave('');
+  }
 }
 
-// ── MAIN TABS ─────────────────────────────────────────────────
 function switchTab(tab){
   ['pending','completed'].forEach(function(t){
     document.getElementById('mtab-'+t).classList.toggle('active',t===tab);
@@ -673,101 +524,88 @@ function switchTab(tab){
   });
 }
 
-// ── PROGRESS ──────────────────────────────────────────────────
 function updateProg(){
-  var done=0;
-  Object.keys(ans).forEach(function(k){if(ans[k].v||ans[k]._done)done++;});
+  var done=0;Object.keys(ans).forEach(function(k){if(ans[k].v||ans[k]._done)done++;});
   document.getElementById('pn').textContent=done+' / '+tot;
   var pct=tot>0?Math.round((done/tot)*100):0;
-  var pf=document.getElementById('pf');
-  pf.style.width=pct+'%';pf.className='pfill'+(pct>=100?' c':'');
-
+  var pf=document.getElementById('pf');pf.style.width=pct+'%';pf.className='pfill'+(pct>=100?' c':'');
   var pending=0,doneC=0;
-  secs.forEach(function(s){s.tasks.forEach(function(t){
-    var a=ans[t.taskId];
-    if(a&&(a.v||a._done))doneC++;else pending++;
-  });});
-  var mcp=document.getElementById('mc-pending');
-  if(mcp){mcp.textContent=pending;mcp.className='mtab-count'+(pending>0?' has':'');}
+  secs.forEach(function(s){s.tasks.forEach(function(t){var a=ans[t.taskId];if(a&&(a.v||a._done))doneC++;else pending++;});});
+  var mcp=document.getElementById('mc-pending');if(mcp){mcp.textContent=pending;mcp.className='mtab-count'+(pending>0?' has':'');}
   var mcc=document.getElementById('mc-completed');if(mcc)mcc.textContent=doneC;
-
-  var allOk=true;
-  must.forEach(function(mid){if(!ans[mid]||(!ans[mid].v&&!ans[mid]._done))allOk=false;});
-  pics.forEach(function(pid){if(!ans[pid]||(!ans[pid].p&&!ans[pid]._done))allOk=false;});
-  document.getElementById('sub-btn').disabled=!allOk;
-
+  // Enable submit as soon as ANY pending task is filled
+  var hasAnyNew=Object.keys(ans).some(function(k){return !ans[k]._done&&ans[k].v;});
+  document.getElementById('sub-btn').disabled=!hasAnyNew;
+  // Show count of pending mandatory tasks as info only (not blocking)
   var miss=[];
-  must.forEach(function(mid){
-    if(!ans[mid]||(!ans[mid].v&&!ans[mid]._done))
-      secs.forEach(function(s){s.tasks.forEach(function(t){if(t.taskId===mid)miss.push(t.taskName);});});
-  });
+  must.forEach(function(mid){if(!ans[mid]||(!ans[mid].v&&!ans[mid]._done))secs.forEach(function(s){s.tasks.forEach(function(t){if(t.taskId===mid)miss.push(t.taskName);});});});
   var vm=document.getElementById('vmsg');
-  if(miss.length){
+  if(miss.length&&hasAnyNew){
     var txt=miss[0].length>35?miss[0].slice(0,35)+'…':miss[0];
     if(miss.length>1)txt+=', +'+(miss.length-1)+' more';
-    vm.textContent='Mandatory pending: '+txt;vm.style.display='block';
+    vm.textContent='Mandatory still pending: '+txt;vm.style.display='block';
   } else vm.style.display='none';
 }
 
-// ── SUBMIT ────────────────────────────────────────────────────
 function doSubmit(){
-  var btn=document.getElementById('sub-btn');
-  btn.disabled=true;btn.textContent='Submitting...';
+  var btn=document.getElementById('sub-btn');btn.disabled=true;btn.textContent='Submitting...';
   var entries=[];
-  secs.forEach(function(s){
-    s.tasks.forEach(function(t){
-      var a=ans[t.taskId]||{};
-      if(!a._done&&a.v){
-        entries.push({section:s.section,taskId:t.taskId,taskName:t.taskName,type:t.type,
-                      response:a.v,photoBase64:a.p||'',photoUrl:'',
-                      status:a.s||(a.v?'OK':'MISS'),remarks:a.r||'',
-                      sequence:'First',updateReason:''});
+  secs.forEach(function(s){s.tasks.forEach(function(t){
+    var a=ans[t.taskId]||{};
+    if(!a._done&&a.v){entries.push({section:s.section,taskId:t.taskId,taskName:t.taskName,type:t.type,
+      response:a.v,photoBase64:a.p||'',photoUrl:a.photoUrl||'',status:a.s||(a.v?'OK':'MISS'),remarks:a.r||'',sequence:'First',updateReason:''});}
+  });});
+  if(!entries.length){toast('Nothing new to submit','err');btn.disabled=false;btn.textContent='Submit';return;}
+
+  // Upload photos one by one first, then submit all at once
+  var photoEntries=entries.filter(function(e){return e.photoBase64&&e.photoBase64.startsWith('data:');});
+  if(photoEntries.length===0){
+    submitEntries(entries,btn);return;
+  }
+
+  // Upload photos first
+  btn.textContent='Uploading photo...';
+  var pending=photoEntries.length;
+  photoEntries.forEach(function(e){
+    apiPost({action:'uploadPhoto',staffName:me.name,taskId:e.taskId,photoBase64:e.photoBase64},function(r){
+      if(r.ok&&r.photoUrl){
+        e.photoUrl=r.photoUrl;
+      }
+      e.photoBase64=''; // clear base64 after upload attempt
+      pending--;
+      if(pending===0){
+        btn.textContent='Submitting...';
+        submitEntries(entries,btn);
       }
     });
   });
-  if(!entries.length){toast('Nothing new to submit','err');btn.disabled=false;btn.textContent='Submit';return;}
-  apiPost({action:'submitChecklist',staffName:me.name,role:me.role,entries:entries},function(r){
+}
+
+function submitEntries(entries,btn){
+  apiPost({action:'submitChecklist',staffName:me.name,entries:entries},function(r){
     if(r.ok){
       var dt=ist();
-      document.getElementById('done-msg').textContent=me.name+' — '+me.role+' submitted.';
+      document.getElementById('done-msg').textContent=me.name+' submitted successfully.';
       document.getElementById('done-time').textContent=dt.lbl+' at '+dt.t+' IST';
       clearDraft();goPage('pg-done');
-      var fromDash=new URLSearchParams(window.location.search).get('from')==='dashboard';
-      setTimeout(function(){
-        if(fromDash)location.href='dashboard.html';
-        else{sessionStorage.removeItem('bscAuth');location.href='index.html';}
-      },2500);
-    } else {
-      toast(r.error||'Submission failed','err');
-      btn.disabled=false;btn.textContent='Submit';
-    }
+    } else {toast(r.error||'Submission failed','err');btn.disabled=false;btn.textContent='Submit';}
   });
 }
 
-// ── AUTO-DRAFT ────────────────────────────────────────────────
 var _dt=null;
 function autoDraft(){
-  clearTimeout(_dt);
-  _dt=setTimeout(function(){
-    try{
-      var key=draftKey();if(!key)return;
-      var toSave={};
+  clearTimeout(_dt);_dt=setTimeout(function(){
+    try{var key=draftKey();if(!key)return;var toSave={};
       Object.keys(ans).forEach(function(k){if(!ans[k]._done)toSave[k]=ans[k];});
-      localStorage.setItem(key,JSON.stringify({staffName:me.name,role:me.role,date:ist().str,answers:toSave}));
-      var btn=document.getElementById('draftBtn');
-      if(btn){btn.textContent='&#128190; Saved';btn.classList.add('saved');}
-    }catch(e){}
-  },800);
+      localStorage.setItem(key,JSON.stringify({name:me.name,date:ist().str,answers:toSave}));
+      var btn=document.getElementById('draftBtn');if(btn){btn.textContent='&#128190; Saved';btn.classList.add('saved');}
+    }catch(e){}},800);
 }
 function saveDraftManual(){autoDraft();toast('Draft saved');}
-function draftKey(){if(!me)return null;return 'soc_'+me.role+'_'+me.name.replace(/\W+/g,'_')+'_'+ist().str;}
+function draftKey(){if(!me)return null;return 'bsc_cl_'+me.name.replace(/\W+/g,'_')+'_'+ist().str;}
 function loadDraft(){
-  try{
-    var key=draftKey();if(!key)return null;
-    var raw=localStorage.getItem(key);if(!raw)return null;
-    var d=JSON.parse(raw);
-    if(!d||d.role!==me.role||d.date!==ist().str){localStorage.removeItem(key);return null;}
-    return d;
+  try{var key=draftKey();if(!key)return null;var raw=localStorage.getItem(key);if(!raw)return null;
+    var d=JSON.parse(raw);if(!d||d.date!==ist().str){localStorage.removeItem(key);return null;}return d;
   }catch(e){return null;}
 }
 function clearDraft(){try{var k=draftKey();if(k)localStorage.removeItem(k);}catch(e){}}
